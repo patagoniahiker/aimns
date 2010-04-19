@@ -24,7 +24,7 @@ Ext.onReady(function() {
             }, {
                 name: 'ManagerName',
                 type: 'string'
-}]
+            }]
             })
         });
 
@@ -88,7 +88,7 @@ Ext.onReady(function() {
             //    width: 200,
             //    editor: combo,
             //   renderer: Ext.util.Format.comboRenderer(combo)
-}]);
+        }]);
 
             // by default columns are sortable
             cm.defaultSortable = true;
@@ -140,7 +140,7 @@ Ext.onReady(function() {
                     tooltip: '删除记录',
                     iconCls: 'remove',
                     handler: handleDelete
-}],
+                }],
                     bbar: pagebar
                 });
 
@@ -210,7 +210,41 @@ Ext.onReady(function() {
                             selectOnFocus: true,
                             allowBlank: false
                         })
-            ]
+                        ]
+                    })
+                });
+
+                var SDepartForm = new Ext.FormPanel({
+                    frame: true,
+                    labelAlign: 'right',
+                    labelWidth: 120,
+                    width: 450,
+                    height: 250,
+                    items: new Ext.form.FieldSet({
+                        title: '部门资料',
+                        autoHeight: true,
+                        defaults: { width: 200 },
+                        defaultType: 'textfield',
+                        items: [{
+                            fieldLabel: '部门号',
+                            name: 'DepartmentID',
+                        }, {
+                            fieldLabel: '部门名',
+                            name: 'DepartmentName',
+                        }, new Ext.form.ComboBox({
+                            fieldLabel: '直属部门',
+                            name: 'ParentDepartmentName',
+                            hiddenName: 'ParentDepartmentId',
+                            store: deptDs,
+                            valueField: 'DepartmentID',
+                            displayField: 'DepartmentName',
+                            typeAhead: true,
+                            mode: 'remote',
+                            triggerAction: 'all',
+                            emptyText: '请选择部门',
+                            selectOnFocus: true,
+                        })
+                        ]
                     })
                 });
 
@@ -226,7 +260,7 @@ Ext.onReady(function() {
                     //    start: encodeURIComponent("0"),//追加一个参数 (areaName)
                     //    limit: encodeURIComponent("25")
                     //});
-                    var formvalue = DepartForm.form.getValues();
+                    var formvalue = SDepartForm.form.getValues();
                     this.baseParams["DepartmentID"] = formvalue["DepartmentID"];
                     this.baseParams["DepartmentName"] = formvalue["DepartmentName"];
                     this.baseParams["ParentDepartmentId"] = formvalue["ParentDepartmentId"];
@@ -325,7 +359,7 @@ Ext.onReady(function() {
                             handler: function() {
                                 AddDepartWin.hide();
                             }
-}]
+                        }]
                         });
                         AddDepartWin.show(this);
                     }
@@ -341,35 +375,7 @@ Ext.onReady(function() {
                             modal: true,
                             autoDestroy: true,
                             plain: true,
-                            items: new Ext.form.FieldSet({
-                                title: '部门资料',
-                                autoHeight: true,
-                                defaults: { width: 200 },
-                                defaultType: 'textfield',
-                                items: [{
-                                    fieldLabel: '部门号',
-                                    name: 'DepartmentID',
-                                    allowBlank: true 
-                                }, {
-                                    fieldLabel: '部门名',
-                                    name: 'DepartmentName',
-                                    allowBlank: true 
-                                }, new Ext.form.ComboBox({
-                                    fieldLabel: '直属部门',
-                                    name: 'ParentDepartmentName',
-                                    hiddenName: 'ParentDepartmentId',
-                                    store: deptDs,
-                                    valueField: 'DepartmentID',
-                                    displayField: 'DepartmentName',
-                                    typeAhead: true,
-                                    mode: 'remote',
-                                    triggerAction: 'all',
-                                    emptyText: '请选择部门',
-                                    selectOnFocus: true,
-                                    allowBlank: true 
-                                })
-                                ]
-                            }),
+                            items: SDepartForm ,
                             buttons: [{
                                 text: '检索',
                                 handler: SearchRecords
@@ -378,7 +384,7 @@ Ext.onReady(function() {
                                 handler: function() {
                                     SDepartWin.hide();
                                 }
-}]
+                            }]
                             });
                             SDepartWin.show(this);
                         }
@@ -407,7 +413,7 @@ Ext.onReady(function() {
                                         handler: function() {
                                             EditDepartWin.hide();
                                         }
-}]
+                                    }]
                                     });
                                     EditDepartWin.show(this);
                                     deptDs.load();
@@ -551,7 +557,7 @@ Ext.onReady(function() {
                                             interval: 200
                                         }
                                     });
-                                    var formvalue = DepartForm.form.getValues();
+                                    //var formvalue = DepartForm.form.getValues();
 
                                     /** 
                                     *@see 表格数据加载之前事件 
