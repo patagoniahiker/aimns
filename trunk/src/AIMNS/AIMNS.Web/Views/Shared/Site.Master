@@ -1,0 +1,28 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="AIMNS.Web.Views.Shared.Site" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title>Spring.NET + Nhibernate +Asp.net MVC +Extjsϵͳ</title>
+    <!-- EXT -->
+    <link href="../../Content/Ext/resources/css/ext-all.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Ext/resources/css/xtheme-slate.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Ext/ext-base.js" type="text/javascript"></script>
+    <script src="../../Content/Ext/ext-all-debug.js" type="text/javascript"></script>
+    <!-- EasyBridge.Web -->
+    <link href="../../Content/Icon.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Ext/ext-lang-zh_CN.js" type="text/javascript"></script>
+    <script src="../../Content/Scripts/Cookies.js" type="text/javascript"></script>
+
+    <asp:ContentPlaceHolder ID="HeadContextPlaceHolder" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <div id="container">
+        <div id="maincontent">
+            <asp:ContentPlaceHolder ID="MainContentPlaceHolder" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </div>
+</body>
+</html>

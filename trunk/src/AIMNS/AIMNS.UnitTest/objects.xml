@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+    <import resource="assembly://AIMNS.App/AIMNS.App/Dao.xml"/>
+    <import resource="assembly://AIMNS.App/AIMNS.App/Services.xml"/>
+</objects>
