@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+
+    <object id="ManagerFactory" type="AIMNS.DTO.AllManagerFactory,AIMNS.DTO">
+      
+        <property name="UserManager" ref="UserManagerTrans"/>
+   
+        <property name="CompanyManager" ref="CompanyManagerTrans"/>
+     
+        <property name="DepartmentManager" ref="DepartmentManagerTrans"/>
+ 
+    </object>
+
+
+
+
+    <object id="LoginController" singleton="false"  type="AIMNS.Controllers.LoginController,AIMNS.Controllers">
+    </object>
+    <object id="HomeController"  singleton="false"  type="AIMNS.Controllers.HomeController,AIMNS.Controllers">
+    </object>
+    <object id="UserController"   singleton="false" type="AIMNS.Controllers.UserController, AIMNS.Controllers" >
+    </object>
+    <object id="DepartmentController"   singleton="false" type="AIMNS.Controllers.DepartmentController, AIMNS.Controllers" >
+    </object>
+ 
+</objects>
+
+
+

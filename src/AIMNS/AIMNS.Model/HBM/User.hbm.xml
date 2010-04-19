@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+
+    <class name="AIMNS.Model.User, AIMNS.Model" table="UserAccount"  lazy="true">
+
+        <id name="UserID" column="UserID" type="System.String">
+            <generator class="assigned"/>
+        </id>
+
+        <property name="CreateTime" column="CreateTime"   type="System.DateTime"  />
+        <property name="Creator" column="Creator"   type="System.String"  length="32" />
+        <property name="Email" column="Email"   type="System.String"  length="255" />
+ 
+        <property name="Mobile" column="Mobile"   type="System.String"  length="15" />
+        <property name="Password" column="Password"   type="System.String"  length="64" update="false"/>
+        <property name="Telephone" column="Telephone"   type="System.String"  length="20" />
+        <property name="UserName" column="UserName"  not-null="true" type="System.String"  length="32" />
+        <property name="ValidFrom" column="ValidFrom"   type="System.DateTime"  />
+        <property name="ValidTo" column="ValidTo"   type="System.DateTime"   />
+ 
+
+        <!--用户所属交易公司-->
+        <many-to-one name="Company"   
+          class="AIMNS.Model.Company,AIMNS.Model"
+          cascade="none"
+          column="CompanyID"
+           />
+
+        <!--用户所属部门-->
+        <many-to-one name="Department"
+          class="AIMNS.Model.Department,AIMNS.Model"
+          cascade="none"
+          column="DepartmentID"
+           />
+
+        <!--主管-->
+        <many-to-one name="Manager"
+          class="AIMNS.Model.User,AIMNS.Model"
+          cascade="none"
+          column="ManagerID"
+           />
+
+          </class>
+
+
+
+</hibernate-mapping>
+

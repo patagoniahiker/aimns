@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net"
+         xmlns:db="http://www.springframework.net/database">                   
+    <!-- 用以我们在其它的应用程序中，配置数据访问 -->
+    <object type="Spring.Objects.Factory.Config.PropertyPlaceholderConfigurer, Spring.Core">
+        <property name="ConfigSections" value="databaseSettings"/>
+    </object>
+
+    <!-- 数据库和Nhibernate的相关配置 -->
+    <db:provider id="DbProvider"
+                     provider="SqlServer-2.0"
+                     connectionString="Password=1;Persist Security Info=True;User ID=sa;Initial Catalog=DirectCenter;Data Source=LINING\LINING"/>
+                     
+    <!--SessionFactory对象，其中包括一些比较重要的属性 -->              
+    <object id="NHibernateSessionFactory" type="Spring.Data.NHibernate.LocalSessionFactoryObject, Spring.Data.NHibernate20">
+        <property name="DbProvider" ref="DbProvider"/>
+        <property name="MappingAssemblies">
+            <list>
+                <value>AIMNS.Model</value>
+            </list>
+        </property>
+        <property name="HibernateProperties">
+            <dictionary>
+                <entry key="hibernate.connection.provider"
+                       value="NHibernate.Connection.DriverConnectionProvider"/>
+                <entry key="dialect"
+                       value="NHibernate.Dialect.MsSql2000Dialect"/>
+                <entry key="hibernate.connection.driver_class"
+                       value="NHibernate.Driver.SqlClientDriver"/>
+
+            </dictionary>
+        </property>
+        <property name="ExposeTransactionAwareSessionFactory" value="true" />
+    </object>
+
+    <!--将id为NHibernateSessionFactory的对象注入到HibernateTemplate中-->
+    <object id="HibernateTemplate" type="Spring.Data.NHibernate.HibernateTemplate">
+        <property name="SessionFactory" ref="NHibernateSessionFactory" />
+        <property name="TemplateFlushMode" value="Auto" />
+        <property name="CacheQueries" value="true" />
+    </object>
+
+    <!-- 我们的数据访问类，将HibernateTemplate注入进来-->
+    <object id="UserDao" type="AIMNS.DAL.UserDao, AIMNS.DAL">
+        <property name="HibernateTemplate" ref="HibernateTemplate"/>
+    </object>
+
+    <object id="CompanyDao" type="AIMNS.DAL.CompanyDao, AIMNS.DAL">
+        <property name="HibernateTemplate" ref="HibernateTemplate"/>
+    </object>
+
+    <object id="DepartmentDao" type="AIMNS.DAL.DepartmentDao, AIMNS.DAL">
+        <property name="HibernateTemplate" ref="HibernateTemplate"/>
+    </object>
+   
+</objects>
+

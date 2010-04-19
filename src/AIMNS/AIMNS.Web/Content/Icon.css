@@ -1,0 +1,339 @@
+﻿.redtext
+{
+    color: Red !important;
+}
+
+/*工具的菜单左侧图标*/
+.btnlogout
+{
+    background-image: url(Images/logout.png) !important;
+}
+.btnadd
+{
+    background-image: url(Images/add.gif) !important;
+}
+.btndelete
+{
+    background-image: url(Images/delete.gif) !important;
+}
+.btnget
+{
+    background-image: url(Images/get.png) !important;
+}
+.btnedit
+{
+    background-image: url(Images/edit.gif) !important;
+}
+.btnsearch
+{
+    background-image: url(Images/search.gif) !important;
+}
+.btnsave
+{
+    background-image: url(Images/save.gif) !important;
+}
+.btncancel
+{
+    background-image: url(Images/cancel.png) !important;
+}
+.btnrefresh
+{
+    background-image: url(Images/refresh.gif) !important;
+}
+.btnuserlist
+{
+    background-image: url(Images/userlist.gif) !important;
+}
+.btnwebqq
+{
+    background-image: url(Images/webqq.gif) !important;
+}
+.btnkey
+{
+    background-image: url(Images/key.gif) !important;
+}
+.btnfreeze
+{
+    background-image: url(Images/freeze.png) !important;
+}
+.btnaudit
+{
+    background-image: url(Images/audit.png) !important;
+}
+.btnrefuse
+{
+    background-image: url(Images/terminate.png) !important;
+}
+.btnterminate
+{
+    background-image: url(Images/terminate.png) !important;
+}
+
+.btnconfirm
+{
+    background-image: url(Images/submit.png) !important;
+}
+.btnsubmit
+{
+    background-image: url(Images/submit.png) !important;
+}
+.btnresume
+{
+    background-image: url(Images/submit.png) !important;
+}
+.btnyes
+{
+    background-image: url(Images/yes.png) !important;
+}
+.btnno
+{
+    background-image: url(Images/no.png) !important;
+}
+.btnright
+{
+    background-image: url(Images/right.gif) !important;
+}
+.btnexpandall
+{
+    background-image: url(Images/expandall.gif) !important;
+}
+.btncollapseall
+{
+    background-image: url(Images/collapseall.gif) !important;
+}
+.btnclear
+{
+    background-image: url(Images/clear.gif) !important;
+}
+.btnupload
+{
+    background-image: url(Images/upload.png) !important;
+}
+.btnrefuse
+{
+    background-image: url(Images/terminate.png) !important;
+}
+/*user*/
+.user_add
+{
+    background-image: url(Images/user_add.png) !important;
+}
+.user_edit
+{
+    background-image: url(Images/user_edit.png) !important;
+}
+.user
+{
+    background-image: url(Images/user.png) !important;
+}
+.usermanager
+{
+    background-image: url(Images/user_gray.png) !important;
+}
+/*工具栏的右侧方块性按钮图标*/
+.x-tool-tbsearch
+{
+    background-image: url(Images/tbsearch.gif) !important;
+}
+.x-tool-tbsearch-over
+{
+    background-image: url(Images/tbsearchover.gif) !important;
+}
+
+/*winform*/
+.winitem
+{
+    background-image: url(Images/itempurple.png) !important;
+}
+.winconfig
+{
+    background-image: url(Images/config.png) !important;
+}
+.winform
+{
+    background-image: url(Images/form.png) !important;
+}
+.winchart
+{
+    background-image: url(Images/chart.png) !important;
+}
+.winpage
+{
+    background-image: url(Images/page.gif) !important;
+}
+.winplug
+{
+    background-image: url(Images/plugin.png) !important;
+}
+.winhome
+{
+    background-image: url(Images/home.png) !important;
+}
+.wincompany
+{
+    background-image: url(Images/company.png) !important;
+}
+.windepart
+{
+    background-image: url(images/department.png) !important;
+}
+.winrole
+{
+    background-image: url(images/role.gif) !important;
+}
+.winusergroup
+{
+    background-image: url(images/group.gif);
+}
+.wingroup
+{
+    background-image: url(images/wingroup.png) !important;
+}
+.winfunction
+{
+    background-image: url(images/function.gif);
+}
+.winresource
+{
+    background-image: url(images/resource.gif);
+}
+.winoperation
+{
+    background-image: url(images/operation.gif);
+}
+
+.wintext
+{
+    background-image: url(images/text.png);
+}
+/*部门*/
+.functionlist .x-tree-node-expanded .x-tree-node-icon, .functionlist .x-tree-node-collapsed .x-tree-node-icon, .functionlist .x-tree-node-leaf .x-tree-node-icon
+{
+    background-image: url(images/function.gif);
+}
+.resourcelist .x-tree-node-expanded .x-tree-node-icon, .resourcelist .x-tree-node-collapsed .x-tree-node-icon, .resourcelist .x-tree-node-leaf .x-tree-node-icon
+{
+    background-image: url(images/resource.gif);
+}
+.operationlist .x-tree-node-expanded .x-tree-node-icon, .operationlist .x-tree-node-collapsed .x-tree-node-icon, .operationlist .x-tree-node-leaf .x-tree-node-icon
+{
+    background-image: url(images/operation.gif);
+}
+.rolelist .x-tree-node-expanded .x-tree-node-icon, .rolelist .x-tree-node-collapsed .x-tree-node-icon, .rolelist .x-tree-node-leaf .x-tree-node-icon
+{
+    background-image: url(images/role.gif);
+}
+.grouplist .x-tree-node-expanded .x-tree-node-icon, .grouplist .x-tree-node-collapsed .x-tree-node-icon, .grouplist .x-tree-node-leaf .x-tree-node-icon
+{
+    background-image: url(images/group.gif);
+}
+
+.departlist .x-tree-node-expanded .x-tree-node-icon, .departlist .x-tree-node-collapsed .x-tree-node-icon, .departlist .x-tree-node-leaf .x-tree-node-icon
+{
+    background-image: url(images/department.png);
+}
+
+/* field focus style */
+.x-form-focus, textarea.x-form-focus
+{
+    border: 1px solid #7eadd9;
+}
+li, ul, h4
+{
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.post li
+{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+.post li.post1
+{
+    color: Red;
+}
+
+.post li.post2
+{
+}
+
+.post li.post3
+{
+}
+
+.post li h4 span
+{
+    cursor: pointer;
+}
+
+.post li p
+{
+    text-align: right;
+    color: #666666;
+}
+
+
+/*allowBlank=false，必填文本框的样式*/
+.x-form-text_need
+{
+    background: #fff url(images/text-bg2.gif) repeat-x 0 0;
+    border-bottom: 1px solid #f63;
+}
+
+/*省略号的trigger样式实现*/
+.x-form-field-wrap .x-form-window-trigger
+{
+    background-image: url(images/trigger2.png) !important;
+    cursor: pointer;
+}
+
+/*文本框trigger样式实现*/
+
+.x-form-field-wrap .x-form-text-trigger
+{
+    background-image: url(images/trigger3.png) !important;
+    cursor: pointer;
+}
+
+
+
+/* file-upload.css */.x-form-file-wrap
+{
+    position: relative;
+    height: 22px;
+}
+.x-form-file-wrap .x-form-file
+{
+    z-index: 2;
+    right: 0px;
+    filter: alpha(opacity: 0);
+    position: absolute;
+    height: 22px;
+    -moz-opacity: 0;
+    opacity: 0;
+}
+.x-form-file-wrap .x-form-file-btn
+{
+    z-index: 1;
+    right: 0px;
+    position: absolute;
+}
+.x-form-file-wrap .x-form-file-text
+{
+    z-index: 3;
+    left: 0px;
+    color: #777;
+    position: absolute;
+}
+
+
+.highlight
+{
+    background: #F9CFA4 !important;
+}
+

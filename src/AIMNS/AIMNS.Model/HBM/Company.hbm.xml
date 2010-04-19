@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+    <class name="AIMNS.Model.Company, AIMNS.Model" table="Company"  lazy="true"  >
+
+        <id name="CompanyID" column="CompanyID" type="System.String" unsaved-value="0">
+            <generator class="assigned"/>
+        </id>
+        <property name="FullName" type="String(100)" column="FullName" />
+        <property name="Principal" column="Principal" type="System.String"/>
+        <property name="Linkman" column="Linkman" type="System.String"/>
+        <property name="RegistryAsset" column="RegistryAsset" />
+        <property name="Employees" column="Employees"  />
+        <property name="Country" column="Country" type="System.String"/>
+        <property name="Region" column="Region" type="System.String"/>
+        <property name="Province" column="Province" type="System.String"/>
+        <property name="Telephone" column="Telephone" type="System.String"/>
+        <property name="Fax" column="Fax" type="System.String"/>
+        <property name="Email" column="Email" type="System.String"/>
+        <property name="Remark" column="Remark" type="System.String"/>
+        <property name="CreateTime" column="CreateTime"  update="false"/>
+        <property name="Creator" column="Creator" type="System.String" update="false"/>
+        <bag name="UserList"    cascade="none"  inverse="true">
+            <key column="CompanyID"/>
+            <one-to-many class="AIMNS.Model.User,AIMNS.Model" />
+        </bag>
+         <bag name="DepartmentList"   cascade="all"  inverse="true">
+            <key column="CompanyID"/>
+            <one-to-many class="AIMNS.Model.Department,AIMNS.Model" />
+        </bag>
+    </class>
+</hibernate-mapping>
