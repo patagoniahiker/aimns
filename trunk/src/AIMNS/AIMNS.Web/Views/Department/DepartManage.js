@@ -64,7 +64,7 @@ Ext.onReady(function() {
                 // combo.lastQuery = null (this will reload the store the next time it expands)
                 beforequery: function(qe) {
                     delete qe.combo.lastQuery;
-                    combo.set
+                    //combo.set
                 }
             }
         });
