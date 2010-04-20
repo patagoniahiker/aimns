@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections;
 
 namespace AIMNS.Model
 {
@@ -15,6 +16,12 @@ namespace AIMNS.Model
         }
 
         public virtual String RoleName
+        {
+            get;
+            set;
+        }
+
+        public virtual IList PermissionList
         {
             get;
             set;
