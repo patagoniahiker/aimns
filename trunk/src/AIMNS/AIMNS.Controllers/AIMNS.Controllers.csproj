@@ -90,6 +90,7 @@
     <Compile Include="JsonBinder.cs" />
     <Compile Include="LoginController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoleController.cs" />
     <Compile Include="UserController.cs" />
   </ItemGroup>
   <ItemGroup>
