@@ -10,59 +10,12 @@ namespace AIMNS.Model
     [Serializable]
     public class User  
     {
-        /// <summary>
-        /// 创建日期
-        /// </summary>
-        public virtual DateTime CreateTime
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// 创建人
-        /// </summary>
-        public virtual System.String Creator
-        {
-            get;
-            set;
-        }
-
-
-
-        /// <summary>
-        /// Email地址
-        /// </summary>
-        public virtual System.String Email
-        {
-            get;
-            set;
-        }
 
         /// <summary>
         /// 用户编号
         /// </summary>
         /// 
         public virtual System.String UserID
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// 导入日期
-        /// </summary>
-        public virtual DateTime? ImportTime
-        {
-            get;
-            set;
-        }
-
-
-        /// <summary>
-        /// 手机号码
-        /// </summary>
-        public virtual System.String Mobile
         {
             get;
             set;
@@ -78,15 +31,6 @@ namespace AIMNS.Model
         }
 
         /// <summary>
-        /// 电话号码
-        /// </summary>
-        public virtual System.String Telephone
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// 用户名称
         /// </summary>
         public virtual System.String UserName
@@ -94,36 +38,6 @@ namespace AIMNS.Model
             get;
             set;
         }
-
-        /// <summary>
-        /// 生效日期
-        /// </summary>
-        public virtual DateTime? ValidFrom
-        {
-            get;
-            set;
-        }
-
-
-        /// <summary>
-        /// 失效日期
-        /// </summary>
-        public virtual DateTime? ValidTo
-        {
-            get;
-            set;
-        }
- 
-
-        /// <summary>
-        /// 所属公司
-        /// </summary>
-        public virtual Company Company
-        {
-            get;
-            set;
-        }
-
 
         /// <summary>
         /// 所属部门
@@ -134,11 +48,19 @@ namespace AIMNS.Model
             set;
         }
 
-
         /// <summary>
-        /// 直接主管
+        /// 角色
         /// </summary>
-        public virtual User Manager
+        public virtual Role Role
+        {
+            get;
+            set;
+        }
+
+        ///<summary>
+        ///用户登录标识
+        ///</summary>
+        public virtual String LoginFlg
         {
             get;
             set;
