@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+    <class name="AIMNS.Model.Permission, AIMNS.Model" table="D_PERMISSION"  lazy="true"  >
+
+        <id name="FucID" column="fuc_id" type="System.String" unsaved-value="0">
+            <generator class="assigned"/>
+        </id>
+        <id name="RoleID" column="role_id" type="System.String" unsaved-value="0">
+            <generator class="assigned"/>
+        </id>
+        <property name="PerFlg" type="System.String" column="per_flg" />
+
+        <!--用户权限-->
+        <many-to-one name="Role"
+          class="AIMNS.Model.Role,AIMNS.Model"
+          cascade="none"
+          column="role_id"
+           />
+    </class>
+</hibernate-mapping>

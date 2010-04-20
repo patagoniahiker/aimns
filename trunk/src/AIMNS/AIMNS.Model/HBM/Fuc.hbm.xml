@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+    <class name="AIMNS.Model.Fuc, AIMNS.Model" table="D_FUNCTION"  lazy="true"  >
+
+        <id name="FucID" column="fuc_id" type="System.String" unsaved-value="0">
+            <generator class="assigned"/>
+        </id>
+        <property name="FucName" type="System.String" column="fuc_name" />
+        
+    </class>
+</hibernate-mapping>
