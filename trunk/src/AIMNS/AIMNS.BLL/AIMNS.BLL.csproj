@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RoleManager.cs" />
     <Compile Include="CompanyManager.cs" />
     <Compile Include="DepartmentManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
