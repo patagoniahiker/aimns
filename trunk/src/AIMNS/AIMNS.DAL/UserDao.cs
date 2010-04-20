@@ -35,5 +35,32 @@ namespace AIMNS.DAL
         {
             return HibernateTemplate.LoadAll(typeof (User));
         }
+
+        public IList GetByCondition(User user)
+        {
+            ArrayList param = new ArrayList();
+            string queryStr =  "from User t where 1=1";
+            if (user.UserID != "")
+            {
+                queryStr += " and t.UserID=?";
+                param.Add(user.UserID);
+            }
+            if (user.UserName != "")
+            {
+                queryStr += " and t.UserName like ?";
+                param.Add("%"+user.UserName+"%");
+            }
+            if (user.Role != null)
+            {
+                queryStr += " and t.Role=?";
+                param.Add(user.Role.RoleId);
+            }
+            if (user.Department != null)
+            {
+                queryStr += " and t.Department=?";
+                param.Add(user.Department.DepartmentID);
+            }
+            return HibernateTemplate.Find(queryStr ,param .ToArray () );
+        }
     }
 }
