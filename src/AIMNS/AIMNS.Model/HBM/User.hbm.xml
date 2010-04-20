@@ -1,48 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
 
-    <class name="AIMNS.Model.User, AIMNS.Model" table="UserAccount"  lazy="true">
-
-        <id name="UserID" column="UserID" type="System.String">
+    <class name="AIMNS.Model.User, AIMNS.Model" table="D_USER"  lazy="true">
+        
+        <!--用户ID-->
+        <id name="UserID" column="usr_id" type="System.String">
             <generator class="assigned"/>
         </id>
 
-        <property name="CreateTime" column="CreateTime"   type="System.DateTime"  />
-        <property name="Creator" column="Creator"   type="System.String"  length="32" />
-        <property name="Email" column="Email"   type="System.String"  length="255" />
- 
-        <property name="Mobile" column="Mobile"   type="System.String"  length="15" />
-        <property name="Password" column="Password"   type="System.String"  length="64" update="false"/>
-        <property name="Telephone" column="Telephone"   type="System.String"  length="20" />
-        <property name="UserName" column="UserName"  not-null="true" type="System.String"  length="32" />
-        <property name="ValidFrom" column="ValidFrom"   type="System.DateTime"  />
-        <property name="ValidTo" column="ValidTo"   type="System.DateTime"   />
- 
+        <!--用户密码-->
+        <property name="Password" column="usr_pwd"   type="System.String"  length="20" update="false"/>
+        
+        <!--用户名-->
+        <property name="UserName" column="usr_name"  not-null="true" type="System.String"  length="10" />
 
-        <!--用户所属交易公司-->
-        <many-to-one name="Company"   
-          class="AIMNS.Model.Company,AIMNS.Model"
-          cascade="none"
-          column="CompanyID"
-           />
-
-        <!--用户所属部门-->
+        <!--所属部门-->
         <many-to-one name="Department"
           class="AIMNS.Model.Department,AIMNS.Model"
           cascade="none"
-          column="DepartmentID"
+          column="usr_department"
            />
 
-        <!--主管-->
-        <many-to-one name="Manager"
-          class="AIMNS.Model.User,AIMNS.Model"
-          cascade="none"
-          column="ManagerID"
-           />
-
-          </class>
-
-
+        <!--角色-->
+        <many-to-one name="Role"
+            class="AIMNS.Model.Role,AIMNS.Model"
+            cascade="none"
+            column="usr_role"
+            />
+            
+        <!--用户登录标识-->
+        <property name="LoginFlg" column="usr_log_flg" type="System.String" length="1"/>
+         
+    </class>
 
 </hibernate-mapping>
 

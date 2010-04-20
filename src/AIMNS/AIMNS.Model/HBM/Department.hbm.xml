@@ -1,48 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
-    <class name="AIMNS.Model.Department, AIMNS.Model" table="Department" lazy="true">
+    <class name="AIMNS.Model.Department, AIMNS.Model" table="D_DEPARTMENT" lazy="true">
 
-        <id name="DepartmentID" column="DepartmentID" type="System.String" unsaved-value="0">
+        <id name="DepartmentID" column="dep_id" type="System.String" unsaved-value="0">
             <generator class="assigned"/>
         </id>
 
-        <property name="DepartmentName" column="DepartmentName" type="System.String"/>
-        <property name="CreateTime" column="CreateTime" type="System.DateTime"  update="false"/>
-        <property name="Creator" column="Creator" type="System.String"/>
-
-        <!--部门所属公司-->
-        <many-to-one name="Company"   update="false"
-          class="AIMNS.Model.Company,AIMNS.Model"
-          cascade="none"
-          column="CompanyID"
-          not-null="false" />
-
+        <property name="DepartmentName" column="dep_name" type="System.String"/>
 
         <!--父部门-->
         <many-to-one  name="ParentDepartment"     
         class="AIMNS.Model.Department,AIMNS.Model"
-        column="ParentID">
+        column="dep_supdep">
         </many-to-one>
 
-
-        <!--子部门列表-->
-        <bag    name="DepartmentList"  cascade="all" >
-            <key column="ParentID" />
-            <one-to-many class="AIMNS.Model.Department,AIMNS.Model" />
-        </bag >
-
-        <!--员工列表-->
-        <bag name="UserList"   table="UserAccount"  cascade="save-update"  inverse="true">
-            <key column="DepartmentID"/>
-            <one-to-many class="AIMNS.Model.User,AIMNS.Model" />
-        </bag>
-
-
-        <!--部门负责人-->
-        <many-to-one  name="Manager"
-        class="AIMNS.Model.User,AIMNS.Model"
-        column="ManagerID">
-        </many-to-one>
     </class>
  
 
