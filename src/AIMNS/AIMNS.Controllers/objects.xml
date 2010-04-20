@@ -4,7 +4,9 @@
     <object id="ManagerFactory" type="AIMNS.DTO.AllManagerFactory,AIMNS.DTO">
       
         <property name="UserManager" ref="UserManagerTrans"/>
-   
+
+        <property name="RoleManager" ref="RoleManagerTrans"/>
+        
         <property name="CompanyManager" ref="CompanyManagerTrans"/>
      
         <property name="DepartmentManager" ref="DepartmentManagerTrans"/>
@@ -19,6 +21,8 @@
     <object id="HomeController"  singleton="false"  type="AIMNS.Controllers.HomeController,AIMNS.Controllers">
     </object>
     <object id="UserController"   singleton="false" type="AIMNS.Controllers.UserController, AIMNS.Controllers" >
+    </object>
+    <object id="RoleController"   singleton="false" type="AIMNS.Controllers.RoleController, AIMNS.Controllers" >
     </object>
     <object id="DepartmentController"   singleton="false" type="AIMNS.Controllers.DepartmentController, AIMNS.Controllers" >
     </object>
