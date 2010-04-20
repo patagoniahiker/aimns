@@ -30,11 +30,6 @@ namespace AIMNS.BLL
         {
             var user = new User();
 
-            //可以采用系统配置
-            user.CreateTime = DateTime.Now;
-
-            user.ValidFrom = DateTime.Now;
-            user.ValidTo = Convert.ToDateTime("2999-12-31");
             return user;
         }
 
@@ -91,6 +86,15 @@ namespace AIMNS.BLL
         public  IList GetAll()
         {
             return UserDao.FindAll();
+        }
+
+        /// <summary>
+        /// 获取用户
+        /// </summary>
+        /// <returns></returns>
+        public IList GetByCondition(User user)
+        {
+            return UserDao.GetByCondition(user);
         }
 
         private void Validate(User  user)
