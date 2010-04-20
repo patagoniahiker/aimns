@@ -20,6 +20,7 @@ using Spring.Threading;
 using AIMNS.DTO;
 
 using AIMNS.Controllers;
+using AIMNS.Model;
 
 namespace AIMNS.Web
 {
@@ -50,6 +51,7 @@ namespace AIMNS.Web
 
             ModelBinders.Binders[typeof(UserDTO)] = new JsonBinder<UserDTO>();
             ModelBinders.Binders[typeof(DepartmentDTO)] = new JsonBinder<DepartmentDTO>();
+            ModelBinders.Binders[typeof(Role)] = new JsonBinder<Role>();
         }
 
         public override void Init()
