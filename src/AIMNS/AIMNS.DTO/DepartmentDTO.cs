@@ -17,9 +17,5 @@ namespace AIMNS.DTO
         public string ParentDepartmentId;
         [DataMember]
         public string ParentDepartmentName;
-        [DataMember]
-        public string ManagerId;
-        [DataMember]
-        public string ManagerName;
     }
 }
