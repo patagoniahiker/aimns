@@ -9,7 +9,7 @@
     <!-- 数据库和Nhibernate的相关配置 -->
     <db:provider id="DbProvider"
                      provider="SqlServer-2.0"
-                     connectionString="Password=1;Persist Security Info=True;User ID=sa;Initial Catalog=DirectCenter;Data Source=LINING\LINING"/>
+                     connectionString="Data Source=172.20.68.130;Database=AIMNS;User ID=sa;Password=1;Trusted_Connection=False"/>
                      
     <!--SessionFactory对象，其中包括一些比较重要的属性 -->              
     <object id="NHibernateSessionFactory" type="Spring.Data.NHibernate.LocalSessionFactoryObject, Spring.Data.NHibernate20">
