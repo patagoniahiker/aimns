@@ -11,6 +11,11 @@
         <!--角色名-->
         <property name="RoleName" column="rol_name"  type="System.String"  length="20" />
 
+        <bag name="PermissionList" cascade="none" inverse="true">
+            <key column="role_id"/>
+            <one-to-many class="AIMNS.Model.Role,AIMNS.Model" />
+        </bag>
+        
     </class>
 
 </hibernate-mapping>
