@@ -143,13 +143,57 @@ namespace AIMNS.Controllers
                 rdto.Message = "添加成功";
                 rdto.Result = true;
             }
-            catch
+            catch(Exception e)
             {
-                rdto.Message = "添加失败";
+                rdto.Message = "添加失败:"+e.Message ;
                 rdto.Result = false;
             }
 
             return this.Json(rdto);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [OutputCache(Duration = 60, VaryByParam = "*")]
+        public ActionResult GetAllPerPage()
+        {
+            IList list = ManagerFactory.UserManager.GetAll();
+            List<UserDTO> arr = new List<UserDTO>();
+            Dictionary<String, Object> result = new Dictionary<String, Object>();
+            int sIndex = this.Request["start"]==null?0:int.Parse(this.Request["start"]);
+            int pageSize = this.Request["limit"] == null ? list.Count  : int.Parse(this.Request["limit"]);
+            for (int i=0;i<pageSize&&(i+sIndex )<list .Count ;i++)
+            {
+                arr.Add(UserDTOMapper.MapToDTO((User)list[i+sIndex]));
+            }
+            result.Add("rows", arr);
+            result.Add("total", list.Count);
+            return this.Json(result);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [OutputCache(Duration = 60, VaryByParam = "*")]
+        public ActionResult GetByConditionPerPage(string UserID,string UserName,
+                                            string RoleId,string DepartmentID)
+        {
+            UserDTO user = new UserDTO();
+            user.UserID = UserID;
+            user.UserName = UserName;
+            user.RoleId = RoleId;
+            user.DepartmentID = DepartmentID;
+            User condition = UserDTOMapper.MapFromDTO(user);
+            IList list = ManagerFactory.UserManager.GetByCondition(condition);
+
+            List<UserDTO> arr = new List<UserDTO>();
+            Dictionary<String, Object> result = new Dictionary<String, Object>();
+            int sIndex = this.Request["start"] == null ? 0 : int.Parse(this.Request["start"]);
+            int pageSize = this.Request["limit"] == null ? list.Count : int.Parse(this.Request["limit"]);
+            for (int i = 0; i < pageSize && (i + sIndex) < list.Count; i++)
+            {
+                arr.Add(UserDTOMapper.MapToDTO((User)list[i + sIndex]));
+            }
+            result.Add("rows", arr);
+            result.Add("total", list.Count);
+            return this.Json(result);
         }
     }
 
