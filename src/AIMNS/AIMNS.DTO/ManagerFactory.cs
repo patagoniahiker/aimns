@@ -13,6 +13,7 @@ namespace AIMNS.DTO
         public IUserManager UserManager { get; set; }
         public ICompanyManager CompanyManager { get; set; }
         public IDepartmentManager DepartmentManager { get; set; }
+        public IRoleManager RoleManager { get; set; }
         
     }
 }
