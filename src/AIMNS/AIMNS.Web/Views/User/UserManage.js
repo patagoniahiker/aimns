@@ -2,11 +2,14 @@
 Ext.onReady(function() {
 	// create the Data Store
 	var store = new Ext.data.Store({
-	            url: '/User.mvc/GetAll',
-			    method : 'POST',
+	            proxy: new Ext.data .HttpProxy({
+	                url:'/User.mvc/GetAllPerPage',	             
+			        method : 'POST'}),
 				remoteSort : false,
 				reader : new Ext.data.JsonReader({
 							id : 'UserID',
+							root: 'rows',
+							totalProperty:'total',
 							fields : [{
 										name : 'UserID',
 										type : 'string'
@@ -14,28 +17,10 @@ Ext.onReady(function() {
 										name : 'UserName',
 										type : 'string'
 									}, {
-										name : 'ManagerName',
-										type : 'string'
-									}, {
 										name : 'DepartmentName',
 										type : 'string'
 									}, {
-										name : 'CompanyName',
-										type : 'string'
-									}, {
-										name : 'ValidFrom',
-										type : 'string'
-									}, {
-										name : 'ValidTo',
-										type : 'string'
-									}, {
-										name : 'Telephone',
-										type : 'string'
-									}, {
-										name : 'Mobile',
-										type : 'string'
-									}, {
-										name : 'Email',
+										name : 'RoleName',
 										type : 'string'
 									}]
 						})
@@ -54,28 +39,16 @@ Ext.onReady(function() {
 		width : 100
 		 
 		}, {
-		header : "姓名",
+		header : "用户名",
 		dataIndex : 'UserName',
 		width : 200
 	}, {
-		header : "公司名称",
-		dataIndex : 'CompanyName',
+		header : "角色",
+		dataIndex : 'RoleName',
 		width : 200
 	}, {
-		header : "部门名称",
+		header : "所属部门",
 		dataIndex : 'DepartmentName',
-		width : 200
-	}, {
-		header : "电话",
-		dataIndex : 'Telephone',
-		width : 200
-	}, {
-		header : "手机",
-		dataIndex : 'Mobile',
-		width : 200
-	}, {
-		header : "Email",
-		dataIndex : 'Email',
 		width : 200
 	}]);
 
@@ -101,19 +74,24 @@ Ext.onReady(function() {
 					}
 				},
 				// inline toolbars
-				tbar : [{
-							text : '添加',
-							tooltip : '添加一条记录',
+				tbar: [{
+				            text: '查询',
+				            tooltip: '检索用户',
+				            iconCls: 'search',
+				            handler: handleSearch
+				        }, '-', {
+							text : '登录',
+							tooltip : '添加用户',
 							iconCls : 'add',
 							handler : handleAdd
 						}, '-', {
 							text : '修改',
-							tooltip : '修改',
+							tooltip : '修改用户信息',
 							iconCls : 'option',
 							handler : handleEdit
 						}, '-', {
 							text : '删除',
-							tooltip : '删除记录',
+							tooltip : '删除用户信息',
 							iconCls : 'remove',
 							handler : handleDelete
 						}],
@@ -146,6 +124,16 @@ Ext.onReady(function() {
                 ),
         remoteSort: false
       });
+
+      //获取角色列表
+      var rolDs = new Ext.data.Store({
+          url: '/Role.mvc/GetAll',
+          reader: new Ext.data.JsonReader({
+              id: 'RoleId'
+          }, ['RoleId', 'RoleName']
+                ),
+          remoteSort: false
+      });
    
       
       
@@ -157,19 +145,33 @@ Ext.onReady(function() {
         width: 450,
         height:250,
         items: new Ext.form.FieldSet({
-                title: '用户资料',
+                title: '用户信息',
                 autoHeight: true,
                 defaults: {width: 200},
                 defaultType: 'textfield',
         items: [{
-                fieldLabel: '帐号',
+                fieldLabel: '用户ID',
                 name: 'UserID',
                 allowBlank:false
             },{
-                fieldLabel: '姓名',
+                fieldLabel: '用户名',
                 name: 'UserName',
                 allowBlank:false
             }, new Ext.form.ComboBox({
+                            fieldLabel: '角色',
+                            name: 'RoleName',
+                            hiddenName: 'RoleId',
+                            store: rolDs,
+                            valueField: 'RoleId',
+                            displayField: 'RoleName',
+                            typeAhead: true,
+                            mode: 'remote',
+                            triggerAction: 'all',
+                            emptyText: '请选择角色',
+                            selectOnFocus: true,
+                            allowBlank: false
+                        }),
+                new Ext.form.ComboBox({
                             fieldLabel: '所属部门',
                             name: 'DepartmentName',
                             hiddenName: 'DepartmentID',
@@ -182,25 +184,61 @@ Ext.onReady(function() {
                             emptyText: '请选择部门',
                             selectOnFocus: true,
                             allowBlank: false
-                        }),{
-                fieldLabel: 'Email',
-                name: 'Email',
-                vtype:'email',
-                allowBlank:false
-            },{
-                fieldLabel: '联系电话',
-                name: 'Telephone',
-                allowBlank:false
-            },{
-                fieldLabel: '手机',
-                name: 'Mobile',
-                allowBlank:false
-            }
-            ]
+                        })
+                        ]
          })
     });
-   
 
+    var SUserForm = new Ext.FormPanel({
+        frame: true,
+        labelAlign: 'right',
+        labelWidth: 120,
+        width: 450,
+        height: 250,
+        items: new Ext.form.FieldSet({
+            title: '用户信息',
+            autoHeight: true,
+            defaults: { width: 200 },
+            defaultType: 'textfield',
+            items: [{
+                fieldLabel: '用户ID',
+                name: 'UserID',
+                allowBlank: true 
+            }, {
+                fieldLabel: '用户名',
+                name: 'UserName',
+                allowBlank: true
+            }, new Ext.form.ComboBox({
+                fieldLabel: '角色',
+                name: 'RoleName',
+                hiddenName: 'RoleId',
+                store: rolDs,
+                valueField: 'RoleId',
+                displayField: 'RoleName',
+                typeAhead: true,
+                mode: 'remote',
+                triggerAction: 'all',
+                emptyText: '请选择角色',
+                selectOnFocus: true,
+                allowBlank: true 
+            }),
+                new Ext.form.ComboBox({
+                    fieldLabel: '所属部门',
+                    name: 'DepartmentName',
+                    hiddenName: 'DepartmentID',
+                    store: deptDs,
+                    valueField: 'DepartmentID',
+                    displayField: 'DepartmentName',
+                    typeAhead: true,
+                    mode: 'remote',
+                    triggerAction: 'all',
+                    emptyText: '请选择部门',
+                    selectOnFocus: true,
+                    allowBlank: true 
+                })
+                        ]
+        })
+    });
     
     
 	function handleDelete() {
@@ -210,9 +248,9 @@ Ext.onReady(function() {
 		// rows ids
 		// only
 		if (selectedKeys.length > 0) {
-			Ext.MessageBox.confirm('提示', '您确实要删除选定的记录吗？', deleteRecord);
+			Ext.MessageBox.confirm('提示', '您确实要删除选定的用户吗？', deleteRecord);
 		} else {
-			Ext.MessageBox.alert('提示', '请至少选择一条记录！');
+			Ext.MessageBox.alert('提示', '请至少选择一个用户！');
 		}// end
 	}
 
@@ -255,6 +293,9 @@ Ext.onReady(function() {
 						},
 						success : function(response, options) {
 							Ext.MessageBox.hide();
+							store.un("beforeload", All);
+							store.un("beforeload", Condition);
+							store.on("beforeload", All);
 							store.reload();
 						}
 					})// end Ajax request
@@ -263,7 +304,7 @@ Ext.onReady(function() {
 
 	function handleAdd() {
 		var AddUserWin = new Ext.Window({
-					title : '增加新用户',
+					title : '登录新用户',
 					layout : 'fit',
 					width : 500,
 				    closeAction: 'hide',
@@ -273,7 +314,7 @@ Ext.onReady(function() {
 					plain : true,
 					items : UserForm,
 					buttons : [{
-								text : '保存',
+								text : '登录',
 								handler : AddRecord
 							}, {
 								text : '取消',
@@ -284,17 +325,41 @@ Ext.onReady(function() {
 				});
 		AddUserWin.show(this);
 	}
-	
-	
+
+	var GetUserWin;
+	function handleSearch() {
+	    GetUserWin = new Ext.Window({
+	        title: '检索用户',
+	        layout: 'fit',
+	        width: 500,
+	        closeAction: 'hide',
+	        height: 300,
+	        modal: true,
+	        autoDestroy: true,
+	        plain: true,
+	        items: SUserForm,
+	        buttons: [{
+	            text: '检索',
+	            handler: SearchRecord
+	        }, {
+	            text: '取消',
+	            handler: function() {
+	                GetUserWin.hide();
+	            }
+            }]
+	        });
+	        GetUserWin.show(this);
+	    }
+	    
 	function handleEdit() {
 		var selectedKeys = grid.selModel.selections.keys; // returns array of
 		// selected rows ids
 		// only
 		if (selectedKeys.length != 1) {
-			Ext.MessageBox.alert('提示', '请选择一条记录！');
+			Ext.MessageBox.alert('提示', '请选择一个用户！');
 		} else {
 			var EditUserWin = new Ext.Window({
-						title : '修改员工资料',
+						title : '修改用户信息',
 						layout : 'fit',
 						width : 500,
 						height : 300,
@@ -303,7 +368,7 @@ Ext.onReady(function() {
 					    autoDestroy : true,
 						items : UserForm,
 						buttons : [{
-									text : '保存',
+									text : '修改',
 									handler : UpdateRecord
 								}, {
 									text : '取消',
@@ -350,6 +415,7 @@ Ext.onReady(function() {
 			})// end Ajax request
 		}
 	}
+	
 	function UpdateRecord(btn) {
 		if (UserForm.form.isValid()) {
 			btn.disabled = true;
@@ -430,11 +496,64 @@ Ext.onReady(function() {
 						},
 						success : function(response, options) {
 							Ext.MessageBox.hide();
+							store.un("beforeload", All);
+							store.un("beforeload", Condition);
+							store.on("beforeload", All);							
 							store.reload();
 						}
 					})// end Ajax request
 
 		}
+	}
+
+	function SearchRecord(btn) {
+	    if (SUserForm.form.isValid()) {
+	        btn.disabled = true;
+	        Ext.MessageBox.show({
+	            msg: '正在请求数据, 请稍侯',
+	            progressText: '正在请求数据',
+	            width: 300,
+	            wait: true,
+	            waitConfig: {
+	                interval: 200
+	            }
+	        });
+
+	        store.un("beforeload", All);
+	        store.un("beforeload", Condition);
+	        store.on("beforeload", Condition);
+
+	        store.load({
+	        params: request,
+	        callback: function(r, options,success) {
+	            btn.disabled = false ;
+	            if (success) {
+	                Ext.MessageBox.hide();
+	                if (r.length == 0) {
+	                    Ext.MessageBox.alert("消息", "用户不存在！");
+	                } else {
+	                    Ext.MessageBox.alert("消息", "检索成功！");
+	                }
+	                GetUserWin.hide();
+	            } else {
+	                Ext.MessageBox.hide();
+	                Ext.MessageBox.alert("失败，请重试！");
+	            }
+	        }});
+	    }
+	}
+
+	var All = function(store) {
+	    this.proxy.conn.url = '/User.mvc/GetAllPerPage';
+	}
+
+	var Condition = function(store) {
+        this.proxy.conn.url = '/User.mvc/GetByConditionPerPage';
+        var formvalues = SUserForm.form.getValues();
+        this.baseParams["UserID"] = formvalues["UserID"];
+        this.baseParams["UserName"] = formvalues["UserName"];
+        this.baseParams["RoleId"] = formvalues["RoleId"];
+        this.baseParams["DepartmentID"] = formvalues["DepartmentID"]; 
 	}
 
 });
