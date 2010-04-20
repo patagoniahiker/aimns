@@ -40,21 +40,33 @@
     <object id="UserManager" type="AIMNS.BLL.UserManager,AIMNS.BLL">
         <property name="UserDao" ref="UserDao"/>
     </object>
-    <object id="DepartmentManager" type="AIMNS.BLL.DepartmentManager,AIMNS.BLL">
-        <property name="DepartmentDao" ref="DepartmentDao"/>
+
+    <object id="RoleManager" type="AIMNS.BLL.RoleManager,AIMNS.BLL">
+        <property name="RoleDao" ref="RoleDao"/>
     </object>
+
     <object id="CompanyManager" type="AIMNS.BLL.CompanyManager,AIMNS.BLL">
         <property name="CompanyDao" ref="CompanyDao"/>
+    </object>
+    
+    <object id="DepartmentManager" type="AIMNS.BLL.DepartmentManager,AIMNS.BLL">
+        <property name="DepartmentDao" ref="DepartmentDao"/>
     </object>
     
     <!-- 事务 -->
     <object id="UserManagerTrans" parent="BaseTransactionManager">
         <property name="Target" ref="UserManager"/>
     </object>
-    <object id="DepartmentManagerTrans" parent="BaseTransactionManager">
-        <property name="Target" ref="DepartmentManager"/>
+
+    <object id="RoleManagerTrans" parent="BaseTransactionManager">
+        <property name="Target" ref="RoleManager"/>
     </object>
+    
     <object id="CompanyManagerTrans" parent="BaseTransactionManager">
         <property name="Target" ref="CompanyManager"/>
+    </object>
+    
+    <object id="DepartmentManagerTrans" parent="BaseTransactionManager">
+        <property name="Target" ref="DepartmentManager"/>
     </object>
 </objects>
