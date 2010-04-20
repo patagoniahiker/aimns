@@ -33,9 +33,6 @@ namespace AIMNS.UnitTest
             user.UserID = "buyer000";
             user.Password = "1356";
             user.UserName = "刘翔";
-            user.ValidFrom = Convert.ToDateTime("2008-8-18");
-            user.ValidTo = Convert.ToDateTime("2012-8-18");
-            user.CreateTime = DateTime.Now;
             UserDao.Save(user);
             transactionManager.Commit(transactionStatus);
         }
