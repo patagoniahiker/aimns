@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IRoleManager.cs" />
     <Compile Include="ICompanyManager.cs" />
     <Compile Include="IDepartmentManager.cs" />
     <Compile Include="IUserManager.cs" />
