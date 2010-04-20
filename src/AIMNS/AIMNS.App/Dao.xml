@@ -45,6 +45,10 @@
         <property name="HibernateTemplate" ref="HibernateTemplate"/>
     </object>
 
+    <object id="RoleDao" type="AIMNS.DAL.RoleDao, AIMNS.DAL">
+        <property name="HibernateTemplate" ref="HibernateTemplate"/>
+    </object>
+    
     <object id="CompanyDao" type="AIMNS.DAL.CompanyDao, AIMNS.DAL">
         <property name="HibernateTemplate" ref="HibernateTemplate"/>
     </object>
