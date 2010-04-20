@@ -48,5 +48,8 @@ namespace AIMNS.IBLL
         /// </summary>
         /// <returns></returns>
         IList  GetAll();
+
+
+        IList GetByCondition(User user);
     }
 }
