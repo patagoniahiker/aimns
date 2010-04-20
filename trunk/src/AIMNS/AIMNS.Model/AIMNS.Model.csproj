@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IRoleDao.cs" />
     <Compile Include="Company.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,6 +59,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="HBM\Department.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HBM\Role.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
