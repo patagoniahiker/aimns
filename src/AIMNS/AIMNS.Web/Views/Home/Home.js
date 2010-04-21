@@ -289,12 +289,17 @@ Ext.onReady(function() {
 		}
 	};
 
+    var now = new Date();
+	var year = now.getFullYear();
+	var month = now.getMonth()+1;
+	var day = now.getDate();
+	var nowdate = year + "年" + month + "月" + day + "日";
 	bottom = new Ext.Toolbar({
 				id : "bottom",
 				frame : true,
 				region : "south",
 				height : 25,
-				items : [new Ext.Toolbar.Fill(), "版权所有　 孤独侠客　"]
+				items: [new Ext.Toolbar.Fill(), nowdate]
 			});
 
 	main = new MainPanel();
