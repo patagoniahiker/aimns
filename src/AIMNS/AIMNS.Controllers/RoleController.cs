@@ -6,6 +6,8 @@ using System.Text;
 using System.Web.Mvc;
 using System.Collections;
 using AIMNS.Model;
+using AIMNS.DTO;
+using AIMNS.DTO.Mappers;
 
 namespace AIMNS.Controllers
 {
@@ -14,10 +16,10 @@ namespace AIMNS.Controllers
         public ActionResult GetAll()
         {
             IList list = ManagerFactory.RoleManager.GetAll();
-            List<Role> result = new List<Role>();
+            List<RoleDTO> result = new List<RoleDTO>();
             foreach (Role o in list)
             {
-                result.Add(o);
+                result.Add(RoleDTOMapper.MapToDTO(o));
             }
             return this.Json(result);
         }
