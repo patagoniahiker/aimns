@@ -56,6 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mappers\RoleDTOMapper.cs" />
+    <Compile Include="RoleDTO.cs" />
     <Compile Include="DepartmentDTO.cs" />
     <Compile Include="ManagerFactory.cs" />
     <Compile Include="Mappers\BaseDTOMapper.cs" />
