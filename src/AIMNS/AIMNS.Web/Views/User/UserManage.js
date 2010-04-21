@@ -189,6 +189,48 @@ Ext.onReady(function() {
          })
     });
 
+    var roleCombo = new Ext.form.ComboBox({
+        fieldLabel: '角色',
+        name: 'RoleName',
+        hiddenName: 'RoleId',
+        store: rolDs,
+        valueField: 'RoleId',
+        displayField: 'RoleName',
+        typeAhead: true,
+        mode: 'remote',
+        triggerAction: 'all',
+        emptyText: '请选择角色',
+        selectOnFocus: true,
+        allowBlank: true
+    });
+
+    var deptCombo = new Ext.form.ComboBox({
+        fieldLabel: '所属部门',
+        name: 'DepartmentName',
+        hiddenName: 'DepartmentID',
+        store: deptDs,
+        valueField: 'DepartmentID',
+        displayField: 'DepartmentName',
+        typeAhead: true,
+        mode: 'remote',
+        triggerAction: 'all',
+        emptyText: '请选择部门',
+        selectOnFocus: true,
+        allowBlank: true
+    });
+
+    var idTxt = new Ext.form.TextField({
+        fieldLabel: '用户ID',
+        name: 'UserID',
+        allowBlank: true
+    });
+
+    var nameTxt = new Ext.form.TextField({
+        fieldLabel: '用户名',
+        name: 'UserName',
+        allowBlank: true
+    });
+
     var SUserForm = new Ext.FormPanel({
         frame: true,
         labelAlign: 'right',
@@ -199,44 +241,7 @@ Ext.onReady(function() {
             title: '用户信息',
             autoHeight: true,
             defaults: { width: 200 },
-            defaultType: 'textfield',
-            items: [{
-                fieldLabel: '用户ID',
-                name: 'UserID',
-                allowBlank: true 
-            }, {
-                fieldLabel: '用户名',
-                name: 'UserName',
-                allowBlank: true
-            }, new Ext.form.ComboBox({
-                fieldLabel: '角色',
-                name: 'RoleName',
-                hiddenName: 'RoleId',
-                store: rolDs,
-                valueField: 'RoleId',
-                displayField: 'RoleName',
-                typeAhead: true,
-                mode: 'remote',
-                triggerAction: 'all',
-                emptyText: '请选择角色',
-                selectOnFocus: true,
-                allowBlank: true 
-            }),
-                new Ext.form.ComboBox({
-                    fieldLabel: '所属部门',
-                    name: 'DepartmentName',
-                    hiddenName: 'DepartmentID',
-                    store: deptDs,
-                    valueField: 'DepartmentID',
-                    displayField: 'DepartmentName',
-                    typeAhead: true,
-                    mode: 'remote',
-                    triggerAction: 'all',
-                    emptyText: '请选择部门',
-                    selectOnFocus: true,
-                    allowBlank: true 
-                })
-                        ]
+            items: [idTxt, nameTxt, roleCombo, deptCombo]
         })
     });
     
@@ -348,6 +353,10 @@ Ext.onReady(function() {
 	            }
             }]
 	        });
+	        idTxt.reset();
+	        nameTxt.reset();
+	        roleCombo.reset();
+	        deptCombo.reset();
 	        GetUserWin.show(this);
 	    }
 	    
@@ -550,10 +559,18 @@ Ext.onReady(function() {
 	var Condition = function(store) {
         this.proxy.conn.url = '/User.mvc/GetByConditionPerPage';
         var formvalues = SUserForm.form.getValues();
+        if(roleCombo.getRawValue()==""){
+            this.baseParams["RoleId"] = "";
+        } else {
+            this.baseParams["RoleId"] = formvalues["RoleId"];
+        }
+        if (deptCombo.getRawValue() == "") {
+            this.baseParams["DepartmentID"] = ""; 
+        } else {
+            this.baseParams["DepartmentID"] = formvalues["DepartmentID"]; 
+        }   
         this.baseParams["UserID"] = formvalues["UserID"];
-        this.baseParams["UserName"] = formvalues["UserName"];
-        this.baseParams["RoleId"] = formvalues["RoleId"];
-        this.baseParams["DepartmentID"] = formvalues["DepartmentID"]; 
+        this.baseParams["UserName"] = formvalues["UserName"];    
 	}
 
 });
