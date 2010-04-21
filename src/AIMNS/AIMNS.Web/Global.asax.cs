@@ -51,7 +51,7 @@ namespace AIMNS.Web
 
             ModelBinders.Binders[typeof(UserDTO)] = new JsonBinder<UserDTO>();
             ModelBinders.Binders[typeof(DepartmentDTO)] = new JsonBinder<DepartmentDTO>();
-            ModelBinders.Binders[typeof(Role)] = new JsonBinder<Role>();
+            ModelBinders.Binders[typeof(RoleDTO)] = new JsonBinder<RoleDTO>();
         }
 
         public override void Init()
