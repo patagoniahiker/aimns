@@ -82,12 +82,6 @@ Ext.onReady(function() {
             header: "直属部门名",
             dataIndex: 'ParentDepartmentName',
             width: 200
-            //}, {
-            //    header: "子部门列表",
-            //    dataIndex: 'DepartmentID',
-            //    width: 200,
-            //    editor: combo,
-            //   renderer: Ext.util.Format.comboRenderer(combo)
         }]);
 
             // by default columns are sortable
@@ -126,8 +120,8 @@ Ext.onReady(function() {
                     iconCls: 'search',
                     handler: handleSearch
                 }, '-', {
-                    text: '添加',
-                    tooltip: '添加一条记录',
+                    text: '登录',
+                    tooltip: '登录一条记录',
                     iconCls: 'add',
                     handler: handleAdd
                 }, '-', {
