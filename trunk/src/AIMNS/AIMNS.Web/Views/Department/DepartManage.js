@@ -227,10 +227,10 @@ Ext.onReady(function() {
                         defaultType: 'textfield',
                         items: [{
                             fieldLabel: '部门号',
-                            name: 'DepartmentID',
+                            name: 'DepartmentID'
                         }, {
                             fieldLabel: '部门名',
-                            name: 'DepartmentName',
+                            name: 'DepartmentName'
                         }, new Ext.form.ComboBox({
                             fieldLabel: '直属部门',
                             name: 'ParentDepartmentName',
@@ -242,7 +242,7 @@ Ext.onReady(function() {
                             mode: 'remote',
                             triggerAction: 'all',
                             emptyText: '请选择部门',
-                            selectOnFocus: true,
+                            selectOnFocus: true
                         })
                         ]
                     })
