@@ -121,8 +121,8 @@ Ext.onReady(function() {
                 },
                 // inline toolbars
                 tbar: [{
-                    text: '检索',
-                    tooltip: '检索记录',
+                    text: '查询',
+                    tooltip: '查询记录',
                     iconCls: 'search',
                     handler: handleSearch
                 }, '-', {
@@ -367,7 +367,7 @@ Ext.onReady(function() {
                     var SDepartWin;
                     function handleSearch() {
                         SDepartWin = new Ext.Window({
-                            title: '检索部门条件',
+                            title: '查询部门条件',
                             layout: 'fit',
                             width: 500,
                             closeAction: 'hide',
@@ -377,7 +377,7 @@ Ext.onReady(function() {
                             plain: true,
                             items: SDepartForm ,
                             buttons: [{
-                                text: '检索',
+                                text: '查询',
                                 handler: SearchRecords
                             }, {
                                 text: '取消',
@@ -571,11 +571,11 @@ Ext.onReady(function() {
                                         callback: function(options, success, response) {
                                             if (success) {
                                                 Ext.MessageBox.hide();
-                                                Ext.MessageBox.alert("消息", "检索成功！");
+                                                Ext.MessageBox.alert("消息", "查询成功！");
                                                 SDepartWin.hide();
                                             } else {
                                                 Ext.MessageBox.hide();
-                                                Ext.MessageBox.alert("消息", "检索结果不存在或检索失败！");
+                                                Ext.MessageBox.alert("消息", "查询结果不存在或查询失败！");
                                             }
                                         },
                                         failure: function(response, options) {
