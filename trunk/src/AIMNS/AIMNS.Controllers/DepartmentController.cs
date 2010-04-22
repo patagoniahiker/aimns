@@ -71,12 +71,12 @@ namespace AIMNS.Controllers
             try
             {
                 ManagerFactory.DepartmentManager.SaveDepartment(dep);
-                rdto.Message = "添加成功";
+                rdto.Message = "登录成功";
                 rdto.Result = true;
             }
             catch (Exception ex)
             {
-                rdto.Message = "添加失败:" + ex.Message ;
+                rdto.Message = "登录失败:" + ex.Message ;
                 rdto.Result = false;
             }
 
