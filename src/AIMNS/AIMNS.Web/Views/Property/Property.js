@@ -144,21 +144,25 @@ Ext.onReady(function() {
         items: [{
                 fieldLabel: '资产ID',
                 name: 'ast_id',
+                style:'color:gray;background:aliceblue;', 
                 allowBlank:false,
                 readOnly:true
             },{
                 fieldLabel: '资产名称',
                 name: 'ast_name',
+                style:'color:gray;background:aliceblue;', 
                 allowBlank:false,
                 readOnly:true
             },{
                 fieldLabel: '资产型号',
                 name: 'ast_model',
+                style:'color:gray;background:aliceblue;', 
                 allowBlank:false,
                 readOnly:true
             },{
                 fieldLabel: '资产规格',
                 name: 'ast_std',
+                style:'color:gray;background:aliceblue;', 
                 allowBlank:false,
                 readOnly:true
             }, new Ext.form.ComboBox({
