@@ -21,10 +21,5 @@ namespace AIMNS.Model
             set;
         }
 
-        public virtual IList PermissionList
-        {
-            get;
-            set;
-        }
     }
 }
