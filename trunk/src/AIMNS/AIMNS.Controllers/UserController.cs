@@ -80,13 +80,16 @@ namespace AIMNS.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult DeleteUser(string userid)
+        public ActionResult DeleteUser(string[] userid)
         {
             
             var rdto = new ResultDTO();
             try
             {
-                ManagerFactory.UserManager.DeleteUser(userid);
+                for (int i = 0; i < userid.Length; i++)
+                {
+                    ManagerFactory.UserManager.DeleteUser(userid[i]);
+                }        
                 rdto.Message = "删除成功";
                 rdto.Result = true;
             }
@@ -97,7 +100,6 @@ namespace AIMNS.Controllers
             }
             return this.Json(rdto);
         }
-
 
         public ActionResult GetUser(string userid)
         {
