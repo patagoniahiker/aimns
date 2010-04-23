@@ -101,5 +101,9 @@ namespace AIMNS.BLL
         {
             //TODO throw exception on error.
         }
+        public IList GetPermissionList(string userId)
+        {
+            return UserDao.GetPermissionList(userId);
+        }
     }
 }
