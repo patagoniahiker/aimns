@@ -48,9 +48,17 @@
     <object id="CompanyManager" type="AIMNS.BLL.CompanyManager,AIMNS.BLL">
         <property name="CompanyDao" ref="CompanyDao"/>
     </object>
+    <object id="PropertyAppropriationManager" type="AIMNS.BLL.PropertyAppropriationManager,AIMNS.BLL">
+      <property name="PropertyAppropriationDao" ref="PropertyAppropriationDao"/>
+    </object>
     
     <object id="DepartmentManager" type="AIMNS.BLL.DepartmentManager,AIMNS.BLL">
         <property name="DepartmentDao" ref="DepartmentDao"/>
+    </object>
+
+    <object id="PropertyManager" type="AIMNS.BLL.PropertyManager,AIMNS.BLL">
+      <property name="PropertyDao" ref="PropertyDao"/>
+      <property name="PropertyAppropriationDao" ref="PropertyAppropriationDao"/>
     </object>
     
     <!-- 事务 -->
@@ -65,8 +73,13 @@
     <object id="CompanyManagerTrans" parent="BaseTransactionManager">
         <property name="Target" ref="CompanyManager"/>
     </object>
-    
+    <object id="PropertyAppropriationManagerTrans" parent="BaseTransactionManager">
+      <property name="Target" ref="PropertyAppropriationManager"/>
+    </object>
     <object id="DepartmentManagerTrans" parent="BaseTransactionManager">
         <property name="Target" ref="DepartmentManager"/>
+    </object>
+    <object id="PropertyManagerTrans" parent="BaseTransactionManager">
+      <property name="Target" ref="PropertyManager"/>
     </object>
 </objects>
