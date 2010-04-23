@@ -55,6 +55,13 @@ Ext.onReady(function() {
 	// by default columns are sortable
 	cm.defaultSortable = true;
 
+    var pageBar = new Ext.PagingToolbar({
+							pageSize : 25,
+							store : store,
+							displayInfo : true
+			});
+	pageBar.setVisible(false );
+						
 	var grid = new Ext.grid.GridPanel({
 				// el:'topic-grid',
 				renderTo : document.body,
@@ -95,11 +102,7 @@ Ext.onReady(function() {
 							iconCls : 'remove',
 							handler : handleDelete
 						}],
-				bbar : new Ext.PagingToolbar({
-							pageSize : 25,
-							store : store,
-							displayInfo : true
-						})
+				bbar : pageBar
 			});
 
 	// render it
@@ -111,13 +114,14 @@ Ext.onReady(function() {
 		limit : 25
 	};
 
- store.load({
-				params : request
-			});
+// store.load({
+//				params : request
+//			});
 			
 	   //获取部门列表
       var deptDs = new Ext.data.Store({
-        url:'/Department.mvc/GetAll',
+        autoLoad:true,
+        url:'/Department.mvc/GetAll',   
         reader: new Ext.data.JsonReader({
                     id: 'DepartmentID'
                     }, [ 'DepartmentID', 'DepartmentName']
@@ -134,10 +138,23 @@ Ext.onReady(function() {
                 ),
           remoteSort: false
       });
-   
+
+
+
+      //用户信息窗口
+      var usrIdLbl = new Ext.form.TextField({
+          fieldLabel: '用户ID',
+          readOnly:true,
+          style:'border:0px'
+      });
+
+      var usrIdTxt = new Ext.form.TextField({
+          fieldLabel: '用户ID',
+          name: 'UserID',
+          allowBlank: false,
+          maxLength:15
+      });
       
-      
- //用户信息窗口
      var  UserForm = new Ext.FormPanel({
         frame:true,
         labelAlign: 'right',
@@ -149,15 +166,14 @@ Ext.onReady(function() {
                 autoHeight: true,
                 defaults: {width: 200},
                 defaultType: 'textfield',
-        items: [{
-                fieldLabel: '用户ID',
-                name: 'UserID',
-                allowBlank:false
-            },{
+        items: [usrIdLbl,usrIdTxt ,
+            {
                 fieldLabel: '用户名',
                 name: 'UserName',
-                allowBlank:false
+                allowBlank:false,
+                maxLength:10
             }, new Ext.form.ComboBox({
+                            id:'roleList',
                             fieldLabel: '角色',
                             name: 'RoleName',
                             hiddenName: 'RoleId',
@@ -172,6 +188,7 @@ Ext.onReady(function() {
                             allowBlank: false
                         }),
                 new Ext.form.ComboBox({
+                            id:'deptList',
                             fieldLabel: '所属部门',
                             name: 'DepartmentName',
                             hiddenName: 'DepartmentID',
@@ -307,8 +324,9 @@ Ext.onReady(function() {
 		}// end if click 'yes' on button
 	} // end deleteRecord
 
+	var AddUserWin;
 	function handleAdd() {
-		var AddUserWin = new Ext.Window({
+		AddUserWin = new Ext.Window({
 					title : '登录新用户',
 					layout : 'fit',
 					width : 500,
@@ -327,8 +345,13 @@ Ext.onReady(function() {
 									AddUserWin.hide();
 								}
 							}]
-				});
+			});
 		AddUserWin.show(this);
+		usrIdLbl.setVisible(false);
+		usrIdLbl.getEl().up('.x-form-item').setDisplayed(false);
+		usrIdTxt.setVisible(true); // for validation
+		usrIdTxt.getEl().up('.x-form-item').setDisplayed(true); // hide label
+		UserForm.form.reset();
 	}
 
 	var GetUserWin;
@@ -359,7 +382,8 @@ Ext.onReady(function() {
 	        deptCombo.reset();
 	        GetUserWin.show(this);
 	    }
-	    
+
+	var EditUserWin;  
 	function handleEdit() {
 		var selectedKeys = grid.selModel.selections.keys; // returns array of
 		// selected rows ids
@@ -367,7 +391,7 @@ Ext.onReady(function() {
 		if (selectedKeys.length != 1) {
 			Ext.MessageBox.alert('提示', '请选择一个用户！');
 		} else {
-			var EditUserWin = new Ext.Window({
+			EditUserWin = new Ext.Window({
 						title : '修改用户信息',
 						layout : 'fit',
 						width : 500,
@@ -387,7 +411,10 @@ Ext.onReady(function() {
 								}]
 					});
 			EditUserWin.show(this);
-			deptDs.load(); 
+			usrIdLbl.setVisible(true);
+			usrIdLbl.getEl().up('.x-form-item').setDisplayed(true);
+			usrIdTxt.setVisible(false); // for validation
+			usrIdTxt.getEl().up('.x-form-item').setDisplayed(false); // hide label
 			Ext.MessageBox.show({
 						msg : '正在请求数据, 请稍侯',
 						progressText : '正在请求数据',
@@ -407,6 +434,9 @@ Ext.onReady(function() {
 						Ext.MessageBox.hide();
 						var formvalue = Ext.decode(response.responseText).Data;
 						UserForm.form.setValues(formvalue);
+						usrIdLbl.getEl().dom.value = usrIdTxt.getValue();
+						Ext.get("roleList").dom.value = formvalue["RoleName"];
+						Ext.get("deptList").dom.value = formvalue["DepartmentName"];
 					} else {
 						Ext.MessageBox.hide();
 						Ext.MessageBox.alert("失败，请重试", response.responseText);
@@ -444,11 +474,13 @@ Ext.onReady(function() {
 						method : 'POST',
 						params : formvalue,// the unique
 						// id(s)
-						callback : function(options, success, response) {
+						callback: function(options, success, response) {
+						    btn.disabled = true;
 							if (success) { 
 								Ext.MessageBox.hide();
 								var result = Ext.util.JSON.decode(response.responseText)
-								Ext.MessageBox.alert("消息",result.Message);
+								Ext.MessageBox.alert("消息", result.Message);
+								EditUserWin.hide();
 							} else {
 								Ext.MessageBox.hide();
 								Ext.MessageBox.alert("失败，请重试",
@@ -485,11 +517,13 @@ Ext.onReady(function() {
 						url : '/User.mvc/AddUser', 
 						method : 'POST',
 						params : Ext.util.JSON.encode(formvalue),
-						callback : function(options, success, response) {
+						callback: function(options, success, response) {
+						    btn.disabled = true;
 							if (success) {
 								Ext.MessageBox.hide();
 								var result = Ext.util.JSON.decode(response.responseText)
-								Ext.MessageBox.alert("消息",result.Message);
+								Ext.MessageBox.alert("消息", result.Message);
+								AddUserWin.hide();
 							} else {
 								Ext.MessageBox.hide();
 								Ext.MessageBox.alert("失败，请重试",
@@ -507,8 +541,15 @@ Ext.onReady(function() {
 							Ext.MessageBox.hide();
 							store.un("beforeload", All);
 							store.un("beforeload", Condition);
-							store.on("beforeload", All);							
-							store.reload();
+							store.on("beforeload", Condition);
+						    store.baseParams["RoleId"] = "";
+						    store.baseParams["DepartmentID"] = "";
+						    store.baseParams["UserID"] = formvalue["UserID"];
+						    store.baseParams["UserName"] = "";
+						    pageBar.setVisible(true);
+						    store.load({
+						        params: request
+						    });
 						}
 					})// end Ajax request
 
@@ -532,6 +573,20 @@ Ext.onReady(function() {
 	        store.un("beforeload", Condition);
 	        store.on("beforeload", Condition);
 
+	        var formvalues = SUserForm.form.getValues();
+	        if (roleCombo.getRawValue() == "") {
+	            store.baseParams["RoleId"] = "";
+	        } else {
+	            store.baseParams["RoleId"] = formvalues["RoleId"];
+	        }
+	        if (deptCombo.getRawValue() == "") {
+	            store.baseParams["DepartmentID"] = "";
+	        } else {
+	            store.baseParams["DepartmentID"] = formvalues["DepartmentID"];
+	        }
+	        store.baseParams["UserID"] = formvalues["UserID"];
+	        store.baseParams["UserName"] = formvalues["UserName"];
+	        pageBar.setVisible(true);
 	        store.load({
 	        params: request,
 	        callback: function(r, options,success) {
@@ -557,20 +612,7 @@ Ext.onReady(function() {
 	}
 
 	var Condition = function(store) {
-        this.proxy.conn.url = '/User.mvc/GetByConditionPerPage';
-        var formvalues = SUserForm.form.getValues();
-        if(roleCombo.getRawValue()==""){
-            this.baseParams["RoleId"] = "";
-        } else {
-            this.baseParams["RoleId"] = formvalues["RoleId"];
-        }
-        if (deptCombo.getRawValue() == "") {
-            this.baseParams["DepartmentID"] = ""; 
-        } else {
-            this.baseParams["DepartmentID"] = formvalues["DepartmentID"]; 
-        }   
-        this.baseParams["UserID"] = formvalues["UserID"];
-        this.baseParams["UserName"] = formvalues["UserName"];    
+        this.proxy.conn.url = '/User.mvc/GetByConditionPerPage';   
 	}
 
 });
