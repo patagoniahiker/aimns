@@ -22,96 +22,113 @@ function logout() {
 			});
 }
 
-function buildTree() {
-	var tree = new Ext.tree.TreePanel({
-				el : 'nav-tree',
-				autoScroll : true,
-				animate : true,
-				enableDD : true,
-				containerScroll : true,
-				draggable : false,
-				rootVisible : false
-			});
-	var rootid = Ext.encode('nav-tree').toString();
+function addToTree( item, children ) {
+  var length = children.length;
+  for( var n = 0; n < length; n++ )
+  {
+    var sub=new Ext.tree.TreeNode({});
+    sub.text = children[n].text;
+    sub.id = children[n].id;
+    sub.url = children[n].url;
+    sub.leaf = children[n].leaf;
+    sub.childNodes = children[n].childNodes;
+    if(children[n].childNodes != null){
+      addToTree( sub, children[n].childNodes );
+    }
 
-	var root = new Ext.tree.AsyncTreeNode({
-				text : 'nav-tree',
-				draggable : false,
-				id : 'nav-tree'
-			});
-
-	tree.setRootNode(root);
-
-	root.appendChild(new Ext.tree.TreeNode({
-				text : "用户管理",
-				id : "1",
-				url : "/User.mvc/Index",
-				leaf : true
-    }));
-    
-    root.appendChild(new Ext.tree.TreeNode({
-        text: "部门管理",
-        id: "2",
-        url: "/Department.mvc/Index",
-        leaf: true
-    }));
-			
-	tree.on("click", function(node) {
-				if (node.attributes.leaf) {
-					AddNewTab(node.attributes.id, node.attributes.text,
-							node.attributes.url);
-				}
-			});
-
-	tree.render();
-	root.expand();
-	tree.show();
-	
-	var tree3 = new Ext.tree.TreePanel({
-				el : 'app-tree',
-				height: Ext.get('nav-tree').getHeight(),
-				autoScroll : true,
-				animate : true,
-				enableDD : true,
-				containerScroll : true,
-				draggable : false,
-				rootVisible : false
-			});
-	var rootid3 = Ext.encode('app-tree').toString();
-
-	var root3 = new Ext.tree.AsyncTreeNode({
-				text : 'app-tree',
-				draggable : false,
-				id : 'app-tree'
-			});
-
-	tree3.setRootNode(root3);
-    
-    root3.appendChild(new Ext.tree.TreeNode({
-        text: "资产调拨一览",
-        id: "3",
-        url: "/PropertyAppropriation.mvc/Index",
-        leaf: true
-    }));
-    
-    root3.appendChild(new Ext.tree.TreeNode({
-        text: "资产调拨",
-        id: "4",
-        url: "/Property.mvc/Index",
-        leaf: true
-    }));
-			
-	tree3.on("click", function(node) {
-				if (node.attributes.leaf) {
-					AddNewTab(node.attributes.id, node.attributes.text,
-							node.attributes.url);
-				}
-			});
-
-	tree3.render();
-	root3.expand();
-	tree3.show();
+    item.appendChild(sub);
+  }
 }
+//function buildTree() {
+//	var tree = new Ext.tree.TreePanel({
+//				el : 'nav-tree',
+//				autoScroll : true,
+//				animate : true,
+//				enableDD : true,
+//				containerScroll : true,
+//				draggable : false,
+//				rootVisible : false
+//			});
+//	var rootid = Ext.encode('nav-tree').toString();
+
+//	var root = new Ext.tree.AsyncTreeNode({
+//				text : 'nav-tree',
+//				draggable : false,
+//				id : 'nav-tree'
+//			});
+
+//	tree.setRootNode(root);
+
+//	root.appendChild(new Ext.tree.TreeNode({
+//				text : "用户管理",
+//				id : "1",
+//				url : "/User.mvc/Index",
+//				leaf : true
+//    }));
+//    
+//    root.appendChild(new Ext.tree.TreeNode({
+//        text: "部门管理",
+//        id: "2",
+//        url: "/Department.mvc/Index",
+//        leaf: true
+//    }));
+//			
+//	tree.on("click", function(node) {
+//				if (node.attributes.leaf) {
+//					AddNewTab(node.attributes.id, node.attributes.text,
+//							node.attributes.url);
+//				}
+//			});
+
+//	tree.render();
+//	root.expand();
+//	tree.show();
+//	
+//	var tree3 = new Ext.tree.TreePanel({
+//				el : 'app-tree',
+//				height: Ext.get('nav-tree').getHeight(),
+//				autoScroll : true,
+//				animate : true,
+//				enableDD : true,
+//				containerScroll : true,
+//				draggable : false,
+//				rootVisible : false
+//			});
+//	var rootid3 = Ext.encode('app-tree').toString();
+
+//	var root3 = new Ext.tree.AsyncTreeNode({
+//				text : 'app-tree',
+//				draggable : false,
+//				id : 'app-tree'
+//			});
+
+//	tree3.setRootNode(root3);
+//    
+//    root3.appendChild(new Ext.tree.TreeNode({
+//        text: "资产调拨一览",
+//        id: "3",
+//        url: "/PropertyAppropriation.mvc/Index",
+//        leaf: true
+//    }));
+//    
+//    root3.appendChild(new Ext.tree.TreeNode({
+//        text: "资产调拨",
+//        id: "4",
+//        url: "/Property.mvc/Index",
+//        leaf: true
+//    }));
+//			
+//	tree3.on("click", function(node) {
+//				if (node.attributes.leaf) {
+//					AddNewTab(node.attributes.id, node.attributes.text,
+//							node.attributes.url);
+//				}
+//			});
+
+//	tree3.render();
+//	root3.expand();
+//	tree3.show();
+//}
 
 function AddNewTab(id, text, url) {
 	var existTab = main.findById(id);// 是否已经存在
@@ -257,8 +274,7 @@ MainPanel = function() {
 					}, {
 						text : '请与我联系',
 						handler : function() {
-							window
-									.open("http://cnblogs.com/lonely7345")
+							window.open("")；
 						}
 					}]
 		}
@@ -348,7 +364,9 @@ Ext.onReady(function() {
 			});
 
 	main = new MainPanel();
+	
 	westMenuPanel = new Ext.Panel({
+	  height : 470,
 		region : 'west',
 		title : "目录",
 		split : false,// 一个小边缘（分割线）
@@ -356,42 +374,98 @@ Ext.onReady(function() {
 		minSize : 175,
 		margins : '0 0 0 0',
 		collapsible : true,// 可折叠
-		items : [{
-			title : '用户管理',
-			autoScroll : true,
-			border : false,
-			iconCls : 'nav',
-			html : '<div id="nav-tree" style="overflow:auto;height:100%;border:0px solid c3daf9;"></div>'
-		}, {
-			title : '基础信息管理',
-			html : '<div id="set-tree"></div>',
-			border : false,
-			autoScroll : true,
-			iconCls : 'settings'
-		}, {
-		    title : '资产管理',
-			html : '<div id="app-tree" style="overflow:auto;height:100%;border:0px solid c3daf9;"></div>',
-			border : false,
-			autoScroll : true,
-			iconCls : 'appropriating'
-		}],
 		defaults : {
 			autoScroll : true
 		},
 		layoutConfig : {
 			titleCollapse : true,
 			animate : true
-		},
-		layout : 'accordion'// 折叠式菜单
+		}//,
+		//layout : 'accordion'// 折叠式菜单
 	});
+	
+	var response = Ext.lib.Ajax.getConnectionObject().conn;    
+  response.open("POST", '/User.mvc/GetMenuRootList', false);    
+  response.send(null);   
+  var treejsonData = Ext.util.JSON.decode(response.responseText);
+    
+  for(var m=0; m<treejsonData.length; m++){
+    var div_id = treejsonData[m].id + "-tree";
+    treejsonData[m].html = "<div id='" + div_id + "' style='overflow:auto;height:100%;border:0px solid c3daf9;'></div>";   
+    treejsonData[m].height = 200;
+    westMenuPanel.add(treejsonData[m]);     
+  }
 
-	var viewport = new Ext.Viewport({
-				layout : 'fit',
-				items : [{
-							id : "desktop",
-							layout : "border",
-							items : [header, westMenuPanel, main, bottom]
-						}]
-			});
-	buildTree();
+  var viewport = new Ext.Viewport({
+			layout : 'fit',
+			items : [{
+						id : "desktop",
+						layout : "border",
+						items : [header, westMenuPanel, main, bottom]
+					}]
+		});
+
+  for(var i=0;i<treejsonData.length;i++){
+    var mdiv_id = treejsonData[i].id + "-tree";
+
+    var paramId = treejsonData[i].id;
+    var tree = new Ext.tree.TreePanel({
+	    el : mdiv_id,
+	    autoScroll : true,
+	    animate : true,
+	    enableDD : true,
+	    containerScroll : true,
+	    draggable : false,
+	    rootVisible : false//,
+//	    listeners:{expand:{fn:function(node) {   
+//          paramId = node.id;
+//          //tree.getLoader().load({dataUrl:'/User.mvc/GetMenuNodeList',baseParams : {fucId : paramId}});
+//          tree.getLoader().baseParams["fucId"] = node.id;
+//          }},click:{fn:function(node){alert(node.id);}} 
+//      },
+//	    loader:new Ext.tree.TreeLoader({
+//          dataUrl:'/User.mvc/GetMenuNodeList',
+//          baseParams : {fucId : paramId}
+//       })
+    });
+
+    var root=new Ext.tree.AsyncTreeNode({
+        id: mdiv_id,
+        text: mdiv_id,
+        draggable : false
+    });
+    
+    dataUrlName = "/User.mvc/GetMenuNodeList";
+    var conn = Ext.lib.Ajax.getConnectionObject().conn;
+    conn.open("POST", dataUrlName, false);
+    conn.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8"); 
+    conn.send( "MenuID = " + treejsonData[i].id );
+    
+    var menuItems = Ext.util.JSON.decode(conn.responseText);
+    for(var j=0; j<menuItems.length; j++){
+        var node = new Ext.tree.TreeNode({});
+        node.singleClickExpand = true;
+        node.text = menuItems[j].text;
+        node.id = menuItems[j].id;
+        node.url = menuItems[j].url;
+        node.leaf = menuItems[j].leaf;
+        if(menuItems[j].childNodes != null){
+          addToTree( node, menuItems[j].childNodes );
+        }
+        root.appendChild(node);
+    }
+    
+    tree.setRootNode(root);
+    
+    tree.on("click", function(node) {
+		  if (node.leaf) {
+			  AddNewTab(node.id, node.text,
+					  node.url);
+		  }
+	  });
+
+    tree.render();
+    root.expand();
+    tree.show();
+  }
 })
