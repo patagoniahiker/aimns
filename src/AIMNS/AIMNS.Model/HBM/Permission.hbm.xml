@@ -10,11 +10,5 @@
         </id>
         <property name="PerFlg" type="System.String" column="per_flg" />
 
-        <!--用户权限-->
-        <many-to-one name="Role"
-          class="AIMNS.Model.Role,AIMNS.Model"
-          cascade="none"
-          column="role_id"
-           />
     </class>
 </hibernate-mapping>
