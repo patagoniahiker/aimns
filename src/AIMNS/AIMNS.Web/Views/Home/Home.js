@@ -274,7 +274,7 @@ MainPanel = function() {
 					}, {
 						text : '请与我联系',
 						handler : function() {
-							window.open("")；
+							window.open("");
 						}
 					}]
 		}
