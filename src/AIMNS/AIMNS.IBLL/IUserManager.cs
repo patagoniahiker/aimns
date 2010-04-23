@@ -51,5 +51,6 @@ namespace AIMNS.IBLL
 
 
         IList GetByCondition(User user);
+        IList GetPermissionList(string userId);
     }
 }
