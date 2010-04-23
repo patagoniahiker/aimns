@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompanyDao.cs" />
+    <Compile Include="DBHelper.cs" />
     <Compile Include="PropertyDao.cs" />
     <Compile Include="RoleDao.cs" />
     <Compile Include="DepartmentDao.cs" />
