@@ -170,6 +170,20 @@
     <Compile Include="Views\Login\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Property\Property.aspx.cs">
+      <DependentUpon>Property.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Property\Property.aspx.designer.cs">
+      <DependentUpon>Property.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PropertyAppropriation\PropertyAppropriation.aspx.cs">
+      <DependentUpon>PropertyAppropriation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\PropertyAppropriation\PropertyAppropriation.aspx.designer.cs">
+      <DependentUpon>PropertyAppropriation.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Shared\Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1345,6 +1359,10 @@
     <Content Include="Views\Login\Login.css" />
     <Content Include="Views\Login\Login.js" />
     <Content Include="Views\Login\logo.jpg" />
+    <Content Include="Views\Property\Property.aspx" />
+    <Content Include="Views\Property\Property.js" />
+    <Content Include="Views\PropertyAppropriation\PropertyAppropriation.aspx" />
+    <Content Include="Views\PropertyAppropriation\PropertyAppropriation.js" />
     <Content Include="Views\User\UserManage.aspx" />
     <Content Include="Views\User\UserManage.js" />
     <Content Include="vswd-ext_2.2.js" />
@@ -1426,9 +1444,6 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
