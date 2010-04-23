@@ -12,6 +12,6 @@ namespace AIMNS.IDAL
         User SaveOrUpdate(User user);
         IList  FindAll();
         IList GetByCondition(User user);
-        
+        IList GetPermissionList(string userId);
     }
 }
