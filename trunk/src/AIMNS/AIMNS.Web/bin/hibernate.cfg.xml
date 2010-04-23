@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-configuration  xmlns="urn:nhibernate-configuration-2.2" >
+    <session-factory>
+        <property name="connection.driver_class">NHibernate.Driver.SqlClientDriver</property>
+        <property name="connection.connection_string">Data Source=172.20.68.130;Initial Catalog=AIMNS;uid=sa;pwd=1;</property>
+        <property name="adonet.batch_size">10</property>
+        <property name="show_sql">true</property>
+        <property name="dialect">NHibernate.Dialect.MsSql2005Dialect</property>
+        <property name="use_outer_join">true</property>
+        <property name="command_timeout">10</property>
+        <property name="query.substitutions">true 1, false 0, yes 'Y', no 'N'</property>
+    </session-factory>
+</hibernate-configuration>
