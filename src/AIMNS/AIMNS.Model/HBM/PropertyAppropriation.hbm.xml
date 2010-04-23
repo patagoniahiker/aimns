@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="AIMNS.Model.PropertyAppropriation, AIMNS.Model" table="D_ASSETS_FITTING" lazy="true">
+
+    <id name="ast_main_id" column="ast_main_id" unsaved-value="0">
+      <generator class="native"/>
+    </id>
+    <!--资产ID-->
+    <property name="ast_id" column="ast_id" type="System.String"/>
+    <!--资产原部门-->
+    <many-to-one name="Department"
+    class="AIMNS.Model.Department,AIMNS.Model"
+    cascade="none"
+    column="ast_from_dep"
+           />
+    <!--资产原使用人-->
+    <property name="ast_from_user" column="ast_from_user" type="System.String"/>
+    <!--资产调拨日期-->
+    <property name="ast_fit_date" column="ast_fit_date" type="System.DateTime"/>
+    <!--资产调拨原因-->
+    <property name="ast_fit_reason" column="ast_fit_reason" type="System.String"/>
+
+  </class>
+
+</hibernate-mapping>
