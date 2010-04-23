@@ -34,10 +34,6 @@ namespace AIMNS.DAL
 
         public IList GetByCondition(Department depart)
         {
-            //IList ls = HibernateTemplate.Find("from Department t where t.DepartmentID=? "// +
-               // "and t.DepartmentName like %?% and t.ParentDepartmentId = ?"
-               // ,depart.DepartmentID ) ;
-            //return ls;
             ArrayList param = new ArrayList();
             string queryStr = "from Department t where 1=1";
             if (depart.DepartmentID != "")
