@@ -3,7 +3,7 @@
     <class name="AIMNS.Model.Company, AIMNS.Model" table="Company"  lazy="true"  >
 
         <id name="CompanyID" column="CompanyID" type="System.String" unsaved-value="0">
-            <generator class="assigned"/>
+          <generator class="assigned"/>
         </id>
         <property name="FullName" type="String(100)" column="FullName" />
         <property name="Principal" column="Principal" type="System.String"/>
