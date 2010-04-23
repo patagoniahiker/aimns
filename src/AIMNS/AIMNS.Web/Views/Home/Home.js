@@ -66,6 +66,51 @@ function buildTree() {
 	tree.render();
 	root.expand();
 	tree.show();
+	
+	var tree3 = new Ext.tree.TreePanel({
+				el : 'app-tree',
+				height: Ext.get('nav-tree').getHeight(),
+				autoScroll : true,
+				animate : true,
+				enableDD : true,
+				containerScroll : true,
+				draggable : false,
+				rootVisible : false
+			});
+	var rootid3 = Ext.encode('app-tree').toString();
+
+	var root3 = new Ext.tree.AsyncTreeNode({
+				text : 'app-tree',
+				draggable : false,
+				id : 'app-tree'
+			});
+
+	tree3.setRootNode(root3);
+    
+    root3.appendChild(new Ext.tree.TreeNode({
+        text: "资产调拨一览",
+        id: "3",
+        url: "/PropertyAppropriation.mvc/Index",
+        leaf: true
+    }));
+    
+    root3.appendChild(new Ext.tree.TreeNode({
+        text: "资产调拨",
+        id: "4",
+        url: "/Property.mvc/Index",
+        leaf: true
+    }));
+			
+	tree3.on("click", function(node) {
+				if (node.attributes.leaf) {
+					AddNewTab(node.attributes.id, node.attributes.text,
+							node.attributes.url);
+				}
+			});
+
+	tree3.render();
+	root3.expand();
+	tree3.show();
 }
 
 function AddNewTab(id, text, url) {
@@ -323,6 +368,12 @@ Ext.onReady(function() {
 			border : false,
 			autoScroll : true,
 			iconCls : 'settings'
+		}, {
+		    title : '资产管理',
+			html : '<div id="app-tree" style="overflow:auto;height:100%;border:0px solid c3daf9;"></div>',
+			border : false,
+			autoScroll : true,
+			iconCls : 'appropriating'
 		}],
 		defaults : {
 			autoScroll : true
