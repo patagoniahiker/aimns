@@ -6,7 +6,7 @@ using System.Collections;
 namespace AIMNS.Model
 {
     [Serializable]
-    class Permission
+    public class Permission
     {
         #region Property Members
 
@@ -37,11 +37,6 @@ namespace AIMNS.Model
             set;
         }
 
-        public virtual Role Role
-        {
-            get;
-            set;
-        }
 
         #endregion
     }
