@@ -42,12 +42,9 @@ namespace AIMNS.Model
             get;
             set;
 
-        }
-
-        
+        }     
 
         #endregion
-
-      
+     
     }
 }
