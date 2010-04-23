@@ -1,74 +1,49 @@
-﻿/// <reference path="../../vswd-ext_2.2.js" />
-Ext.onReady(function() {
-    // create the Data Store
-    var store = new Ext.data.Store({
-        proxy: new Ext.data.HttpProxy({
+﻿Ext.onReady(function() {
+        // 创建Data Store，获取部门信息
+        var store = new Ext.data.Store({
+            proxy: new Ext.data.HttpProxy({
             url: '/Department.mvc/GetPageRecords',
             method: 'POST'
-        }),
-        //params: { start: 0, limit: 10 },
-        remoteSort: false,
-        reader: new Ext.data.JsonReader({
-            id: 'DepartmentID',
-            root: 'root',
-            totalProperty: 'total',
-            fields: [{
-                name: 'DepartmentID',
-                type: 'string'
-            }, {
-                name: 'DepartmentName',
-                type: 'string'
-            }, {
-                name: 'ParentDepartmentName',
-                type: 'string'
-            }, {
-                name: 'ManagerName',
-                type: 'string'
-            }]
+            }),
+            remoteSort: false,
+            reader: new Ext.data.JsonReader({
+                id: 'DepartmentID',
+                root: 'root',
+                totalProperty: 'total',
+                fields: [{
+                    name: 'DepartmentID',
+                    type: 'string'
+                }, {
+                    name: 'DepartmentName',
+                    type: 'string'
+                }, {
+                    name: 'ParentDepartmentName',
+                    type: 'string'
+                }, {
+                    name: 'ManagerName',
+                    type: 'string'
+                }]
             })
         });
 
+        //设置store默认的排序
         store.setDefaultSort('DepartmentID', 'ASC');
 
 
+        //创建自动生成数字的列
         var nm = new Ext.grid.RowNumberer();
-        var sm = new Ext.grid.CheckboxSelectionModel(); // add checkbox
+        //创建checkbox列
+        var sm = new Ext.grid.CheckboxSelectionModel();
 
         // create reusable renderer
         Ext.util.Format.comboRenderer = function(combo) {
             return function(value) {
-                //var record = combo.findRecord('DepartmentID', value);
-                //return record ? record.get('DepartmentName') : "子部门列表";
                 return "子部门列表";
             }
         }
 
-        // create the combo instance
-        var combo = new Ext.form.ComboBox({
-            typeAhead: true,
-            triggerAction: 'all',
-            //{@link #lazyRender}:true,
-            mode: 'remote',
-            store: new Ext.data.Store({
-                url: '/Department.mvc/GetAll',
-                reader: new Ext.data.JsonReader({
-                    id: 'DepartmentID'
-                }, ['DepartmentID', 'DepartmentName']
-                    ),
-                remoteSort: false
-            }),
-            valueField: 'DepartmentID',
-            displayField: 'DepartmentName',
-            listeners: {
-                // delete the previous query in the beforequery event or set
-                // combo.lastQuery = null (this will reload the store the next time it expands)
-                beforequery: function(qe) {
-                    delete qe.combo.lastQuery;
-                    //combo.set
-                }
-            }
-        });
 
+        //创建Grid的列模型实例
         var cm = new Ext.grid.ColumnModel([nm, sm, {
             header: "部门ID",
             dataIndex: 'DepartmentID',
@@ -84,64 +59,65 @@ Ext.onReady(function() {
             width: 200
         }]);
 
-            // by default columns are sortable
-            cm.defaultSortable = true;
+        // 设置Grid是否默认排序
+        cm.defaultSortable = true;
 
-            var pagebar = new Ext.PagingToolbar({
-                pageSize: 10,
-                store: store,
-                displayInfo: true,
-                displayMsg: '显示第{0}条到{1}条记录,一共{2}条.',
-                emptyMsg: '没有记录'
-            });
+        //设置工具栏显示的信息
+        var pagebar = new Ext.PagingToolbar({
+            pageSize: 10,
+            store: store,
+            displayInfo: true,
+            displayMsg: '显示第{0}条到{1}条记录,一共{2}条.',
+            emptyMsg: '没有记录'
+        });
 
-            var grid = new Ext.grid.EditorGridPanel({
-                // el:'topic-grid',
-                renderTo: document.body,
-                height: 500,
-                title: '分页和排序列表',
-                store: store,
-                cm: cm,
-                trackMouseOver: false,
-                sm: sm,
-                loadMask: true,
-                viewConfig: {
-                    forceFit: true,
-                    enableRowBody: true,
-                    showPreview: true,
-                    getRowClass: function(record, rowIndex, p, store) {
-                        return 'x-grid3-row-collapsed';
-                    }
-                },
-                // inline toolbars
-                tbar: [{
-                    text: '查询',
-                    tooltip: '查询记录',
-                    iconCls: 'search',
-                    handler: handleSearch
-                }, '-', {
-                    text: '登录',
-                    tooltip: '登录一条记录',
-                    iconCls: 'add',
-                    handler: handleAdd
-                }, '-', {
-                    text: '修改',
-                    tooltip: '修改',
-                    iconCls: 'option',
-                    handler: handleEdit
-                }, '-', {
-                    text: '删除',
-                    tooltip: '删除记录',
-                    iconCls: 'remove',
-                    handler: handleDelete
-                }],
-                    bbar: pagebar
-                });
+        //创建可编辑的GridPanel
+        var grid = new Ext.grid.EditorGridPanel({
+            renderTo: document.body,
+            height: 500,
+            title: '分页和排序列表',
+            store: store,
+            cm: cm,
+            trackMouseOver: false,
+            sm: sm,
+            loadMask: true,
+            viewConfig: {
+                forceFit: true,
+                enableRowBody: true,
+                showPreview: true,
+                getRowClass: function(record, rowIndex, p, store) {
+                    return 'x-grid3-row-collapsed';
+                }
+            },
+            // 设置面板顶部的工具条
+            tbar: [{
+                text: '查询',
+                tooltip: '查询记录',
+                iconCls: 'search',
+                handler: handleSearch
+            }, '-', {
+                text: '登录',
+                tooltip: '登录一条记录',
+                iconCls: 'add',
+                handler: handleAdd
+            }, '-', {
+                text: '修改',
+                tooltip: '修改',
+                iconCls: 'option',
+                handler: handleEdit
+            }, '-', {
+                text: '删除',
+                tooltip: '删除记录',
+                iconCls: 'remove',
+                handler: handleDelete
+            }],
+                bbar: pagebar
+        });//创建可编辑的GridPanel end
 
                 // render it
                 grid.render();
 
-                // trigger the data store load
+                //
                 var request = {
                     start: 0,
                     limit: 10
@@ -150,11 +126,6 @@ Ext.onReady(function() {
                 store.load({
                     params: request,
                     callback: function(r, options, success) {
-                        //                        if (success == false) {
-                        //                            Ext.Msg.alert("ERROR", "数据加载出现错误!");
-                        //                        } else {
-                        //                            Ext.Msg.alert("ERROR", "数据加载成功!");
-                        //                        }
                     }
                 });
 
@@ -164,33 +135,27 @@ Ext.onReady(function() {
                     reader: new Ext.data.JsonReader({
                         id: 'DepartmentID'
                     }, ['DepartmentID', 'DepartmentName']
-                ),
+                    ),
                     remoteSort: false
                 });
 
 
-
-                //部门信息窗口
-                var DepartForm = new Ext.FormPanel({
-                    frame: true,
-                    labelAlign: 'right',
-                    labelWidth: 120,
-                    width: 450,
-                    height: 250,
-                    items: new Ext.form.FieldSet({
-                        title: '部门资料',
-                        autoHeight: true,
-                        defaults: { width: 200 },
-                        defaultType: 'textfield',
-                        items: [{
-                            fieldLabel: '部门号',
-                            name: 'DepartmentID',
-                            allowBlank: false
-                        }, {
-                            fieldLabel: '部门名',
-                            name: 'DepartmentName',
-                            allowBlank: false
-                        }, new Ext.form.ComboBox({
+                //部门登录信息窗口部门号文本框
+                var idTxtL = new Ext.form.TextField({
+                     fieldLabel: '部门号',
+                     name: 'DepartmentID',
+                     allowBlank: false
+                });
+                
+                //部门登录信息窗口部门名文本框
+                var nameTxtL = new Ext.form.TextField({
+                     fieldLabel: '部门名',
+                     name: 'DepartmentName',
+                     allowBlank: false
+                });
+                
+                //部门登录信息窗口直属部门列表框
+                var deptComboL = new Ext.form.ComboBox({
                             fieldLabel: '直属部门',
                             name: 'ParentDepartmentName',
                             hiddenName: 'ParentDepartmentId',
@@ -202,13 +167,11 @@ Ext.onReady(function() {
                             triggerAction: 'all',
                             emptyText: '请选择部门',
                             selectOnFocus: true,
-                            allowBlank: false
-                        })
-                        ]
-                    })
+                            allowBlank: true
                 });
-
-                var SDepartForm = new Ext.FormPanel({
+                
+                //部门登录信息窗口
+                var DepartForm = new Ext.FormPanel({
                     frame: true,
                     labelAlign: 'right',
                     labelWidth: 120,
@@ -219,13 +182,24 @@ Ext.onReady(function() {
                         autoHeight: true,
                         defaults: { width: 200 },
                         defaultType: 'textfield',
-                        items: [{
-                            fieldLabel: '部门号',
-                            name: 'DepartmentID'
-                        }, {
-                            fieldLabel: '部门名',
-                            name: 'DepartmentName'
-                        }, new Ext.form.ComboBox({
+                        items: [idTxtL,nameTxtL,deptComboL]
+                    })
+                });
+                
+                //部门检索信息窗口部门号文本框
+                var idTxt = new Ext.form.TextField({
+                     fieldLabel: '部门号',
+                     name: 'DepartmentID'
+                });
+                
+                //部门检索信息窗口部门名文本框
+                var nameTxt = new Ext.form.TextField({
+                     fieldLabel: '部门名',
+                     name: 'DepartmentName'
+                });
+                
+                //部门检索信息窗口直属部门列表框
+                var deptCombo = new Ext.form.ComboBox({
                             fieldLabel: '直属部门',
                             name: 'ParentDepartmentName',
                             hiddenName: 'ParentDepartmentId',
@@ -237,55 +211,53 @@ Ext.onReady(function() {
                             triggerAction: 'all',
                             emptyText: '请选择部门',
                             selectOnFocus: true
-                        })
-                        ]
+                        });
+                        
+                //部门检索信息窗口
+                var SDepartForm = new Ext.FormPanel({
+                    frame: true,
+                    labelAlign: 'right',
+                    labelWidth: 120,
+                    width: 450,
+                    height: 250,
+                    items: new Ext.form.FieldSet({
+                        title: '部门资料',
+                        autoHeight: true,
+                        defaults: { width: 200 },
+                        defaultType: 'textfield',
+                        items: [idTxt, nameTxt, deptCombo]
                     })
                 });
 
 
+                //按条件进行查询
                 var Condition = function(store) {
-                    //Ext.Msg.alert("ERROR", "before load");
-                    //this.proxy.url = '/Department.mvc/GetDepartment';
-                    //Ext.apply(this.url, '/Department.mvc/GetDepartment');
                     this.proxy.conn.url = '/Department.mvc/GetDepartment';
-                    //pagebar.hide();
-                    //this.proxy.conn.params = Ext.util.JSON.encode(formvalue);
-                    //Ext.apply(this.baseParams, {
-                    //    start: encodeURIComponent("0"),//追加一个参数 (areaName)
-                    //    limit: encodeURIComponent("25")
-                    //});
                     var formvalue = SDepartForm.form.getValues();
                     this.baseParams["DepartmentID"] = formvalue["DepartmentID"];
                     this.baseParams["DepartmentName"] = formvalue["DepartmentName"];
                     this.baseParams["ParentDepartmentId"] = formvalue["ParentDepartmentId"];
                 }
 
-                var All = function(store) {
-                    //Ext.Msg.alert("ERROR", "before load");
-                    //this.proxy.url = '/Department.mvc/GetDepartment';
-                    //Ext.apply(this.url, '/Department.mvc/GetDepartment');
+
+                //查询所有的部门
+                var All = function(store) {                 
                     this.proxy.conn.url = '/Department.mvc/GetPageRecords';
-                    //pagebar.hide();
-                    //this.proxy.conn.params = Ext.util.JSON.encode(formvalue);
-                    //Ext.apply(this.baseParams, {
-                    //    start: encodeURIComponent("0"),//追加一个参数 (areaName)
-                    //    limit: encodeURIComponent("25")
-                    //});
                 }
 
+
+                //按下删除按钮时
                 function handleDelete() {
-                    var selectedKeys = grid.selModel.selections.keys; // returns
-                    // array of
-                    // selected
-                    // rows ids
-                    // only
+                    var selectedKeys = grid.selModel.selections.keys; 
                     if (selectedKeys.length > 0) {
                         Ext.MessageBox.confirm('提示', '您确实要删除选定的记录吗？', deleteRecord);
                     } else {
                         Ext.MessageBox.alert('提示', '请至少选择一条记录！');
-                    } // end
+                    }
                 }
 
+
+                //删除数据
                 function deleteRecord(btn) {
                     if (btn == 'yes') {
                         var selectedRows = grid.selModel.selections.items;
@@ -316,8 +288,6 @@ Ext.onReady(function() {
 										response.responseText);
                                 }
                             },
-                            // the function to be called upon failure of the request
-                            // (server script, 404, or 403 errors)
                             failure: function(response, options) {
                                 Ext.MessageBox.hide();
                                 ReturnValue = Ext.MessageBox.alert("警告",
@@ -331,10 +301,120 @@ Ext.onReady(function() {
                                 store.reload();
                             }
                         })// end Ajax request
-                    } // end if click 'yes' on button
-                } // end deleteRecord
+                    } // end if click "yes" on button
+                } // end deleteRecord            
+                                  
+                        
+                //按下修改按钮时
+                function handleEdit() {
+                    var selectedKeys = grid.selModel.selections.keys;
+                    if (selectedKeys.length != 1) {
+                        Ext.MessageBox.alert('提示', '请选择一条记录！');
+                    } else {
+                        ////创建修改部门资料画面
+                        var EditDepartWin = new Ext.Window({
+                            title: '修改部门资料',
+                            layout: 'fit',
+                            width: 500,
+                            height: 300,
+                            closeAction: 'hide',
+                            plain: true,
+                            autoDestroy: true,
+                            items: DepartForm,
+                            buttons: [{
+                                text: '保存',
+                                handler: UpdateRecord
+                            }, {
+                                text: '取消',
+                                handler: function() {
+                                EditDepartWin.hide();
+                                }
+                            }]
+                        });
+                        EditDepartWin.show(this);
+                        deptDs.load();
+                        Ext.MessageBox.show({
+                            msg: '正在请求数据, 请稍侯',
+                            progressText: '正在请求数据',
+                            width: 300,
+                            wait: true,
+                            waitConfig: {
+                                interval: 200
+                            }
+                        });
+                        Ext.Ajax.request({
+                            url: '/Department.mvc/GetDepart',
+                            method: 'POST',
+                            params: { DepartmentID: selectedKeys[0] },
+                            callback: function(options, success, response) {
+                                if (success) {
+                                    Ext.MessageBox.hide();
+                                    var formvalue = Ext.decode(response.responseText);
+                                    DepartForm.form.setValues(formvalue);
+                                } else {
+                                    Ext.MessageBox.hide();
+                                    Ext.MessageBox.alert("失败，请重试", response.responseText);
+                                }
+                            },              
+                            failure: function(response, options) {
+                                Ext.MessageBox.hide();
+                                ReturnValue = Ext.MessageBox.alert("警告", "出现异常错误！请联系管理员！");
+                            },
+                            success: function(response, options) {
+                                Ext.MessageBox.hide();
+                            }
+                        })
+                    }
+                }
 
+                            
+                //更新数据
+                function UpdateRecord(btn) {
+                    if (DepartForm.form.isValid()) {
+                        btn.disabled = true;
+                        Ext.MessageBox.show({
+                            msg: '正在请求数据, 请稍侯',
+                            progressText: '正在请求数据',
+                            width: 300,
+                            wait: true,
+                            waitConfig: {
+                                interval: 200
+                            }
+                        });
+                        var formvalue = Ext.util.JSON.encode(DepartForm.form.getValues());
+
+                        Ext.Ajax.request({
+                            url: '/Department.mvc/UpdateDepart',
+                            method: 'POST',
+                            params: formvalue, // the unique
+                            callback: function(options, success, response) {
+                                if (success) {
+                                    Ext.MessageBox.hide();
+                                    var result = Ext.util.JSON.decode(response.responseText)
+                                    Ext.MessageBox.alert("消息", result.Message);
+                                } else {
+                                    Ext.MessageBox.hide();
+                                    Ext.MessageBox.alert("失败，请重试",
+							response.responseText);
+                                }
+                            },
+                            failure: function(response, options) {
+                                Ext.MessageBox.hide();
+                                ReturnValue = Ext.MessageBox.alert("警告",
+						"出现异常错误！请联系管理员！");
+                            },
+                            success: function(response, options) {
+                                Ext.MessageBox.hide();
+                                store.reload();
+                            }
+                        })// end Ajax request
+                    }
+                }
+
+                            
+                //按下登录按钮时
                 function handleAdd() {
+                    //创建增加新部门画面
                     var AddDepartWin = new Ext.Window({
                         title: '增加新部门',
                         layout: 'fit',
@@ -355,11 +435,62 @@ Ext.onReady(function() {
                             }
                         }]
                         });
+                        idTxtL .reset ();
+                        nameTxtL .reset ();
+                        deptComboL.reset();
                         AddDepartWin.show(this);
                     }
-
+                            
+                            
+                    //登录数据
+                    function AddRecord(btn) {
+                        if (DepartForm.form.isValid()) {
+                            btn.disabled = true;
+                            Ext.MessageBox.show({
+                            msg: '正在请求数据, 请稍侯',
+                            progressText: '正在请求数据',
+                            width: 300,
+                            wait: true,
+                                waitConfig: {
+                                    interval: 200
+                                }
+                            });
+                            var formvalue = DepartForm.form.getValues();
+                            Ext.Ajax.request({
+                                url: '/Department.mvc/AddDepart',
+                                method: 'POST',
+                                params: Ext.util.JSON.encode(formvalue),
+                                callback: function(options, success, response) {
+                                    if (success) {
+                                        Ext.MessageBox.hide();
+                                        var result = Ext.util.JSON.decode(response.responseText)
+                                        Ext.MessageBox.alert("消息", result.Message);
+                                    } else {
+                                        Ext.MessageBox.hide();
+                                        Ext.MessageBox.alert("失败，请重试",
+						    	response.responseText);
+                                    }
+                                },
+                                failure: function(response, options) {
+                                    Ext.MessageBox.hide();
+                                    ReturnValue = Ext.MessageBox.alert("警告",
+							"出现异常错误！请联系管理员！");
+                                },
+                                success: function(response, options) {
+                                    Ext.MessageBox.hide();
+                                    store.un('beforeload', Condition);
+                                    store.un('beforeload', All);
+                                    store.on('beforeload', All);
+                                    store.reload();
+                                }
+                            })// end Ajax request
+                        }
+                    }
+                        
+                    //按下查询按钮时
                     var SDepartWin;
                     function handleSearch() {
+                        //创建查询部门条件画面
                         SDepartWin = new Ext.Window({
                             title: '查询部门条件',
                             layout: 'fit',
@@ -379,216 +510,61 @@ Ext.onReady(function() {
                                     SDepartWin.hide();
                                 }
                             }]
+                        });
+                        idTxt .reset ();
+                        nameTxt .reset ();
+                        deptCombo.reset();
+                        SDepartWin.show(this);
+                    }
+
+                            
+                            
+                    //查询数据
+                    function SearchRecords(btn) {
+                        if (DepartForm.form.isValid()) {
+                            btn.disabled = true;
+                            Ext.MessageBox.show({
+                                msg: '正在请求数据, 请稍侯',
+                                progressText: '正在请求数据',
+                                width: 300,
+                                wait: true,
+                                waitConfig: {
+                                    interval: 200
+                                }
                             });
-                            SDepartWin.show(this);
-                        }
+                                    
+                            //表格数据加载之前事件       
+                            store.un('beforeload', Condition);
+                            store.un('beforeload', All);
+                            store.on('beforeload', Condition);
 
-                        function handleEdit() {
-                            var selectedKeys = grid.selModel.selections.keys; // returns array of
-                            // selected rows ids
-                            // only
-                            if (selectedKeys.length != 1) {
-                                Ext.MessageBox.alert('提示', '请选择一条记录！');
-                            } else {
-                                var EditDepartWin = new Ext.Window({
-                                    title: '修改部门资料',
-                                    layout: 'fit',
-                                    width: 500,
-                                    height: 300,
-                                    closeAction: 'hide',
-                                    plain: true,
-                                    autoDestroy: true,
-                                    items: DepartForm,
-                                    buttons: [{
-                                        text: '保存',
-                                        handler: UpdateRecord
-                                    }, {
-                                        text: '取消',
-                                        handler: function() {
-                                            EditDepartWin.hide();
-                                        }
-                                    }]
-                                    });
-                                    EditDepartWin.show(this);
-                                    deptDs.load();
-                                    Ext.MessageBox.show({
-                                        msg: '正在请求数据, 请稍侯',
-                                        progressText: '正在请求数据',
-                                        width: 300,
-                                        wait: true,
-                                        waitConfig: {
-                                            interval: 200
-                                        }
-                                    });
-                                    Ext.Ajax.request({
-                                        url: '/Department.mvc/GetDepart', // url to server
-                                        // side script
-                                        method: 'POST',
-                                        params: { DepartmentID: selectedKeys[0] }, // the unique id(s)
-                                        callback: function(options, success, response) {
-                                            if (success) {
-                                                Ext.MessageBox.hide();
-                                                var formvalue = Ext.decode(response.responseText);
-                                                DepartForm.form.setValues(formvalue);
-                                            } else {
-                                                Ext.MessageBox.hide();
-                                                Ext.MessageBox.alert("失败，请重试", response.responseText);
-                                            }
-                                        },
-                                        // the function to be called upon failure of the request (server
-                                        // script, 404, or 403 errors)
-                                        failure: function(response, options) {
-                                            Ext.MessageBox.hide();
-                                            ReturnValue = Ext.MessageBox.alert("警告", "出现异常错误！请联系管理员！");
-                                        },
-                                        success: function(response, options) {
-                                            Ext.MessageBox.hide();
-                                        }
-                                    })// end Ajax request
-                                }
-                            }
-
-                            function UpdateRecord(btn) {
-                                if (DepartForm.form.isValid()) {
-                                    btn.disabled = true;
-                                    Ext.MessageBox.show({
-                                        msg: '正在请求数据, 请稍侯',
-                                        progressText: '正在请求数据',
-                                        width: 300,
-                                        wait: true,
-                                        waitConfig: {
-                                            interval: 200
-                                        }
-                                    });
-                                    var formvalue = Ext.util.JSON.encode(DepartForm.form.getValues());
-
-                                    Ext.Ajax.request({
-                                        url: '/Department.mvc/UpdateDepart',
-                                        method: 'POST',
-                                        params: formvalue, // the unique
-                                        // id(s)
-                                        callback: function(options, success, response) {
-                                            if (success) {
-                                                Ext.MessageBox.hide();
-                                                var result = Ext.util.JSON.decode(response.responseText)
-                                                Ext.MessageBox.alert("消息", result.Message);
-                                            } else {
-                                                Ext.MessageBox.hide();
-                                                Ext.MessageBox.alert("失败，请重试",
-										response.responseText);
-                                            }
-                                        },
-                                        failure: function(response, options) {
-                                            Ext.MessageBox.hide();
-                                            ReturnValue = Ext.MessageBox.alert("警告",
-									"出现异常错误！请联系管理员！");
-                                        },
-                                        success: function(response, options) {
-                                            Ext.MessageBox.hide();
-                                            store.reload();
-                                        }
-                                    })// end Ajax request
-                                }
-                            }
-
-                            function AddRecord(btn) {
-                                if (DepartForm.form.isValid()) {
-                                    btn.disabled = true;
-                                    Ext.MessageBox.show({
-                                        msg: '正在请求数据, 请稍侯',
-                                        progressText: '正在请求数据',
-                                        width: 300,
-                                        wait: true,
-                                        waitConfig: {
-                                            interval: 200
-                                        }
-                                    });
-                                    var formvalue = DepartForm.form.getValues();
-                                    Ext.Ajax.request({
-                                        url: '/Department.mvc/AddDepart',
-                                        method: 'POST',
-                                        params: Ext.util.JSON.encode(formvalue),
-                                        callback: function(options, success, response) {
-                                            if (success) {
-                                                Ext.MessageBox.hide();
-                                                var result = Ext.util.JSON.decode(response.responseText)
-                                                Ext.MessageBox.alert("消息", result.Message);
-                                            } else {
-                                                Ext.MessageBox.hide();
-                                                Ext.MessageBox.alert("失败，请重试",
-										response.responseText);
-                                            }
-                                        },
-                                        // the function to be called upon failure of the request
-                                        // (server script, 404, or 403 errors)
-                                        failure: function(response, options) {
-                                            Ext.MessageBox.hide();
-                                            ReturnValue = Ext.MessageBox.alert("警告",
-									"出现异常错误！请联系管理员！");
-                                        },
-                                        success: function(response, options) {
-                                            Ext.MessageBox.hide();
-                                            store.un('beforeload', Condition);
-                                            store.un('beforeload', All);
-                                            store.on('beforeload', All);
-                                            store.reload();
-
-                                        }
-                                    })// end Ajax request
-
-                                }
-                            }
-
-                            function SearchRecords(btn) {
-                                if (DepartForm.form.isValid()) {
-                                    btn.disabled = true;
-                                    Ext.MessageBox.show({
-                                        msg: '正在请求数据, 请稍侯',
-                                        progressText: '正在请求数据',
-                                        width: 300,
-                                        wait: true,
-                                        waitConfig: {
-                                            interval: 200
-                                        }
-                                    });
-                                    //var formvalue = DepartForm.form.getValues();
-
-                                    /** 
-                                    *@see 表格数据加载之前事件 
-                                    */
-                                    store.un('beforeload', Condition);
-                                    store.un('beforeload', All);
-                                    store.on('beforeload', Condition);
-
-                                    store.load({
-                                        params: request,
-                                        callback:function (r,options,succss){
-                                        btn.disable=false;
-                                        if(succss){
+                            store.load({
+                                params: request,
+                                callback:function (r,options,succss){
+                                    btn.disable=false;
+                                    if(succss){
                                         Ext .MessageBox .hide ();
                                         if(r.length==0){
-                                        Ext .MessageBox .alert ("消息","部门不存在！");
+                                            Ext .MessageBox .alert ("消息","部门不存在！");
                                         }else{
-                                        Ext .MessageBox .alert ("消息","查询成功！");
+                                            Ext .MessageBox .alert ("消息","查询成功！");
                                         }
-                                        GetUserWin.hide();
-                                        }else{
+                                        SDepartWin.hide();
+                                    }else{
                                         Ext.MessageBox.hide();
 	                                    Ext.MessageBox.alert("失败，请重试！");
-                                        }
-                                        },
-                                        failure: function(response, options) {
-                                            Ext.MessageBox.hide();
-                                            ReturnValue = Ext.MessageBox.alert("警告",
-									    "出现异常错误！请联系管理员！");
-                                        },
-                                        success: function(response, options) {
-                                            Ext.MessageBox.hide();
-                                        }
-                                    });
-
-
+                                    }
+                                },
+                                failure: function(response, options) {
+                                    Ext.MessageBox.hide();
+                                    ReturnValue = Ext.MessageBox.alert("警告",
+							   "出现异常错误！请联系管理员！");
+                                },
+                                success: function(response, options) {
+                                    Ext.MessageBox.hide();
                                 }
-                            }
+                            });//load end
+                        }//if end
+                    }//SearchRecords end
 
-                        });
+});
