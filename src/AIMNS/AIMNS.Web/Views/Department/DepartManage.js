@@ -562,15 +562,20 @@ Ext.onReady(function() {
 
                                     store.load({
                                         params: request,
-                                        callback: function(options, success, response) {
-                                            if (success) {
-                                                Ext.MessageBox.hide();
-                                                Ext.MessageBox.alert("消息", "查询成功！");
-                                                SDepartWin.hide();
-                                            } else {
-                                                Ext.MessageBox.hide();
-                                                Ext.MessageBox.alert("消息", "查询结果不存在或查询失败！");
-                                            }
+                                        callback:function (r,options,succss){
+                                        btn.disable=false;
+                                        if(succss){
+                                        Ext .MessageBox .hide ();
+                                        if(r.length==0){
+                                        Ext .MessageBox .alert ("消息","部门不存在！");
+                                        }else{
+                                        Ext .MessageBox .alert ("消息","查询成功！");
+                                        }
+                                        GetUserWin.hide();
+                                        }else{
+                                        Ext.MessageBox.hide();
+	                                    Ext.MessageBox.alert("失败，请重试！");
+                                        }
                                         },
                                         failure: function(response, options) {
                                             Ext.MessageBox.hide();
