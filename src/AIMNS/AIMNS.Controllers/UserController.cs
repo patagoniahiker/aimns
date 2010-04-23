@@ -37,16 +37,28 @@ namespace AIMNS.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Login(string userid, string password)
         {
+            userid = userid.Trim();
+            password = password.Trim();
             var rdto = new ResultDTO();
             User  user  = ManagerFactory.UserManager.GetUser(userid);
+            //if ( "1".Equals( user.LoginFlg ))
+            //{
+            //    rdto.Message = "用户已登录";
+            //    rdto.Result = false;
+            //    return this.Json(rdto);
+            //}
+
             if (user != null && user.Password.Trim() == password.Trim())
             {
-                rdto.Message = "登陆成功";
+                HttpContext.Session["User"] = userid;
+                user.LoginFlg = "1";
+                ManagerFactory.UserManager.UpdateUser(user);
+
                 rdto.Result = true;
             }
             else
             {
-                rdto.Message = "登陆失败";
+                rdto.Message = "用户名或密码错误";
                 rdto.Result = false;
             }
             return this.Json(rdto);
@@ -194,6 +206,97 @@ namespace AIMNS.Controllers
             result.Add("rows", arr);
             result.Add("total", list.Count);
             return this.Json(result);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult GetMenuRootList()
+        {
+            string userId = HttpContext.Session["User"].ToString();
+            MenuNodeList nodeList = new MenuNodeList(userId);
+            IList list = nodeList.GetMenuNodeList();
+
+            IList<MenuRootDTO> result = new List<MenuRootDTO>();
+            foreach (MenuNode root in list)
+            {
+                MenuRootDTO dto = new MenuRootDTO();
+                dto.id = root.ID;
+                dto.title = root.Name;
+                dto.border = false;
+                dto.autoScroll = true;
+                dto.iconCls = "";
+                dto.html = "";
+
+                result.Add(dto);
+            }
+
+            return this.Json(result);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult GetMenuNodeList()
+        {
+            string fucId = Request.Params[0].Trim();
+            string userId = HttpContext.Session["User"].ToString();
+            MenuNodeList nodeList = new MenuNodeList(userId);
+            MenuNode root = nodeList.GetCurrentRootNode(fucId);
+
+            IList<MenuNodeDTO> result = new List<MenuNodeDTO>();
+            foreach (MenuNode child in root.Children)
+            {
+                MenuNodeDTO dto = new MenuNodeDTO();
+                dto.id = child.ID;
+                dto.text = child.Name;
+                dto.url = child.Url;
+                dto.leaf = true;
+                if (child.Children.Count > 0)
+                {
+                    dto.leaf = false;
+                    dto.childNodes = new List<MenuNodeDTO>();
+                    AddToRoot(child, dto.childNodes);
+                }
+
+                result.Add(dto);
+            }
+
+            return this.Json(result);
+        }
+
+        public void AddToRoot(MenuNode parent, List<MenuNodeDTO> dtoList)
+        {
+            int i = 0;
+            foreach (MenuNode child in parent.Children)
+            {
+                MenuNodeDTO dto = new MenuNodeDTO();
+                dto.id = child.ID;
+                dto.text = child.Name;
+                dto.url = child.Url;
+                dto.leaf = true;
+                if (child.Children.Count > 0)
+                {
+                    dto.leaf = false;
+                    dto.childNodes = new List<MenuNodeDTO>();
+                    AddToRoot(child, dto.childNodes);
+                }
+
+                dtoList.Add(dto);
+                i++;
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Logout()
+        {
+            var rdto = new ResultDTO();
+            string userId = HttpContext.Session["User"].ToString();
+            User user = ManagerFactory.UserManager.GetUser(userId);
+
+            HttpContext.Session["User"] = null;
+            user.LoginFlg = "0";
+            ManagerFactory.UserManager.UpdateUser(user);
+
+            rdto.Result = true;
+
+            return this.Json(rdto);
         }
     }
 
