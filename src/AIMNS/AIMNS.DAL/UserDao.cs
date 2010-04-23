@@ -8,6 +8,10 @@ using AIMNS.IDAL;
 using AIMNS.Model;
 using Spring.Data.NHibernate;
 using NHibernate.Engine;
+using NHibernate.SqlCommand;
+using NHibernate.SqlTypes;
+using System.Data;
+using NHibernate.Driver;
 
 namespace AIMNS.DAL
 {
@@ -61,6 +65,20 @@ namespace AIMNS.DAL
                 param.Add(user.Department.DepartmentID);
             }
             return HibernateTemplate.Find(queryStr ,param .ToArray () );
+        }
+
+        public IList GetPermissionList(string userId)
+        {
+            IList result = new ArrayList();
+
+            string query = "select per.fuc_id, fuc.fuc_name, fuc.fuc_url ";
+            query += "from D_USER usr left join D_PERMISSION per on usr.usr_role = per.role_id ";
+            query += "inner join D_FUNCTION fuc on per.fuc_id = fuc.fuc_id where usr.usr_id = '";
+            query += userId;
+            query += "' order by per.fuc_id";
+
+            result = DBHelper.executeSQL(query);
+            return result;
         }
     }
 }
