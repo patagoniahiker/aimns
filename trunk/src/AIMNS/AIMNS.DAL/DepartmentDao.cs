@@ -34,10 +34,28 @@ namespace AIMNS.DAL
 
         public IList GetByCondition(Department depart)
         {
-            IList ls = HibernateTemplate.Find("from Department t where t.DepartmentID=? "// +
+            //IList ls = HibernateTemplate.Find("from Department t where t.DepartmentID=? "// +
                // "and t.DepartmentName like %?% and t.ParentDepartmentId = ?"
-                ,depart.DepartmentID ) ;
-            return ls;
+               // ,depart.DepartmentID ) ;
+            //return ls;
+            ArrayList param = new ArrayList();
+            string queryStr = "from Department t where 1=1";
+            if (depart.DepartmentID != "")
+            {
+                queryStr += " and t.DepartmentID=?";
+                param.Add(depart.DepartmentID);
+            }
+            if (depart.DepartmentName != "")
+            {
+                queryStr += " and t.DepartmentName like ?";
+                param.Add("%" + depart.DepartmentName + "%");
+            }
+            if (depart.ParentDepartment != null)
+            {
+                queryStr += " and t.ParentDepartment=?";
+                param.Add(depart.ParentDepartment.DepartmentID);
+            }
+            return HibernateTemplate.Find(queryStr, param.ToArray());
         }
 
         public IList FindAll()
