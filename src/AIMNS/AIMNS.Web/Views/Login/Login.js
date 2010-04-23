@@ -1,13 +1,69 @@
 ﻿/// <reference path="../../vswd-ext_2.2.js" />
+Ext.QuickTips.init();
+Ext.form.Field.prototype.msgTarget='side';
+
 function LoginItems() {
-	return [{
+  //获取部门列表
+  var deptDs = new Ext.data.Store({
+    url:'/Department.mvc/GetAll',
+    reader: new Ext.data.JsonReader({
+                id: 'DepartmentID'
+                }, [ 'DepartmentID', 'DepartmentName']
+            ),
+    remoteSort: false
+  });
+  
+  //获取用户列表
+  var userDs = new Ext.data.Store({
+    url:'/User.mvc/GetAll',
+    reader: new Ext.data.JsonReader({
+                id: 'UserID'
+                }, [ 'UserID', 'DepartmentID', 'UserName']
+            ),
+    remoteSort: false
+  });
+      
+	return [
+  new Ext.form.ComboBox({
+      fieldLabel: '部门',
+      name: 'DepartmentName',
+      hiddenName: 'DepartmentID',
+      store: deptDs,
+      valueField: 'DepartmentID',
+      displayField: 'DepartmentName',
+      typeAhead: true,
+      mode: 'remote',
+      readOnly : true,
+      triggerAction: 'all',
+      emptyText: '请选择部门',
+      selectOnFocus: true,
+      allowBlank: false,
+      listeners:{select:{fn:function(combo, value) {   
+          var comboCity = Ext.getCmp('user_combo');           
+          comboCity.clearValue();   
+          comboCity.store.filter('DepartmentID', combo.getValue());   
+          }}   
+      }
+  }), 
+  new Ext.form.ComboBox({
+      id : 'user_combo',
+      fieldLabel: '用户名',
+      name: 'UserName',
+      hiddenName: 'UserID',
+      store: userDs,
+      readOnly : true,
+      valueField: 'UserID',
+      displayField: 'UserName',
+      typeAhead: true,
+      mode: 'remote',
+      triggerAction: 'all',
+      emptyText: '请选择用户',
+      selectOnFocus: false,
+      allowBlank: false
+  }),
+  	{
 		xtype : 'textfield',
-		fieldLabel : "用户名",
-		id : 'UserID',
-		name : 'UserID',
-		allowBlank : false
-	}, {
-		xtype : 'textfield',
+		id : 'password',
 		fieldLabel : "密码",
 		inputType : 'password',
 		name : 'UserPassword',
@@ -19,13 +75,12 @@ Login = function() {
 	var win, form, submitUrl = '/user.mvc/login';  
 	return {
 		Init : function() {
-		//	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 			var logoPanel = new Ext.Panel({
 				baseCls : 'x-plain',
 				id : 'login-logo',
 				region : 'center'
 			});
-
+		
 			var formPanel = new Ext.form.FormPanel({
 				baseCls : 'x-plain',
 				defaults : {
@@ -38,6 +93,7 @@ Login = function() {
 				labelWidth : 120,
 				region : 'south'
 			});
+  
 			win = new Ext.Window({
 				buttons : [{
 					scope : Login,
@@ -59,23 +115,25 @@ Login = function() {
 									if (responseMessage.Result) {
 										win.destroy();
 										window.location = "/Home.mvc/Index";
-									} else {
+									} else {	
 										Ext.MessageBox.alert("消息",
 												responseMessage.Message);
+										Ext.getCmp( "password" ).focus(true,true);
 									}
 								},
 								failure : function(response, options) {
 									Ext.MessageBox.hide();
 									Ext.MessageBox.show({
 										title :"登陆失败",
-										msg : response.responseText
+										msg : response.responseText								
 									});
-
+									Ext.getCmp( "password" ).focus(true,true);
 								}
 							});
 						} else {
 							form.markInvalid();
 							Ext.MessageBox.alert("消息", "输入错误");
+							Ext.getCmp( "password" ).focus(true,true);
 						}
 					}
 				}],
@@ -93,7 +151,6 @@ Login = function() {
 				title : 'Login',
 				width : 530
 			});
-
 			form = formPanel.getForm();
 			win.show();
 		}
