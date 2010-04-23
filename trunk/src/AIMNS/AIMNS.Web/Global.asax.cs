@@ -55,6 +55,8 @@ namespace AIMNS.Web
             ModelBinders.Binders[typeof(Role)] = new JsonBinder<Role>();
             ModelBinders.Binders[typeof(RoleDTO)] = new JsonBinder<RoleDTO>();
             ModelBinders.Binders[typeof(PropertyDTO)] = new JsonBinder<PropertyDTO>();
+            ModelBinders.Binders[typeof(MenuRootDTO)] = new JsonBinder<MenuRootDTO>();
+            ModelBinders.Binders[typeof(MenuNodeDTO)] = new JsonBinder<MenuNodeDTO>();
         }
 
         public override void Init()
@@ -91,6 +93,15 @@ namespace AIMNS.Web
             }
         }
 
+        protected void Session_Start(Object sender, EventArgs e)
+        {
+            Session["User"] = "";
+        }
+
+        protected void Session_End(Object sender, EventArgs e)
+        {
+            Session["User"] = "";
+        }
  
     }
 }
