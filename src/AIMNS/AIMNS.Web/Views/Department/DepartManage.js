@@ -42,7 +42,6 @@
             }
         }
 
-
         //创建Grid的列模型实例
         var cm = new Ext.grid.ColumnModel([nm, sm, {
             header: "部门ID",
@@ -139,7 +138,6 @@
                     remoteSort: false
                 });
 
-
                 //部门登录信息窗口部门号文本框
                 var idTxtL = new Ext.form.TextField({
                      fieldLabel: '部门号',
@@ -229,7 +227,6 @@
                     })
                 });
 
-
                 //按条件进行查询
                 var Condition = function(store) {
                     this.proxy.conn.url = '/Department.mvc/GetDepartment';
@@ -239,12 +236,10 @@
                     this.baseParams["ParentDepartmentId"] = formvalue["ParentDepartmentId"];
                 }
 
-
                 //查询所有的部门
                 var All = function(store) {                 
                     this.proxy.conn.url = '/Department.mvc/GetPageRecords';
                 }
-
 
                 //按下删除按钮时
                 function handleDelete() {
@@ -255,7 +250,6 @@
                         Ext.MessageBox.alert('提示', '请至少选择一条记录！');
                     }
                 }
-
 
                 //删除数据
                 function deleteRecord(btn) {
@@ -303,8 +297,7 @@
                         })// end Ajax request
                     } // end if click "yes" on button
                 } // end deleteRecord            
-                                  
-                        
+                                                      
                 //按下修改按钮时
                 function handleEdit() {
                     var selectedKeys = grid.selModel.selections.keys;
@@ -366,7 +359,6 @@
                         })
                     }
                 }
-
                             
                 //更新数据
                 function UpdateRecord(btn) {
@@ -410,7 +402,6 @@
                         })// end Ajax request
                     }
                 }
-
                             
                 //按下登录按钮时
                 function handleAdd() {
@@ -440,8 +431,7 @@
                         deptComboL.reset();
                         AddDepartWin.show(this);
                     }
-                            
-                            
+                                                        
                     //登录数据
                     function AddRecord(btn) {
                         if (DepartForm.form.isValid()) {
@@ -516,9 +506,7 @@
                         deptCombo.reset();
                         SDepartWin.show(this);
                     }
-
-                            
-                            
+                         
                     //查询数据
                     function SearchRecords(btn) {
                         if (DepartForm.form.isValid()) {
