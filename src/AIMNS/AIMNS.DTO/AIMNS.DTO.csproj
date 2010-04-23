@@ -59,6 +59,8 @@
     <Compile Include="Mappers\PropertyAppropriationDTOMapper.cs" />
     <Compile Include="Mappers\PropertyDTOMapper.cs" />
     <Compile Include="Mappers\RoleDTOMapper.cs" />
+    <Compile Include="MenuNodeDTO.cs" />
+    <Compile Include="MenuRootDTO.cs" />
     <Compile Include="PropertyAppropriationDTO.cs" />
     <Compile Include="PropertyDTO.cs" />
     <Compile Include="RoleDTO.cs" />
