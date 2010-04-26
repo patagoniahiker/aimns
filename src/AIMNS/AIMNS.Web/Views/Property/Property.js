@@ -73,7 +73,7 @@ Ext.onReady(function() {
 				// el:'topic-grid',
 				renderTo : document.body,
 				height : 500,
-				title : '分页和排序列表',
+				title : '资产调拨信息表',
 				store : store,
 				cm : cm,
 				trackMouseOver : false,
@@ -91,14 +91,19 @@ Ext.onReady(function() {
 				tbar: [{
 				            text: '查询',
 				            tooltip: '资产检索',
-				            iconCls: 'search',
+				            iconCls: 'btnsearch',
 				            handler: handleSearch
 				        }, '-', {
 							text : '调拨',
 							tooltip : '资产调拨',
-							iconCls : 'option',
+							iconCls : 'winconfig',
 							handler : handleEdit
-						}],
+						}, '-', {
+			                text: '导出',
+			                tooltip: 'Excel出力',
+			                iconCls: 'btnright',
+			                handler: handleExport
+			            }],
 				bbar : new Ext.PagingToolbar({
 							pageSize : 25,
 							store : store,
@@ -441,6 +446,18 @@ Ext.onReady(function() {
             this.baseParams["DepartmentID"] = formvalues["DepartmentID"]; 
         }
         this.baseParams["ast_user"] = formvalues["ast_user"];
+	}
+	
+	function handleExport() {
+	    if (grid.getStore().getTotalCount() == 0) {
+	        Ext.MessageBox.alert('提示', '请先检索用户记录！');
+	        return;
+	    }
+	    var config={
+             store: null,//因为后续可能需要处理分页，因此此处一般不直接传递GridPanel的数据源
+             title: ''//需要显示标题
+           }; 
+        ExportExcel(grid,config);
 	}
 
 });
