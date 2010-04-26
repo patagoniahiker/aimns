@@ -56,7 +56,13 @@ Ext.onReady(function(){
 	}]);
 
 	cm.defaultSortable = true;
-
+	
+	var pagebar = new Ext.PagingToolbar({
+							pageSize : 25,
+							store : store,
+							displayInfo : true
+						});
+    pagebar.setVisible (false);
 	var grid = new Ext.grid.GridPanel({
 				renderTo : document.body,
 				height : 500,
@@ -84,11 +90,7 @@ Ext.onReady(function(){
 			                iconCls: 'btnright',
 			                handler: handleExport
 			            }],
-				bbar : new Ext.PagingToolbar({
-							pageSize : 25,
-							store : store,
-							displayInfo : true
-						})
+				bbar : pagebar
 			});
 	grid.render();
 	
@@ -97,9 +99,9 @@ Ext.onReady(function(){
 		limit : 25
 	};
 
-    store.load({
-				params : request
-			});
+//    store.load({
+//				params : request
+//			});
 	//获取部门列表
     var deptDs = new Ext.data.Store({
         url:'/Department.mvc/GetAll',
@@ -203,7 +205,7 @@ Ext.onReady(function(){
             }else{
                 store.baseParams["DepartmentID"] = formvalues["DepartmentID"]; 
             }
-
+            pagebar.setVisible (true);
 	        store.load({
 	        params: request,
 	        callback: function(r, options,success) {
@@ -227,7 +229,7 @@ Ext.onReady(function(){
 	
 	function handleExport() {
 	    if (grid.getStore().getTotalCount() == 0) {
-	        Ext.MessageBox.alert('提示', '请先检索用户记录！');
+	        Ext.MessageBox.alert('提示', '请先检索资产调度记录！');
 	        return;
 	    }
 	    var config={
