@@ -56,9 +56,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetApplyDTO.cs" />
+    <Compile Include="AssetApply_AssetDTO.cs" />
+    <Compile Include="Mappers\AssetApply_AssetDTOMapper.cs" />
+    <Compile Include="Mappers\MasterInfoDTOMapper.cs" />
     <Compile Include="Mappers\PropertyAppropriationDTOMapper.cs" />
     <Compile Include="Mappers\PropertyDTOMapper.cs" />
     <Compile Include="Mappers\RoleDTOMapper.cs" />
+    <Compile Include="MasterInfoDTO.cs" />
     <Compile Include="MenuNodeDTO.cs" />
     <Compile Include="MenuRootDTO.cs" />
     <Compile Include="PropertyAppropriationDTO.cs" />
@@ -66,6 +71,7 @@
     <Compile Include="RoleDTO.cs" />
     <Compile Include="DepartmentDTO.cs" />
     <Compile Include="ManagerFactory.cs" />
+    <Compile Include="Mappers\AssetApplyDTOMapper.cs" />
     <Compile Include="Mappers\BaseDTOMapper.cs" />
     <Compile Include="Mappers\DepartmentDTOMapper.cs" />
     <Compile Include="Mappers\UserDTOMapper.cs" />
