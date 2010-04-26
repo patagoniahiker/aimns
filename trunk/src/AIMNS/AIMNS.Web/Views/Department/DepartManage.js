@@ -400,6 +400,7 @@
                                 store.reload();
                             }
                         })// end Ajax request
+                        btn.disabled = false ;
                     }
                 }
                             
@@ -474,6 +475,7 @@
                                     store.reload();
                                 }
                             })// end Ajax request
+                            btn.disabled = false ;
                         }
                     }
                         
