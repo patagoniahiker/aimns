@@ -433,7 +433,7 @@ function ExportExcel(gridPanel,config) {
                        //alert(r.responseText);
                    },
                    isUpload: true,
-                   params: { ExportContent: tmpExportContent, ExportFile: gridPanel.id + '.xls' }
+                   params: { ExportContent: tmpExportContent, ExportFile: config.fileName}
                });
            } else {
                document.location = 'data:application/vnd.ms-excel;base64,' + Base64.encode(tmpExportContent);
