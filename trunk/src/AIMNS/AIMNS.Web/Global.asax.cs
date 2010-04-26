@@ -54,6 +54,8 @@ namespace AIMNS.Web
             ModelBinders.Binders[typeof(PropertyAppropriationDTO)] = new JsonBinder<PropertyAppropriationDTO>();
             ModelBinders.Binders[typeof(Role)] = new JsonBinder<Role>();
             ModelBinders.Binders[typeof(RoleDTO)] = new JsonBinder<RoleDTO>();
+            ModelBinders.Binders[typeof(AssetApplyDTO)] = new JsonBinder<AssetApplyDTO>();
+            ModelBinders.Binders[typeof(AssetApply_AssetDTO)] = new JsonBinder<AssetApply_AssetDTO>();
             ModelBinders.Binders[typeof(PropertyDTO)] = new JsonBinder<PropertyDTO>();
             ModelBinders.Binders[typeof(MenuRootDTO)] = new JsonBinder<MenuRootDTO>();
             ModelBinders.Binders[typeof(MenuNodeDTO)] = new JsonBinder<MenuNodeDTO>();
