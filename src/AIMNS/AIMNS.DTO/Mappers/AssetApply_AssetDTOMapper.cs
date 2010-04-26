@@ -23,6 +23,8 @@ namespace AIMNS.DTO.Mappers
             dto.AssetSpec = model.AssetSpec;
             dto.AssetCls = model.AssetCls;
             dto.AssetStatus = model.AssetStatus;
+            dto.BelongingDept = model.BelongingDept;
+            dto.User = model.User;
 
             return dto;
         }
@@ -42,6 +44,8 @@ namespace AIMNS.DTO.Mappers
             model.AssetSpec = dto.AssetSpec;
             model.AssetCls = dto.AssetCls;
             model.AssetStatus = dto.AssetStatus;
+            model.BelongingDept = dto.BelongingDept;
+            model.User = dto.User;
 
             return model;
         }
