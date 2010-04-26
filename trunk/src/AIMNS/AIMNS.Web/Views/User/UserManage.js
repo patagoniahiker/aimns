@@ -102,7 +102,12 @@ Ext.onReady(function() {
 							tooltip : '删除用户信息',
 							iconCls: 'usermanager',
 							handler : handleDelete
-						}],
+			            }, '-', {
+			                text: '导出',
+			                tooltip: 'Excel出力',
+			                iconCls: 'option',
+			                handler: handleExport
+			            }],
 				bbar : pageBar
 			});
 
@@ -597,10 +602,22 @@ Ext.onReady(function() {
 	                GetUserWin.hide();
 	            } else {
 	                Ext.MessageBox.hide();
-	                Ext.MessageBox.alert("失败，请重试！");
+	                Ext.MessageBox.alert("失败，请重试！")
 	            }
 	        }});
 	    }
+	}
+
+	function handleExport() {
+	    if (grid.getStore().getTotalCount() == 0) {
+	        Ext.MessageBox.alert('提示', '请先检索用户记录！');
+	        return;
+	    }
+	    var config={
+             store: null,//因为后续可能需要处理分页，因此此处一般不直接传递GridPanel的数据源
+             title: ''//需要显示标题
+           }; 
+        ExportExcel(grid,config);
 	}
 
 });
