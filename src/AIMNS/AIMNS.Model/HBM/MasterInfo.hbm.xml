@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+
+    <class name="AIMNS.Model.MasterInfo, AIMNS.Model" table="D_MASTER" lazy="true">
+
+      <composite-id>
+        <key-property name="InfoCode" column="mst_id" type="System.String" length="2" />
+        <key-property name="SubinfoCode" column="bra_mst_id" type="System.String" length="4" />
+      </composite-id>
+
+        <property name="SubinfoName" column="bra_mst_name"   type="System.String" length="20" />
+
+    </class>
+
+
+</hibernate-mapping>
+

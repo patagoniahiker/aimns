@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+
+    <class name="AIMNS.Model.AssetApply_Asset, AIMNS.Model" table="D_ASSETS" lazy="true">
+
+        <id name="AssetID" column="ast_id" type="System.String">
+            <generator class="native"/>
+        </id>
+
+        <property name="AssetName" column="ast_name"   type="System.String" length="30" />
+        <property name="AssetModel" column="ast_model"   type="System.String"  length="20" />
+        <property name="AssetSpec" column="ast_std"   type="System.String"  length="8" />
+        <property name="AssetStatus" column="ast_state"   type="System.String"  length="4" />
+        <property name="AssetCls" column="ast_diff"   type="System.String"  length="1" />
+        <property name="AssetType" column="ast_class1"   type="System.String"  length="4" />
+        <property name="AssetSubtype" column="ast_class2"   type="System.String"  length="4" />
+
+    </class>
+
+
+</hibernate-mapping>
+
