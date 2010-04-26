@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="AIMNS.Model.Assets, AIMNS.Model" table="D_ASSETS"  lazy="true">
+
+    <id name="ast_id" column="ast_id" type="System.String">
+      <generator class="assigned"/>
+    </id>
+    <property name="ast_name" type="System.String" column="ast_name" length="30" />
+    <property name="ast_model" type="System.String" column="ast_model" length="20" />
+    <property name="ast_std" type="System.String" column="ast_std" length="8" />
+    <property name="ast_unit" type="System.String" column="ast_unit" length="4" />
+    <property name="ast_depart" type="System.String" column="ast_depart" length="8" />
+    <property name="ast_user" type="System.String" column="ast_user" length="15" />
+    <property name="ast_class1" type="System.String" column="ast_class1" length="4" />
+    <property name="ast_class2" type="System.String" column="ast_class2" length="4" />
+    <property name="ast_state" type="System.String" column="ast_state" length="4" />
+    <property name="ast_diff" type="System.String" column="ast_diff" length="1" />
+    <property name="ast_fa_id" type="System.String" column="ast_fa_id" length="30" />
+    <property name="ast_buy_date" type="System.DateTime" column="ast_buy_date" />
+    <property name="ast_supplier" type="System.String" column="ast_supplier" length="6" />
+   
+  </class>
+</hibernate-mapping>
