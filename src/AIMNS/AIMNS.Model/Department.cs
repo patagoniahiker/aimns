@@ -42,7 +42,13 @@ namespace AIMNS.Model
             get;
             set;
 
-        }     
+        }
+
+        public virtual IList UserList
+        {
+            get;
+            set;
+        }
 
         #endregion
      
