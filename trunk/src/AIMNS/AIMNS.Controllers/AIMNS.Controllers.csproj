@@ -87,6 +87,7 @@
     <Compile Include="BaseController.cs" />
     <Compile Include="AssetApplyController.cs" />
     <Compile Include="DepartmentController.cs" />
+    <Compile Include="ExcelController.cs" />
     <Compile Include="HomeController.cs" />
     <Compile Include="JsonBinder.cs" />
     <Compile Include="LoginController.cs" />
