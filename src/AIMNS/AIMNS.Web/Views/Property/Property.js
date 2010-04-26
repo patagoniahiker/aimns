@@ -267,7 +267,7 @@ Ext.onReady(function() {
 	        });
 	        GetUserWin.show(this);
 	    }
-	    
+	var EditUserWin;   
 	function handleEdit() {
 		var selectedKeys = grid.selModel.selections.keys; // returns array of
 		// selected rows ids
@@ -275,7 +275,7 @@ Ext.onReady(function() {
 		if (selectedKeys.length != 1) {
 			Ext.MessageBox.alert('提示', '请选择一个要调度的资产！');
 		} else {
-			var EditUserWin = new Ext.Window({
+			EditUserWin = new Ext.Window({
 						title : '资产调度信息',
 						layout : 'fit',
 						width : 500,
@@ -376,13 +376,15 @@ Ext.onReady(function() {
 						},
 						success : function(response, options) {
 							Ext.MessageBox.hide();
+							UserForm.form.reset();
+							EditUserWin.hide();
+							sm.clearSelections ();
 							store.reload();
-							grid.reconfigure (store,cm);
 						}
 					})// end Ajax request
 		}
 	}
-
+	
 	function SearchRecord(btn) {
 	    if (SUserForm.form.isValid()) {
 	        btn.disabled = true;
@@ -411,6 +413,7 @@ Ext.onReady(function() {
 	                } else {
 	                    Ext.MessageBox.alert("消息", "检索成功！");
 	                }
+	                SUserForm.form.reset();
 	                GetUserWin.hide();
 	            } else {
 	                Ext.MessageBox.hide();
