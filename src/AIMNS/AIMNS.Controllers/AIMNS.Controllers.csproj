@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseController.cs" />
+    <Compile Include="AssetApplyController.cs" />
     <Compile Include="DepartmentController.cs" />
     <Compile Include="HomeController.cs" />
     <Compile Include="JsonBinder.cs" />
