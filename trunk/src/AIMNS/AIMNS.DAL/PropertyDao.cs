@@ -48,22 +48,22 @@ namespace AIMNS.DAL
         {
             ArrayList param = new ArrayList();
             string queryStr = "from Property t where 1=1";
-            if (property.ast_id != "")
+            if (!string.IsNullOrEmpty(property.ast_id))
             {
                 queryStr += " and t.ast_id=?";
                 param.Add(property.ast_id);
             }
-            if (property.ast_name != "")
+            if (!string.IsNullOrEmpty(property.ast_name))
             {
                 queryStr += " and t.ast_name like ?";
                 param.Add("%" + property.ast_name + "%");
             }
-            if (property.ast_model != "")
+            if (!string.IsNullOrEmpty(property.ast_model))
             {
                 queryStr += " and t.ast_model = ?";
                 param.Add(property.ast_model);
             }
-            if (property.ast_std != "")
+            if (!string.IsNullOrEmpty(property.ast_std))
             {
                 queryStr += " and t.ast_std = ?";
                 param.Add(property.ast_std);

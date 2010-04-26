@@ -38,7 +38,7 @@ namespace AIMNS.DAL
         {
             ArrayList param = new ArrayList();
             string queryStr = "from PropertyAppropriation t where 1=1";
-            if (propertyAppropriation.ast_id != "")
+            if (!string.IsNullOrEmpty(propertyAppropriation.ast_id))
             {
                 queryStr += " and t.ast_id=?";
                 param.Add(propertyAppropriation.ast_id);
@@ -48,7 +48,7 @@ namespace AIMNS.DAL
                 queryStr += " and t.Department = ?";
                 param.Add(propertyAppropriation.Department.DepartmentID);
             }
-            if (propertyAppropriation.ast_from_user != "")
+            if (!string.IsNullOrEmpty(propertyAppropriation.ast_from_user))
             {
                 queryStr += " and t.ast_from_user like ?";
                 param.Add("%" + propertyAppropriation.ast_from_user  + "%");
