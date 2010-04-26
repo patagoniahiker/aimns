@@ -614,9 +614,10 @@ Ext.onReady(function() {
 	        return;
 	    }
 	    var config={
-             store: null,//因为后续可能需要处理分页，因此此处一般不直接传递GridPanel的数据源
-             title: ''//需要显示标题
-           }; 
+	         store: null, //因为后续可能需要处理分页，因此此处一般不直接传递GridPanel的数据源
+             fileName : '用户列表',
+             title: '用户记录一览表'//需要显示标题
+         };
         ExportExcel(grid,config);
 	}
 
