@@ -114,5 +114,88 @@ namespace AIMNS.BLL
 
             return AssetApplyDao.SaveSome(listForSave);
         }
+
+        /// <summary>
+        /// 资产新增申请处理
+        /// </summary>
+        /// <param name="ast">要进行申请的资产对象</param>
+        /// <returns></returns>
+        public int DoApplyAdd(AssetApply ast)
+        {
+            ast.AplType = "0001";//申请类型=新增
+            ast.AplStatus = "0001";//申请状态=已申请
+
+            return AssetApplyDao.SaveOne(ast);
+        }
+
+        /// <summary>
+        /// 获取部门资产列表
+        /// </summary>
+        /// <param name="deptId"></param>
+        /// <returns></returns>
+        public IList GetDeptAssetList(string deptId)
+        {
+            return AssetApplyDao.FindAssetsByDeptId(deptId);
+        }
+
+        public int DoApplyRepair(string id, string reason)
+        {
+            AssetApply_Asset ast = AssetApplyDao.FindAssetById(id);
+
+            AssetApply target = new AssetApply();
+            target.AssetID = ast.AssetID;
+            target.AssetName = ast.AssetName;
+            target.AssetModel = ast.AssetModel;
+            target.AssetSpec = ast.AssetSpec;
+            target.AssetType = ast.AssetType;
+            target.AssetSubType = ast.AssetSubtype;
+            target.AplDeptID = ast.BelongingDept;
+            target.AplAmount = 1;
+            target.AplType = "0003"; //申请报修
+            target.AplStatus = "0001"; //已申请
+            target.AplReason = reason;
+
+            return AssetApplyDao.SaveOne(target);
+        }
+
+        public int DoApplyReturn(string id, string reason)
+        {
+            AssetApply_Asset ast = AssetApplyDao.FindAssetById(id);
+
+            AssetApply target = new AssetApply();
+            target.AssetID = ast.AssetID;
+            target.AssetName = ast.AssetName;
+            target.AssetModel = ast.AssetModel;
+            target.AssetSpec = ast.AssetSpec;
+            target.AssetType = ast.AssetType;
+            target.AssetSubType = ast.AssetSubtype;
+            target.AplDeptID = ast.BelongingDept;
+            target.AplAmount = 1;
+            target.AplType = "0002"; //申请退还
+            target.AplStatus = "0001"; //已申请
+            target.AplReason = reason;
+
+            return AssetApplyDao.SaveOne(target);
+        }
+
+        public int DoApplyDestroy(string id, string reason)
+        {
+            AssetApply_Asset ast = AssetApplyDao.FindAssetById(id);
+
+            AssetApply target = new AssetApply();
+            target.AssetID = ast.AssetID;
+            target.AssetName = ast.AssetName;
+            target.AssetModel = ast.AssetModel;
+            target.AssetSpec = ast.AssetSpec;
+            target.AssetType = ast.AssetType;
+            target.AssetSubType = ast.AssetSubtype;
+            target.AplDeptID = ast.BelongingDept;
+            target.AplAmount = 1;
+            target.AplType = "0004"; //申请报废
+            target.AplStatus = "0001"; //已申请
+            target.AplReason = reason;
+
+            return AssetApplyDao.SaveOne(target);
+        }
     }
 }
