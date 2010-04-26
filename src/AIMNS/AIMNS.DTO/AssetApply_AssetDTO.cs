@@ -29,5 +29,11 @@ namespace AIMNS.DTO
 
         [DataMember]
         public string AssetCls; // 资产区分
+
+        [DataMember]
+        public string BelongingDept; // 所属部门
+
+        [DataMember]
+        public string User; // 使用者
     }
 }
