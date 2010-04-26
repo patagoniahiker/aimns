@@ -1,9 +1,10 @@
 ﻿/// <reference path="../../vswd-ext_2.2.js" />
 Ext.onReady(function() {
+    Ext.QuickTips.init();
 	// create the Data Store
 	var store = new Ext.data.Store({
 	            proxy: new Ext.data .HttpProxy({
-	                url:'/User.mvc/GetAllPerPage',	             
+	                url:'/User.mvc/GetByConditionPerPage',	             
 			        method : 'POST'}),
 				remoteSort : false,
 				reader : new Ext.data.JsonReader({
@@ -66,7 +67,7 @@ Ext.onReady(function() {
 				// el:'topic-grid',
 				renderTo : document.body,
 				height : 500,
-				title : '分页和排序列表',
+				title : '用户列表',
 				store : store,
 				cm : cm,
 				trackMouseOver : false,
@@ -82,24 +83,24 @@ Ext.onReady(function() {
 				},
 				// inline toolbars
 				tbar: [{
-				            text: '查询',
-				            tooltip: '检索用户',
-				            iconCls: 'search',
+				            text: '检索',
+				            tooltip: '检索用户记录',
+				            iconCls: 'user',
 				            handler: handleSearch
 				        }, '-', {
 							text : '登录',
-							tooltip : '添加用户',
-							iconCls : 'add',
+							tooltip : '登录用户信息',
+							iconCls: 'user_add',
 							handler : handleAdd
 						}, '-', {
 							text : '修改',
 							tooltip : '修改用户信息',
-							iconCls : 'option',
+							iconCls: 'user_edit',
 							handler : handleEdit
 						}, '-', {
 							text : '删除',
 							tooltip : '删除用户信息',
-							iconCls : 'remove',
+							iconCls: 'usermanager',
 							handler : handleDelete
 						}],
 				bbar : pageBar
@@ -261,9 +262,13 @@ Ext.onReady(function() {
             items: [idTxt, nameTxt, roleCombo, deptCombo]
         })
     });
-    
-    
-	function handleDelete() {
+
+
+    function handleDelete() {
+        if (grid.getStore().getTotalCount() == 0) {
+            Ext.MessageBox.alert('提示', '请先检索用户记录！');
+            return;
+	    }
 		var selectedKeys = grid.selModel.selections.keys; // returns
 		// array of
 		// selected
@@ -315,9 +320,6 @@ Ext.onReady(function() {
 						},
 						success : function(response, options) {
 							Ext.MessageBox.hide();
-							store.un("beforeload", All);
-							store.un("beforeload", Condition);
-							store.on("beforeload", All);
 							store.reload();
 						}
 					})// end Ajax request
@@ -376,15 +378,16 @@ Ext.onReady(function() {
 	            }
             }]
 	        });
-	        idTxt.reset();
-	        nameTxt.reset();
-	        roleCombo.reset();
-	        deptCombo.reset();
+	        SUserForm.form.reset();
 	        GetUserWin.show(this);
 	    }
 
-	var EditUserWin;  
+	var EditUserWin;
 	function handleEdit() {
+	    if (grid.getStore().getTotalCount() == 0) {
+	        Ext.MessageBox.alert('提示', '请先检索用户记录！');
+	        return;
+	    }
 		var selectedKeys = grid.selModel.selections.keys; // returns array of
 		// selected rows ids
 		// only
@@ -539,9 +542,6 @@ Ext.onReady(function() {
 						},
 						success : function(response, options) {
 							Ext.MessageBox.hide();
-							store.un("beforeload", All);
-							store.un("beforeload", Condition);
-							store.on("beforeload", Condition);
 						    store.baseParams["RoleId"] = "";
 						    store.baseParams["DepartmentID"] = "";
 						    store.baseParams["UserID"] = formvalue["UserID"];
@@ -569,10 +569,6 @@ Ext.onReady(function() {
 	            }
 	        });
 
-	        store.un("beforeload", All);
-	        store.un("beforeload", Condition);
-	        store.on("beforeload", Condition);
-
 	        var formvalues = SUserForm.form.getValues();
 	        if (roleCombo.getRawValue() == "") {
 	            store.baseParams["RoleId"] = "";
@@ -594,7 +590,7 @@ Ext.onReady(function() {
 	            if (success) {
 	                Ext.MessageBox.hide();
 	                if (r.length == 0) {
-	                    Ext.MessageBox.alert("消息", "用户不存在！");
+	                    Ext.MessageBox.alert("消息", "该用户不存在！");
 	                } else {
 	                    Ext.MessageBox.alert("消息", "检索成功！");
 	                }
@@ -605,14 +601,6 @@ Ext.onReady(function() {
 	            }
 	        }});
 	    }
-	}
-
-	var All = function(store) {
-	    this.proxy.conn.url = '/User.mvc/GetAllPerPage';
-	}
-
-	var Condition = function(store) {
-        this.proxy.conn.url = '/User.mvc/GetByConditionPerPage';   
 	}
 
 });
