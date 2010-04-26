@@ -206,6 +206,7 @@ Ext.onReady(function(){
 	                } else {
 	                    Ext.MessageBox.alert("消息", "检索成功！");
 	                }
+	               	SUserForm.form.reset();
 	                GetUserWin.hide();
 	            } else {
 	                Ext.MessageBox.hide();
