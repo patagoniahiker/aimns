@@ -15,7 +15,7 @@ function LoginItems() {
   
   //获取用户列表
   var userDs = new Ext.data.Store({
-    url:'/User.mvc/GetAll',
+    //url:'/User.mvc/GetAll',
     reader: new Ext.data.JsonReader({
                 id: 'UserID'
                 }, [ 'UserID', 'DepartmentID', 'UserName']
@@ -39,9 +39,14 @@ function LoginItems() {
       selectOnFocus: true,
       allowBlank: false,
       listeners:{select:{fn:function(combo, value) {   
-          var comboCity = Ext.getCmp('user_combo');           
-          comboCity.clearValue();   
-          comboCity.store.filter('DepartmentID', combo.getValue());   
+          var comboCity = Ext.getCmp('user_combo');
+          comboCity.clearValue();
+          userDs.proxy = new Ext.data.HttpProxy({
+            url:'/User.mvc/GetAllByDepartment?id=' + combo.getValue()
+          });
+          //comboCity.store.filter('DepartmentID', combo.getValue());
+          //userDs.filter('DepartmentID', combo.getValue());
+          userDs.load();
           }}   
       }
   }), 
