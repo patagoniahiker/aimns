@@ -48,10 +48,7 @@ Ext.onReady(function(){
 	}, {
 		header : "资产调拨日期",
 		dataIndex : 'ast_fit_date',
-		width : 50,
-//		renderer: function(val) {
-//            return new Date(parseInt(val.substring(6, val.length - 2))).format('yyyy/MM/dd')
-//        }
+		width : 50
 	}, {
 		header : "资产调拨原因",
 		dataIndex : 'ast_fit_reason',
@@ -63,7 +60,7 @@ Ext.onReady(function(){
 	var grid = new Ext.grid.GridPanel({
 				renderTo : document.body,
 				height : 500,
-				title : '分页和排序列表',
+				title : '资产调拨一览表',
 				store : store,
 				cm : cm,
 				trackMouseOver : false,
@@ -78,10 +75,15 @@ Ext.onReady(function(){
 				},
 				tbar: [{
 				            text: '查询',
-				            tooltip: '检索用户',
-				            iconCls: 'search',
+				            tooltip: '检索资产调度',
+				            iconCls: 'btnsearch',
 				            handler: handleSearch
-				        }],
+				        }, '-', {
+			                text: '导出',
+			                tooltip: 'Excel出力',
+			                iconCls: 'btnright',
+			                handler: handleExport
+			            }],
 				bbar : new Ext.PagingToolbar({
 							pageSize : 25,
 							store : store,
@@ -215,23 +217,6 @@ Ext.onReady(function(){
 	        }});
 	    }
 	}
-//	Date.prototype.format = function(format) {
-//        var o = {
-//        "M+": this.getMonth() + 1, //month
-//        "d+": this.getDate(), //day
-//        "h+": this.getHours(), //hour
-//        "m+": this.getMinutes(), //minute
-//        "s+": this.getSeconds(), //second
-//        "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
-//        "S": this.getMilliseconds() //millisecond
-//        }
-//        if (/(y+)/.test(format))
-//        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-//        for (var k in o)
-//        if (new RegExp("(" + k + ")").test(format))
-//        format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
-//        return format;
-//    }
 
 	var All = function(store) {
 	    this.proxy.conn.url = '/PropertyAppropriation.mvc/GetAllPerPage';
@@ -249,5 +234,17 @@ Ext.onReady(function(){
         }else{
             this.baseParams["DepartmentID"] = formvalues["DepartmentID"]; 
         }
+	}
+	
+	function handleExport() {
+	    if (grid.getStore().getTotalCount() == 0) {
+	        Ext.MessageBox.alert('提示', '请先检索用户记录！');
+	        return;
+	    }
+	    var config={
+             store: null,//因为后续可能需要处理分页，因此此处一般不直接传递GridPanel的数据源
+             title: ''//需要显示标题
+           }; 
+        ExportExcel(grid,config);
 	}
 });
