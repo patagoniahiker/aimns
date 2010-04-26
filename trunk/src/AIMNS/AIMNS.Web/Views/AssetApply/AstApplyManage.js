@@ -1,5 +1,7 @@
 ﻿/// <reference path="../../vswd-ext_2.2.js" />
 Ext.onReady(function() {
+	//----Global variables------
+	var handleType;
 	
 	//-------------本部的所有申请(已关闭的除外)-------------------
 	var myAllAplDs = new Ext.data.Store({
@@ -100,23 +102,13 @@ Ext.onReady(function() {
 				tbar : [{
 							text : '资产新增',
 							tooltip : '为部门申请一个新的资产项目',
-							iconCls : 'add',
+							iconCls : 'option',
 							handler : showFreeAst
 						}, '-', {
-							text : '资产报修',
-							tooltip : '为发生故障的设备申请报修',
+							text : '报修|退还|报废',
+							tooltip : '报修|退还|报废',
 							iconCls : 'option',
-							handler : handleAdd
-						}, '-', {
-							text : '资产退还',
-							tooltip : '退还部门资产',
-							iconCls : 'remove',
-							handler : handleAdd
-						}, '-', {
-							text : '报废申请',
-							tooltip : '为淘汰的资产申请报废处理',
-							iconCls : 'remove',
-							handler : handleAdd
+							handler : showDeptAst
 						}],
 				bbar : new Ext.PagingToolbar({
 							pageSize : 25,
@@ -207,7 +199,7 @@ var freeAstDs = new Ext.data.Store({
 
 	var freeAstGrid = new Ext.grid.GridPanel({
 				height : 500,
-				title : '想知道有哪些空闲资产可以申请？点“检索”试试。',
+				title : 'Free Asset Search',
 				store : freeAstDs,
 				cm : freeAstDsCm,
 				trackMouseOver : false,
@@ -245,8 +237,103 @@ var freeAstDs = new Ext.data.Store({
 						})
 			});
 
-	// render it
-	grid.render();
+	
+	//--------------本部资产列表--------------------
+	var deptAstDs = new Ext.data.Store({
+	            url: '/AssetApply.mvc/GetDeptAssets',
+			    method : 'POST',
+				remoteSort : false,
+				reader : new Ext.data.JsonReader({
+							id : 'AssetID',
+							fields : [{
+										name : 'AssetID',
+										type : 'string'
+									}, {
+										name : 'AssetName',
+										type : 'string'
+									}, {
+										name : 'User',
+										type : 'string'
+									}, {
+										name : 'AssetModel',
+										type : 'string'
+									}, {
+										name : 'AssetSpec',
+										type : 'string'
+									}]
+						})
+			});
+
+	deptAstDs.setDefaultSort('AssetID', 'ASC');
+	
+	var deptAstDsNm = new Ext.grid.RowNumberer ();
+	var deptAstDsSm = new Ext.grid.CheckboxSelectionModel(); // add checkbox
+	
+	var deptAstDsCm = new Ext.grid.ColumnModel([deptAstDsNm, deptAstDsSm, {
+		header : "资产ID",
+		dataIndex : 'AssetID',
+		width : 200	 
+	}, {
+		header : "资产名称",
+		dataIndex : 'AssetName',
+		width : 300
+	}, {
+		header : "使用者",
+		dataIndex : 'User',
+		width : 200
+	}, {
+		header : "资产型号",
+		dataIndex : 'AssetModel',
+		width : 300
+	}, {
+		header : "资产规格",
+		dataIndex : 'AssetSpec',
+		width : 300
+	}]);
+
+	// by default columns are sortable
+	deptAstDsCm.defaultSortable = true;
+
+	var deptAstGrid = new Ext.grid.GridPanel({
+				height : 500,
+				title : 'Departmental Assets',
+				store : deptAstDs,
+				cm : deptAstDsCm,
+				trackMouseOver : false,
+				sm : deptAstDsSm,
+				loadMask : true,
+				viewConfig : {
+					forceFit : true,
+					enableRowBody : true,
+					showPreview : true,
+					getRowClass : function(record, rowIndex, p, store) {
+						return 'x-grid3-row-collapsed';
+					}
+				},
+				// inline toolbars
+				tbar : [{
+							text : '报修',
+							tooltip : '申请报修选中的资产项目',
+							iconCls : 'option',
+							handler : function(){showConfirmWin2(1)}
+						}, '-', {
+							text : '退还',
+							tooltip : '申请退还选中的资产项目',
+							iconCls : 'option',
+							handler : function(){showConfirmWin2(2)}
+						}, '-', {
+							text : '报废',
+							tooltip : '对选中的资产项目申请报废处理',
+							iconCls : 'option',
+							handler : function(){showConfirmWin2(3)}
+						}],
+				bbar : new Ext.PagingToolbar({
+							pageSize : 25,
+							store : deptAstDs,
+							displayInfo : true
+						})
+			});
+
 	
 	//----------------获取资产大类别------------------
 	var astTypeDs = new Ext.data.Store({
@@ -295,8 +382,8 @@ var freeAstDs = new Ext.data.Store({
      var  AstInfoForm = new Ext.FormPanel({
         frame:true,
         labelAlign: 'right',
-        labelWidth: 120,
-        width: 320,
+        labelWidth: 100,
+        width: 400,
         height:400,
         items: new Ext.form.FieldSet({
                 title: '资产概要',
@@ -306,7 +393,7 @@ var freeAstDs = new Ext.data.Store({
         items: [{
                 fieldLabel: '资产名称',
                 name: 'AssetName',
-                allowBlank:true
+                allowBlank:false
             },{
                 fieldLabel: '资产型号',
                 name: 'AssetModel',
@@ -331,7 +418,7 @@ var freeAstDs = new Ext.data.Store({
 	
 	
 	//-------------空闲资产检索条件输入表单-------------------
-	var  FreeAstCondiForm = new Ext.FormPanel({
+	var FreeAstCondiForm = new Ext.FormPanel({
         frame:true,
         labelAlign: 'right',
         labelWidth: 120,
@@ -402,12 +489,13 @@ var freeAstDs = new Ext.data.Store({
 	        }]
         })
 	});
-				
+    
+    ////申请确认窗体（新增申请用）				
 	var AplConfirmWin = new Ext.Window({
 	    title : '申请确认',
 	    layout : 'fit',
 	    width : 400,
-	    height : 150,
+	    height : 160,
 	    closeAction: 'hide',
 	    plain : true,
 	    autoDestroy : true,
@@ -419,6 +507,27 @@ var freeAstDs = new Ext.data.Store({
 	        text : '取消',
 	        handler : function() {
 	        AplConfirmWin.hide();
+	        }
+	    }]
+	});
+	
+	//申请确认窗体（报修、退还、报废申请用）
+	var AplConfirmWin2 = new Ext.Window({
+	    title : '申请确认',
+	    layout : 'fit',
+	    width : 400,
+	    height : 160,
+	    closeAction: 'hide',
+	    plain : true,
+	    autoDestroy : true,
+	    items : AplConfirmForm,
+	    buttons : [{
+	        text : '申请',
+	        handler : handleApply2
+	        }, {
+	        text : '取消',
+	        handler : function() {
+	            AplConfirmWin2.hide();
 	        }
 	    }]
 	});
@@ -443,7 +552,25 @@ var freeAstDs = new Ext.data.Store({
 						}
 					}]
 	});
-				
+	
+	//部门资产一览窗体
+	var deptAstWin = new Ext.Window({
+					title : '部门资产一览',
+						layout : 'fit',
+						width : 600,
+						height : 420,
+					    closeAction: 'hide',
+						plain : true,
+					    autoDestroy : true,
+						items : deptAstGrid,
+						buttons : [{
+									text : '取消',
+									handler : function() {
+										deptAstWin.hide();
+									}
+								}]
+				}
+	    );			
    
     /* function 定义段 */
     // 检索处理
@@ -484,8 +611,97 @@ var freeAstDs = new Ext.data.Store({
             AplConfirmWin.show();
         }
     }
+    function showConfirmWin2(flg) {
+        var selectedKeys = deptAstGrid.selModel.selections.keys;
+        
+        if(selectedKeys.length < 1)
+        {
+            Ext.MessageBox.alert('提示', '请选择至少一个资产项目！');
+        } else {
+            if(selectedKeys.length > 1)
+            {
+                Ext.MessageBox.alert('提示', '只能选择一个资产项目！');
+            } else {
+                handleType = flg;
+                AplConfirmWin2.show();
+            }
+        }
+    }
     
-    //将资产概要表单提交到后台进行处理
+    //用于报修 退还 报废的通用处理
+    function handleApply2(btn) {
+        var url;
+        
+        if(AplConfirmForm.form.isValid()) {
+            switch(handleType)
+            {
+                case 1:
+                    url = "/AssetApply.mvc/ApplyRepair";
+                    break;
+                case 2:
+                    url = "/AssetApply.mvc/ApplyReturn";
+                    break;
+                case 3:
+                    url = "/AssetApply.mvc/ApplyDestroy";
+                    break;
+            }
+            btn.disabled = true;
+            
+            var selectedRows = deptAstGrid.selModel.selections.items;
+			var selectedKeys = deptAstGrid.selModel.selections.keys;
+			
+            Ext.MessageBox.show({
+						msg : '正在提交申请, 请稍侯',
+						progressText : '正在请求数据',
+						width : 300,
+						wait : true,
+						waitConfig : {
+							interval : 200
+						}
+					});
+			var formvalue = AplConfirmForm.form.getValues();
+		 
+			Ext.Ajax.request({
+						url : url,
+						method : 'POST',
+						params :{ 
+						    assetId : selectedKeys[0],
+						    reason : formvalue["AplReason"]
+						},
+						callback : function(options, success, response) {
+						    btn.disabled = false;
+							if (success) {
+								Ext.MessageBox.hide();
+								var result = Ext.util.JSON.decode(response.responseText)
+								Ext.MessageBox.alert("消息",result.Message);
+							} else {
+								Ext.MessageBox.hide();
+								Ext.MessageBox.alert("失败，请重试",
+										response.responseText);
+							}
+						},
+						// (server script, 404, or 403 errors)
+						failure : function(response, options) {
+							Ext.MessageBox.hide();
+							ReturnValue = Ext.MessageBox.alert("警告",
+									"出现异常错误！请联系管理员！");
+						},
+						success : function(response, options) {
+							Ext.MessageBox.hide();
+							
+							//更新成功后的处理
+							AplConfirmForm.form.reset();
+							deptAstDsSm.clearSelections();
+							AplConfirmWin2.hide();
+							deptAstDs.reload();// 空闲资产重新加载
+							myAllAplDs.reload();// 本部申请重新加载
+						}
+			})// end of Ajax request
+        }// end of if
+    }// end of function
+    
+    
+    //单个新增申请处理
     function handleApplyOne(btn) {
         if(AstInfoForm.form.isValid()) {
             btn.disabled = true;
@@ -533,16 +749,15 @@ var freeAstDs = new Ext.data.Store({
 							
 							//更新成功后的处理
 							AstInfoForm.form.reset();
-							AplConfirmWin.hide();
-							AstSearchWin.hide();
-							freeAstDs.reload();// 空闲资产重新加载
+							AstAddWin.hide();
 							myAllAplDs.reload();// 本部申请重新加载
 						}
 			})//end of Ajax request
         }//end of if
     }
     
-    //提交用户选中的项目到后台进行处理
+    
+    //批量新增申请处理
     function handleApply(btn) {
         if(AplConfirmForm.form.isValid()) {
             btn.disabled = true;
@@ -614,56 +829,11 @@ var freeAstDs = new Ext.data.Store({
 			Ext.MessageBox.alert('提示', '请至少选择一条记录！');
 		}// end
 	}
-
-	function deleteRecord(btn) {
-		if (btn == 'yes') {
-			var selectedRows = grid.selModel.selections.items;
-			var selectedKeys = grid.selModel.selections.keys;
-			Ext.MessageBox.show({
-						msg : '正在请求数据, 请稍侯',
-						progressText : '正在请求数据',
-						width : 300,
-						wait : true,
-						waitConfig : {
-							interval : 200
-						}
-					});
-			Ext.Ajax.request({
-						url : '/User.mvc/DeleteUser', 
-						method : 'POST',
-						params : {
-							"userid" : selectedKeys
-						},// the unique id(s)
-						callback : function(options, success, response) {
-							if (success) {
-								Ext.MessageBox.hide();
-								var result = Ext.util.JSON.decode(response.responseText)
-								Ext.MessageBox.alert("消息",result.Message);
-							} else {
-								Ext.MessageBox.hide();
-								Ext.MessageBox.alert("失败，请重试",
-										response.responseText);
-							}
-						},
-						// the function to be called upon failure of the request
-						// (server script, 404, or 403 errors)
-						failure : function(response, options) {
-							Ext.MessageBox.hide();
-							ReturnValue = Ext.MessageBox.alert("警告",
-									"出现异常错误！请联系管理员！");
-						},
-						success : function(response, options) {
-							Ext.MessageBox.hide();
-							myAllAplDs.reload();
-						}
-					})// end Ajax request
-		}// end if click 'yes' on button
-	} // end deleteRecord
 	
 	
 	//-----------显示资产新增申请画面---------------
 	function handleAdd() {
-		AstAddWin.show();
+		AstAddWin.show(this);
 		//astTypeDs.load();
 		//astSubtypeDs.load();
 	}
@@ -694,159 +864,16 @@ var freeAstDs = new Ext.data.Store({
 	function showAstSearchWin() {
 	
 		AstSearchWin.show(this);
-		astTypeDs.load();
-		astSubtypeDs.load();
+		//astTypeDs.load();
+		//astSubtypeDs.load();
 	}
 	
-	function handleEdit() {
-		var selectedKeys = grid.selModel.selections.keys; // returns array of
-		// selected rows ids
-		// only
-		if (selectedKeys.length != 1) {
-			Ext.MessageBox.alert('提示', '请选择一条记录！');
-		} else {
-			var EditUserWin = new Ext.Window({
-						title : '修改员工资料',
-						layout : 'fit',
-						width : 500,
-						height : 300,
-					    closeAction: 'hide',
-						plain : true,
-					    autoDestroy : true,
-						items : UserForm,
-						buttons : [{
-									text : '保存',
-									handler : UpdateRecord
-								}, {
-									text : '取消',
-									handler : function() {
-										EditUserWin.hide();
-									}
-								}]
-					});
-			EditUserWin.show(this);
-			deptDs.load(); 
-			Ext.MessageBox.show({
-						msg : '正在请求数据, 请稍侯',
-						progressText : '正在请求数据',
-						width : 300,
-						wait : true,
-						waitConfig : {
-							interval : 200
-						}
-					});
-			Ext.Ajax.request({
-				url : '/User.mvc/GetUser', // url to server
-				// side script
-				method : 'POST',
-				params : {UserID : selectedKeys[0]},// the unique id(s)
-				callback : function(options, success, response) {
-					if (success) {  
-						Ext.MessageBox.hide();
-						var formvalue = Ext.decode(response.responseText).Data;
-						UserForm.form.setValues(formvalue);
-					} else {
-						Ext.MessageBox.hide();
-						Ext.MessageBox.alert("失败，请重试", response.responseText);
-					}
-				},
-				// the function to be called upon failure of the request (server
-				// script, 404, or 403 errors)
-				failure : function(response, options) {
-					Ext.MessageBox.hide();
-					ReturnValue = Ext.MessageBox.alert("警告", "出现异常错误！请联系管理员！");
-				},
-				success : function(response, options) {
-					Ext.MessageBox.hide();
-				}
-			})// end Ajax request
-		}
-	}
-	function UpdateRecord(btn) {
-		if (UserForm.form.isValid()) {
-			btn.disabled = true;
-			Ext.MessageBox.show({
-						msg : '正在请求数据, 请稍侯',
-						progressText : '正在请求数据',
-						width : 300,
-						wait : true,
-						waitConfig : {
-							interval : 200
-						}
-					});
-			var formvalue = Ext.util.JSON.encode(UserForm.form.getValues());
-		 
-			Ext.Ajax.request({
-						url : '/User.mvc/UpdateUser',
-						method : 'POST',
-						params : formvalue,// the unique
-						// id(s)
-						callback : function(options, success, response) {
-							if (success) { 
-								Ext.MessageBox.hide();
-								var result = Ext.util.JSON.decode(response.responseText)
-								Ext.MessageBox.alert("消息",result.Message);
-							} else {
-								Ext.MessageBox.hide();
-								Ext.MessageBox.alert("失败，请重试",
-										response.responseText);
-							}
-						},
-						failure : function(response, options) {
-							Ext.MessageBox.hide();
-							ReturnValue = Ext.MessageBox.alert("警告",
-									"出现异常错误！请联系管理员！");
-						},
-						success : function(response, options) {
-							Ext.MessageBox.hide();
-							store.reload();
-						}
-					})// end Ajax request
-		}
-	}
-
-	function AddRecord(btn) {
-		if (UserForm.form.isValid()) {
-			btn.disabled = true;
-			Ext.MessageBox.show({
-						msg : '正在请求数据, 请稍侯',
-						progressText : '正在请求数据',
-						width : 300,
-						wait : true,
-						waitConfig : {
-							interval : 200
-						}
-					});
-			var formvalue = UserForm.form.getValues();
-			Ext.Ajax.request({
-						url : '/User.mvc/AddUser', 
-						method : 'POST',
-						params : Ext.util.JSON.encode(formvalue),
-						callback : function(options, success, response) {
-							if (success) {
-								Ext.MessageBox.hide();
-								var result = Ext.util.JSON.decode(response.responseText)
-								Ext.MessageBox.alert("消息",result.Message);
-							} else {
-								Ext.MessageBox.hide();
-								Ext.MessageBox.alert("失败，请重试",
-										response.responseText);
-							}
-						},
-						// the function to be called upon failure of the request
-						// (server script, 404, or 403 errors)
-						failure : function(response, options) {
-							Ext.MessageBox.hide();
-							ReturnValue = Ext.MessageBox.alert("警告",
-									"出现异常错误！请联系管理员！");
-						},
-						success : function(response, options) {
-							Ext.MessageBox.hide();
-							store.reload();
-						}
-					})// end Ajax request
-
-		}
+	//-----------显示部门资产--------------
+	function showDeptAst() {
+	    deptAstWin.show(this);
+	    deptAstDs.load({
+				params : request
+			});
 	}
 
 });
