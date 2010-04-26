@@ -29,5 +29,11 @@ namespace AIMNS.Model
         public virtual string AssetType { get; set; }
 
         public virtual string AssetSubtype { get; set; }
+
+        //所属部门
+        public virtual string BelongingDept { get; set; }
+
+        //使用者
+        public virtual string User { get; set; }
     }
 }
