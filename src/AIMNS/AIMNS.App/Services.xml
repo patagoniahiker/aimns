@@ -48,6 +48,12 @@
     <object id="CompanyManager" type="AIMNS.BLL.CompanyManager,AIMNS.BLL">
         <property name="CompanyDao" ref="CompanyDao"/>
     </object>
+
+    <object id="AssetApplyManager" type="AIMNS.BLL.AssetApplyManager,AIMNS.BLL">
+      <property name="AssetApplyDao" ref="AssetApplyDao"/>
+      <property name="MasterInfoDao" ref="MasterInfoDao"/>
+    </object>
+
     <object id="PropertyAppropriationManager" type="AIMNS.BLL.PropertyAppropriationManager,AIMNS.BLL">
       <property name="PropertyAppropriationDao" ref="PropertyAppropriationDao"/>
     </object>
@@ -73,12 +79,19 @@
     <object id="CompanyManagerTrans" parent="BaseTransactionManager">
         <property name="Target" ref="CompanyManager"/>
     </object>
+
+    <object id="AssetApplyManagerTrans" parent="BaseTransactionManager">
+      <property name="Target" ref="AssetApplyManager"/>
+    </object>
+    
     <object id="PropertyAppropriationManagerTrans" parent="BaseTransactionManager">
       <property name="Target" ref="PropertyAppropriationManager"/>
     </object>
+
     <object id="DepartmentManagerTrans" parent="BaseTransactionManager">
         <property name="Target" ref="DepartmentManager"/>
     </object>
+
     <object id="PropertyManagerTrans" parent="BaseTransactionManager">
       <property name="Target" ref="PropertyManager"/>
     </object>
