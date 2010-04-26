@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B968B89C-4696-4A3A-A855-D385B55FB8B7}</ProjectGuid>
     <ProjectTypeGuids>{603c0e0b-db56-11dc-be95-000d561079b0};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -149,6 +149,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\AssetApply\AstApplyManage.aspx.cs">
+      <DependentUpon>AstApplyManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\AssetApply\AstApplyManage.aspx.designer.cs">
+      <DependentUpon>AstApplyManage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Department\DepartManage.aspx.cs">
       <DependentUpon>DepartManage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1352,6 +1359,8 @@
     <Content Include="Content\Scripts\treeSerializer.js" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Views\AssetApply\AstApplyManage.aspx" />
+    <Content Include="Views\AssetApply\AstApplyManage.js" />
     <Content Include="Views\Department\DepartManage.aspx" />
     <Content Include="Views\Department\DepartManage.js" />
     <Content Include="Views\Home\Home.js" />
@@ -1439,7 +1448,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>4530</DevelopmentServerPort>
+          <DevelopmentServerPort>6299</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
