@@ -14,6 +14,11 @@
         column="dep_supdep">
         </many-to-one>
 
+        <bag name="UserList"    cascade="none"  inverse="true">
+            <key column="usr_department"/>
+            <one-to-many class="AIMNS.Model.User,AIMNS.Model" />
+        </bag>
+
     </class>
  
 
