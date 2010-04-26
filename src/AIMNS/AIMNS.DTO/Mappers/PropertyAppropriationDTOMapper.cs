@@ -27,7 +27,7 @@ namespace AIMNS.DTO.Mappers
             propertyAppropriation.ast_id  = dto.ast_id ;
             propertyAppropriation.Department = dto.DepartmentID == null ? null : ManagerFactory.DepartmentManager.GetDepartment(dto.DepartmentID);
             propertyAppropriation.ast_from_user = dto.ast_from_user;
-            if (dto.ast_fit_date != "")
+            if (!string.IsNullOrEmpty(dto.ast_fit_date))
             {
                 propertyAppropriation.ast_fit_date = DateTime.Parse(dto.ast_fit_date);
             }
