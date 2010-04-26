@@ -55,6 +55,22 @@ namespace AIMNS.DAL
             return list;
         }
 
+        public AssetApply_Asset FindAssetById(string id)
+        {
+            AssetApply_Asset asset = null;
+            asset = HibernateTemplate.Load(typeof(AssetApply_Asset), id) as AssetApply_Asset;
+            return asset;
+        }
+
+        public IList FindAssetsByDeptId(string id)
+        {
+            NHibernate.ISession session = HibernateTemplate.SessionFactory.OpenSession();
+            NHibernate.IQuery query = session.CreateQuery("from AssetApply_Asset ast where ast.BelongingDept=:deptId");
+
+            query.SetParameter("deptId", id);
+            return query.List();
+        }
+
         public int SaveOne(AssetApply asset)
         {
             try
