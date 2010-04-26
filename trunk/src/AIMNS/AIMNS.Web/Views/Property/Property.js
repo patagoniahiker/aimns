@@ -3,7 +3,7 @@ Ext.onReady(function() {
 	// create the Data Store
 	var store = new Ext.data.Store({
 	            proxy: new Ext.data.HttpProxy({
-	                url:'/Property.mvc/GetAllPerPage',	             
+	                url:'/Property.mvc/GetByConditionPerPage',	             
 			        method : 'POST'}),
 				remoteSort : false,
 				reader : new Ext.data.JsonReader({
@@ -402,11 +402,20 @@ Ext.onReady(function() {
 	                interval: 200
 	            }
 	        });
-
-	        store.un("beforeload", All);
-	        store.un("beforeload", Condition);
-	        store.on("beforeload", Condition);
-
+            
+            var formvalues = SUserForm.form.getValues();
+            store.baseParams["ast_id"] = formvalues["ast_id"];
+            store.baseParams["ast_name"] = formvalues["ast_name"];
+            store.baseParams["ast_model"] = formvalues["ast_model"];
+            store.baseParams["ast_std"] = formvalues["ast_std"];
+            if(combo.getRawValue ()=="")
+            {
+                store.baseParams["DepartmentID"] = ""; 
+            }else{
+                store.baseParams["DepartmentID"] = formvalues["DepartmentID"]; 
+            }
+            store.baseParams["ast_user"] = formvalues["ast_user"];
+            
 	        store.load({
 	        params: request,
 	        callback: function(r, options,success) {
@@ -426,26 +435,6 @@ Ext.onReady(function() {
 	            }
 	        }});
 	    }
-	}
-
-	var All = function(store) {
-	    this.proxy.conn.url = '/Property.mvc/GetAllPerPage';
-	}
-
-	var Condition = function(store) {
-        this.proxy.conn.url = '/Property.mvc/GetByConditionPerPage';
-        var formvalues = SUserForm.form.getValues();
-        this.baseParams["ast_id"] = formvalues["ast_id"];
-        this.baseParams["ast_name"] = formvalues["ast_name"];
-        this.baseParams["ast_model"] = formvalues["ast_model"];
-        this.baseParams["ast_std"] = formvalues["ast_std"];
-        if(combo.getRawValue ()=="")
-        {
-            this.baseParams["DepartmentID"] = ""; 
-        }else{
-            this.baseParams["DepartmentID"] = formvalues["DepartmentID"]; 
-        }
-        this.baseParams["ast_user"] = formvalues["ast_user"];
 	}
 	
 	function handleExport() {
