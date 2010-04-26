@@ -2,7 +2,7 @@
 Ext.onReady(function(){
     	var store = new Ext.data.Store({
 	            proxy: new Ext.data .HttpProxy({
-	            url:'/PropertyAppropriation.mvc/GetAllPerPage',	             
+	            url:'/PropertyAppropriation.mvc/GetByConditionPerPage',	             
 			    method : 'POST'}),
 				remoteSort : false,
 				reader : new Ext.data.JsonReader({
@@ -193,9 +193,16 @@ Ext.onReady(function(){
 	            }
 	        });
 
-	        store.un("beforeload", All);
-	        store.un("beforeload", Condition);
-	        store.on("beforeload", Condition);
+	        var formvalues = SUserForm.form.getValues();
+            store.baseParams["ast_id"] = formvalues["ast_id"];
+            store.baseParams["ast_from_user"] = formvalues["ast_from_user"];
+            store.baseParams["ast_fit_date"] = formvalues["ast_fit_date"];
+            if(combo .getRawValue ()=="")
+            {
+                store.baseParams["DepartmentID"] = ""; 
+            }else{
+                store.baseParams["DepartmentID"] = formvalues["DepartmentID"]; 
+            }
 
 	        store.load({
 	        params: request,
@@ -216,24 +223,6 @@ Ext.onReady(function(){
 	            }
 	        }});
 	    }
-	}
-
-	var All = function(store) {
-	    this.proxy.conn.url = '/PropertyAppropriation.mvc/GetAllPerPage';
-	}
-
-	var Condition = function(store) {
-        this.proxy.conn.url = '/PropertyAppropriation.mvc/GetByConditionPerPage';
-        var formvalues = SUserForm.form.getValues();
-        this.baseParams["ast_id"] = formvalues["ast_id"];
-        this.baseParams["ast_from_user"] = formvalues["ast_from_user"];
-        this.baseParams["ast_fit_date"] = formvalues["ast_fit_date"];
-        if(combo .getRawValue ()=="")
-        {
-            this.baseParams["DepartmentID"] = ""; 
-        }else{
-            this.baseParams["DepartmentID"] = formvalues["DepartmentID"]; 
-        }
 	}
 	
 	function handleExport() {
