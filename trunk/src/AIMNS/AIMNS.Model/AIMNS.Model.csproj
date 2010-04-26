@@ -45,10 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetApply.cs" />
+    <Compile Include="AssetApply_Asset.cs" />
     <Compile Include="Property.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Company.cs" />
     <Compile Include="Department.cs" />
+    <Compile Include="MasterInfo.cs" />
     <Compile Include="Fuc.cs" />
     <Compile Include="Permission.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,6 +74,13 @@
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="HBM\AssetApply.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HBM\MasterInfo.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HBM\AssetApply_Asset.hbm.xml" />
     <EmbeddedResource Include="HBM\PropertyAppropriation.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
