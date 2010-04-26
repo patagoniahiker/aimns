@@ -413,6 +413,7 @@ function ExportExcel(gridPanel,config) {
            proxy:tmpStore.proxy,
            reader:tmpStore.reader
        });
+       if (config.fileName == null) config.fileName = gridPanel.id;
        tmpAllStore.load(tmpParam);//获取所有数据
        tmpAllStore.on('load', function(store) {
            config.store = store;
