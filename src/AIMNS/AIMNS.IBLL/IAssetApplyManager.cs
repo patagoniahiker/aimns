@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using AIMNS.Model;
 
 namespace AIMNS.IBLL
 {
@@ -16,7 +17,12 @@ namespace AIMNS.IBLL
         IList GetAplTypeList();
         IList GetAplStatusList();
         IList GetFreeAssetList();
+        IList GetDeptAssetList(string deptId);
 
         int DoApplyAddInBatch(string deptId, string[] astIds, string reason);
+        int DoApplyAdd(AssetApply ast);
+        int DoApplyRepair(string id, string reason);
+        int DoApplyReturn(string id, string reason);
+        int DoApplyDestroy(string id, string reason);
     }
 }
