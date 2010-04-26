@@ -12,8 +12,10 @@
         <property name="AssetSpec" column="ast_std"   type="System.String"  length="8" />
         <property name="AssetStatus" column="ast_state"   type="System.String"  length="4" />
         <property name="AssetCls" column="ast_diff"   type="System.String"  length="1" />
-        <property name="AssetType" column="ast_class1"   type="System.String"  length="4" />
-        <property name="AssetSubtype" column="ast_class2"   type="System.String"  length="4" />
+        <property name="AssetType" column="ast_class1" type="System.String" length="4" />
+        <property name="AssetSubtype" column="ast_class2" type="System.String" length="4" />
+        <property name="BelongingDept" column="ast_depart" type="System.String" length="8" />
+        <property name="User" column="ast_user" type="System.String" length="15" />
 
     </class>
 
