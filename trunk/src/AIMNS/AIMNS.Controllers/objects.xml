@@ -13,6 +13,8 @@
 
         <property name="AssetApplyManager" ref="AssetApplyManagerTrans" />
 
+        <property name="AssetAcceptManager" ref="AssetAcceptManagerTrans" />
+
         <property name="PropertyAppropriationManager" ref="PropertyAppropriationManagerTrans"/>
 
          <property name="PropertyManager" ref="PropertyManagerTrans"/>
@@ -34,12 +36,10 @@
     </object>
     <object id="AssetApplyController"   singleton="false" type="AIMNS.Controllers.AssetApplyController, AIMNS.Controllers" >
     </object>
+    <object id="AssetAcceptController"   singleton="false" type="AIMNS.Controllers.AssetAcceptController, AIMNS.Controllers" />
     <object id="PropertyAppropriationController"   singleton="false" type="AIMNS.Controllers.PropertyAppropriationController, AIMNS.Controllers" >
     </object>
     <object id="PropertyController"   singleton="false" type="AIMNS.Controllers.PropertyController, AIMNS.Controllers" >
     </object>
  
 </objects>
-
-
-

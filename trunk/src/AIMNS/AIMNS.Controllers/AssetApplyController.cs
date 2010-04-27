@@ -26,8 +26,10 @@ namespace AIMNS.Controllers
         [OutputCache(Duration = 60, VaryByParam = "*")]
         public ActionResult GetMyAll()
         {
-            //string deptId = this.Request["deptId"].ToString();
-            string deptId = "00000003";
+            //获取已登录用户所在部门
+            string userId = HttpContext.Session["User"].ToString();
+            string deptId = ManagerFactory.AssetApplyManager.GetUsersDeptId(userId);
+
             IList list = ManagerFactory.AssetApplyManager.GetMyAll(deptId);
 
             IList<AssetApplyDTO> result = new List<AssetApplyDTO>();
@@ -97,6 +99,33 @@ namespace AIMNS.Controllers
         }
 
         /// <summary>
+        /// 检索资产
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        [OutputCache(Duration = 60, VaryByParam = "*")]
+        public ActionResult SearchFreeAssets(string id, string name, string model, string spec)
+        {
+            AssetApply_Asset condition = new AssetApply_Asset();
+
+            condition.AssetID = id;
+            condition.AssetName = name;
+            condition.AssetModel = model;
+            condition.AssetSpec = spec;
+            condition.AssetStatus = "0001";
+
+            IList list = ManagerFactory.AssetApplyManager.GetAssetListByCondition(condition);
+
+            IList<AssetApply_AssetDTO> result = new List<AssetApply_AssetDTO>();
+
+            foreach (AssetApply_Asset o in list)
+            {
+                result.Add(AssetApply_AssetDTOMapper.MapToDTO(o));
+            }
+            return this.Json(result);
+        }
+
+        /// <summary>
         /// 申请用户选中的资产项目
         /// </summary>
         /// <param name="assetIds">选中的资产ID</param>
@@ -105,7 +134,10 @@ namespace AIMNS.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ApplyAddBatch(string[] assetIds, string reason)
         {
-            string deptId = "00000003";//这里只是暂时这样写，将来要改为从session中读取当前用户所在部门ID
+            //获取已登录用户所在部门
+            string userId = HttpContext.Session["User"].ToString();
+            string deptId = ManagerFactory.AssetApplyManager.GetUsersDeptId(userId);
+
             int val = ManagerFactory.AssetApplyManager.DoApplyAddInBatch(deptId, assetIds, reason);
 
             ResultDTO rdto = new ResultDTO();
@@ -135,7 +167,9 @@ namespace AIMNS.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ApplyAdd(string astName, string astModel, string astSpec, string aplAmount, string reason)
         {
-            string deptId = "00000003";
+            //获取已登录用户所在部门
+            string userId = HttpContext.Session["User"].ToString();
+            string deptId = ManagerFactory.AssetApplyManager.GetUsersDeptId(userId);
 
             AssetApply astApply = new AssetApply();
 
@@ -229,7 +263,10 @@ namespace AIMNS.Controllers
         [OutputCache(Duration = 60, VaryByParam = "*")]
         public ActionResult GetDeptAssets()
         {
-            string deptId = "00000003";
+            //获取已登录用户所在部门
+            string userId = HttpContext.Session["User"].ToString();
+            string deptId = ManagerFactory.AssetApplyManager.GetUsersDeptId(userId);
+
             IList list = ManagerFactory.AssetApplyManager.GetDeptAssetList(deptId);
 
             IList<AssetApply_AssetDTO> result = new List<AssetApply_AssetDTO>();
