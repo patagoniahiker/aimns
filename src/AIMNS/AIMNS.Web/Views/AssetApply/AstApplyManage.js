@@ -33,12 +33,12 @@ Ext.onReady(function() {
 										type : 'string'
 									}, {
 										name : 'AplNo',
-										type : 'string'
+										type : 'int'
 									}]
 						})
 			});
 
-	myAllAplDs.setDefaultSort('AplTypeName', 'ASC');
+	myAllAplDs.setDefaultSort('AplNo', 'DESC');
 	
 	var nm = new Ext.grid.RowNumberer ();
 	var sm = new Ext.grid.CheckboxSelectionModel(); // 追加 checkbox
