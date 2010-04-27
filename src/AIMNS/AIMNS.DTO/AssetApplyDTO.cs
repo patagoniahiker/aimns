@@ -17,6 +17,8 @@ namespace AIMNS.DTO
         [DataMember]
         public string AplDeptID; // 申请部门ID
         [DataMember]
+        public string AplDeptName; // 申请部门名称
+        [DataMember]
         public string AplType; // 申请类别代码
         [DataMember]
         public string AplTypeName; // 申请类别名称
@@ -44,5 +46,19 @@ namespace AIMNS.DTO
         public string AplStatus; // 申请状态
         [DataMember]
         public string AplReason; // 申请理由
+        [DataMember]
+        public Dictionary<string, string> StatusSet;
+        [DataMember]
+        public Dictionary<string, string> AplTypeSet;
+        [DataMember]
+        public Dictionary<string, string> DeptSet;
+
+        //构造方法
+        public AssetApplyDTO()
+        {
+            this.StatusSet = new Dictionary<string, string>();
+            this.AplTypeSet = new Dictionary<string, string>();
+            this.DeptSet = new Dictionary<string, string>();
+        }
     }
 }
