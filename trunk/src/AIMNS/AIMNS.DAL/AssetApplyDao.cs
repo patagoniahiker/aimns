@@ -95,5 +95,63 @@ namespace AIMNS.DAL
             return retVal;
         }
 
+        /// <summary>
+        /// 获取指定用户所在部门的ID
+        /// </summary>
+        /// <param name="userId">用户ID</param>
+        /// <returns>该用户所在部门的ID</returns>
+        public string GetDeptIdByUserId(string id)
+        {
+            User user = HibernateTemplate.Load(typeof(User), id) as User;
+            if (user == null)
+            {
+                return String.Empty;
+            }
+            else
+            {
+                return user.Department.DepartmentID;
+            }
+        }
+
+        public IList FindAssetsByCondition(AssetApply_Asset condition)
+        {
+            ArrayList param = new ArrayList(); // 定义参数列表
+            // 定义HQL查询语句
+            string hql = "from AssetApply_Asset a where 1=1";
+            
+            //HQL查询语句的拼接
+            if (condition.AssetStatus.Trim().Length > 0)
+            {
+                hql += " and a.AssetStatus=?";
+                param.Add(condition.AssetStatus);
+            }
+
+            if (condition.AssetID.Trim().Length > 0)
+            {
+                hql += " and a.AssetID like ?";
+                param.Add("%" + condition.AssetID + "%");
+            }
+
+            if (condition.AssetName.Trim().Length > 0)
+            {
+                hql += " and a.AssetName like ?";
+                param.Add("%" + condition.AssetName + "%");
+            }
+
+            if (condition.AssetModel.Trim().Length > 0)
+            {
+                hql += " and a.AssetModel like ?";
+                param.Add("%" + condition.AssetModel + "%");
+            }
+
+            if (condition.AssetSpec.Trim().Length > 0)
+            {
+                hql += " and a.AssetSpec like ?";
+                param.Add("%" + condition.AssetSpec + "%");
+            }
+
+            return HibernateTemplate.Find(hql, param.ToArray());
+        }
+
     }
 }

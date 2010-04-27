@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetAcceptDao.cs" />
     <Compile Include="AssetApplyDao.cs" />
     <Compile Include="CompanyDao.cs" />
     <Compile Include="MasterInfoDao.cs" />
