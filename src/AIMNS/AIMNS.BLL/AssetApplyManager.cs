@@ -14,6 +14,7 @@ namespace AIMNS.BLL
     {
         public IAssetApplyDao AssetApplyDao { get; set; }
         public IMasterInfoDao MasterInfoDao { get; set; }
+        public IDepartmentDao DepartDao { get; set; }
 
         /// <summary>
         /// 获取指定部门的所有申请(已关闭的除外)
@@ -79,6 +80,16 @@ namespace AIMNS.BLL
             // 空闲资产状态码=0001
             string status = "0001";
             return AssetApplyDao.FindAssetsByStatus(status);
+        }
+
+        /// <summary>
+        /// 根据条件检索资产
+        /// </summary>
+        /// <param name="condition">带有条件的资产对象</param>
+        /// <returns>资产列表</returns>
+        public IList GetAssetListByCondition(AssetApply_Asset condition)
+        {
+            return AssetApplyDao.FindAssetsByCondition(condition);
         }
 
         /// <summary>
@@ -196,6 +207,16 @@ namespace AIMNS.BLL
             target.AplReason = reason;
 
             return AssetApplyDao.SaveOne(target);
+        }
+
+        public string GetUsersDeptId(string userId)
+        {
+            return AssetApplyDao.GetDeptIdByUserId(userId);
+        }
+
+        public IList GetDeptList()
+        {
+            return DepartDao.FindAll();
         }
     }
 }
