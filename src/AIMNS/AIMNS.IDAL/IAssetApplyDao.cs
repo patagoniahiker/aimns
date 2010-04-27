@@ -13,10 +13,13 @@ namespace AIMNS.IDAL
         IList FindAssetsByStatus(string status);
         IList FindAssetsByIds(string[] ids);
         IList FindAssetsByDeptId(string id);
+        IList FindAssetsByCondition(AssetApply_Asset condition);
         
         int SaveOne(AssetApply asset);
         int SaveSome(IList astList);
 
         AssetApply_Asset FindAssetById(string id);
+
+        string GetDeptIdByUserId(string id);
     }
 }
