@@ -142,7 +142,7 @@ Ext.onReady(function() {
 
 //-----------------空闲资产列表-----------------------------
 var freeAstDs = new Ext.data.Store({
-	            url: '/AssetApply.mvc/GetFreeAssets',
+	            url: '/AssetApply.mvc/SearchFreeAssets',
 			    method : 'POST',
 				remoteSort : false,
 				reader : new Ext.data.JsonReader({
@@ -475,12 +475,30 @@ var freeAstDs = new Ext.data.Store({
 	var AplConfirmForm = new Ext.FormPanel({
 	    frame: true,
         labelAlign: 'right',
-        labelWidth: 80,
+        labelWidth: 100,
         width: 400,
-        height: 120,
+        height: 200,
         items: new Ext.form.FieldSet({
             autoHeight: true,
-            defaults: { width: 220 },
+            defaults: { width: 200 },
+            defaultType: 'textfield',
+            items: [{
+	            fieldLabel: '申请原因',
+	            name: 'AplReason',
+	            allowBlank: false
+	        }]
+        })
+	});
+	
+	var AplConfirmForm2 = new Ext.FormPanel({
+	    frame: true,
+        labelAlign: 'right',
+        labelWidth: 100,
+        width: 400,
+        height: 200,
+        items: new Ext.form.FieldSet({
+            autoHeight: true,
+            defaults: { width: 200 },
             defaultType: 'textfield',
             items: [{
 	            fieldLabel: '申请原因',
@@ -520,7 +538,7 @@ var freeAstDs = new Ext.data.Store({
 	    closeAction: 'hide',
 	    plain : true,
 	    autoDestroy : true,
-	    items : AplConfirmForm,
+	    items : AplConfirmForm2,
 	    buttons : [{
 	        text : '申请',
 	        handler : handleApply2
@@ -584,6 +602,13 @@ var freeAstDs = new Ext.data.Store({
             interval: 200
         }
         });
+        
+        var formvalues = FreeAstCondiForm.form.getValues();
+        freeAstDs.baseParams["id"] = formvalues["AssetID"];
+        freeAstDs.baseParams["name"] = formvalues["AssetName"];
+        freeAstDs.baseParams["model"] = formvalues["AssetModel"];
+        freeAstDs.baseParams["spec"] = formvalues["AssetSpec"];
+        
         freeAstDs.load({
             params: request,
             callback: function(r, options,success) {
@@ -595,6 +620,7 @@ var freeAstDs = new Ext.data.Store({
                     Ext.MessageBox.hide();
                     Ext.MessageBox.alert("消息", "检索结果不存在或检索失败！");
                 }
+                FreeAstCondiForm.form.reset();
             }
  
         });
@@ -608,7 +634,7 @@ var freeAstDs = new Ext.data.Store({
         {
             Ext.MessageBox.alert('提示', '请选择至少一个资产项目！');
         } else {
-            AplConfirmWin.show();
+            AplConfirmWin.show(this);
         }
     }
     function showConfirmWin2(flg) {
@@ -623,7 +649,7 @@ var freeAstDs = new Ext.data.Store({
                 Ext.MessageBox.alert('提示', '只能选择一个资产项目！');
             } else {
                 handleType = flg;
-                AplConfirmWin2.show();
+                AplConfirmWin2.show(this);
             }
         }
     }
@@ -632,7 +658,7 @@ var freeAstDs = new Ext.data.Store({
     function handleApply2(btn) {
         var url;
         
-        if(AplConfirmForm.form.isValid()) {
+        if(AplConfirmForm2.form.isValid()) {
             switch(handleType)
             {
                 case 1:
@@ -659,7 +685,7 @@ var freeAstDs = new Ext.data.Store({
 							interval : 200
 						}
 					});
-			var formvalue = AplConfirmForm.form.getValues();
+			var formvalue = AplConfirmForm2.form.getValues();
 		 
 			Ext.Ajax.request({
 						url : url,
@@ -690,7 +716,7 @@ var freeAstDs = new Ext.data.Store({
 							Ext.MessageBox.hide();
 							
 							//更新成功后的处理
-							AplConfirmForm.form.reset();
+							AplConfirmForm2.form.reset();
 							deptAstDsSm.clearSelections();
 							AplConfirmWin2.hide();
 							deptAstDs.reload();// 空闲资产重新加载

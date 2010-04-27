@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" AutoEventWireup="true" CodeBehind="UserManage.aspx.cs" Inherits="AIMNS.Web.Views.User.UserManage" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" AutoEventWireup="true" CodeBehind="AstApplyManage.aspx.cs" Inherits="AIMNS.Web.Views.User.UserManage" %>
 
 <asp:Content ID="head" ContentPlaceHolderID="HeadContextPlaceHolder" runat="server">
     <script type="text/javascript" src="/Views/AssetApply/AstApplyManage.js"></script>
