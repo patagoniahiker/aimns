@@ -60,6 +60,9 @@
     <object id="AssetApplyDao" type="AIMNS.DAL.AssetApplyDao, AIMNS.DAL">
         <property name="HibernateTemplate" ref="HibernateTemplate"/>
     </object>
+    <object id="AssetAcceptDao" type="AIMNS.DAL.AssetAcceptDao, AIMNS.DAL">
+      <property name="HibernateTemplate" ref="HibernateTemplate"/>
+    </object>
     <object id="MasterInfoDao" type="AIMNS.DAL.MasterInfoDao, AIMNS.DAL">
       <property name="HibernateTemplate" ref="HibernateTemplate"/>
     </object>
