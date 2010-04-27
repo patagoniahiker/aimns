@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAssetAcceptDao.cs" />
     <Compile Include="IAssetApplyDao.cs" />
     <Compile Include="IMasterInfoDao.cs" />
     <Compile Include="IPropertyDao.cs" />
