@@ -5,22 +5,7 @@ var main, menu, header, bottom, onlineWindow;
 var westMenuPanel;
 var navtree;
 Ext.QuickTips.init();
-function logout() {
-	Ext.Msg.confirm("友情提示", "是否真的要注销当前用户?", function(btn) {
-				if (btn == "yes") {
-				    window.location = '../Login/Login.aspx';
-					//Ext.Ajax.request({
-								// url :
-								// EasyBridge.ClientProxy.RenderUrl('UserAccount',
-								// 'Logout'),
-								//url : '../../TestDataHandler.ashx?action=Logout',
-								//success : function() {
-								//	window.location = '../Login/Login.aspx';
-								//}
-							//});
-				}
-			});
-}
+Ext.form.Field.prototype.msgTarget='side';
 
 function addToTree( item, children ) {
   var length = children.length;
@@ -39,96 +24,6 @@ function addToTree( item, children ) {
     item.appendChild(sub);
   }
 }
-//function buildTree() {
-//	var tree = new Ext.tree.TreePanel({
-//				el : 'nav-tree',
-//				autoScroll : true,
-//				animate : true,
-//				enableDD : true,
-//				containerScroll : true,
-//				draggable : false,
-//				rootVisible : false
-//			});
-//	var rootid = Ext.encode('nav-tree').toString();
-
-//	var root = new Ext.tree.AsyncTreeNode({
-//				text : 'nav-tree',
-//				draggable : false,
-//				id : 'nav-tree'
-//			});
-
-//	tree.setRootNode(root);
-
-//	root.appendChild(new Ext.tree.TreeNode({
-//				text : "用户管理",
-//				id : "1",
-//				url : "/User.mvc/Index",
-//				leaf : true
-//    }));
-//    
-//    root.appendChild(new Ext.tree.TreeNode({
-//        text: "部门管理",
-//        id: "2",
-//        url: "/Department.mvc/Index",
-//        leaf: true
-//    }));
-//			
-//	tree.on("click", function(node) {
-//				if (node.attributes.leaf) {
-//					AddNewTab(node.attributes.id, node.attributes.text,
-//							node.attributes.url);
-//				}
-//			});
-
-//	tree.render();
-//	root.expand();
-//	tree.show();
-//	
-//	var tree3 = new Ext.tree.TreePanel({
-//				el : 'app-tree',
-//				height: Ext.get('nav-tree').getHeight(),
-//				autoScroll : true,
-//				animate : true,
-//				enableDD : true,
-//				containerScroll : true,
-//				draggable : false,
-//				rootVisible : false
-//			});
-//	var rootid3 = Ext.encode('app-tree').toString();
-
-//	var root3 = new Ext.tree.AsyncTreeNode({
-//				text : 'app-tree',
-//				draggable : false,
-//				id : 'app-tree'
-//			});
-
-//	tree3.setRootNode(root3);
-//    
-//    root3.appendChild(new Ext.tree.TreeNode({
-//        text: "资产调拨一览",
-//        id: "3",
-//        url: "/PropertyAppropriation.mvc/Index",
-//        leaf: true
-//    }));
-//    
-//    root3.appendChild(new Ext.tree.TreeNode({
-//        text: "资产调拨",
-//        id: "4",
-//        url: "/Property.mvc/Index",
-//        leaf: true
-//    }));
-//			
-//	tree3.on("click", function(node) {
-//				if (node.attributes.leaf) {
-//					AddNewTab(node.attributes.id, node.attributes.text,
-//							node.attributes.url);
-//				}
-//			});
-
-//	tree3.render();
-//	root3.expand();
-//	tree3.show();
-//}
 
 function AddNewTab(id, text, url) {
 	var existTab = main.findById(id);// 是否已经存在
@@ -173,8 +68,6 @@ MainPanel = function() {
 		var o = (typeof panel == "string" ? panel : id || panel.id);
 		var tab = this.getComponent(o);
 		if (tab) {
-			// if(tab.lazyClose)tab.hide();
-			// else
 			this.remove(tab);
 		}
 	};
@@ -232,6 +125,120 @@ MainPanel = function() {
 							scope : this
 						}]
 			});
+			
+	Ext.apply(Ext.form.VTypes,{
+    password:function(val,field){
+       if(field.confirmTo){
+           var pwd=Ext.get(field.confirmTo);
+           return (val==pwd.getValue());
+       }
+       return true;
+    }
+  });
+
+  var newTxt = new Ext.form.TextField({
+      fieldLabel: '新密码',
+      name: 'newPassword',
+      id:'newPassword',
+      inputType : 'password',
+      allowBlank: false
+  });
+  
+  var againTxt = new Ext.form.TextField({
+      fieldLabel: '确认新密码',
+      name: 'againPassword',
+      id:'againPassword',
+      inputType : 'password',
+      vtype:"password",
+      vtypeText:"两次密码不一致！",
+      confirmTo:"newPassword",
+      allowBlank: false
+  });
+			
+	var PasswordForm = new Ext.FormPanel({
+        frame: true,
+        labelAlign: 'right',
+        labelWidth: 120,
+        width: 450,
+        height: 250,
+        items: new Ext.form.FieldSet({
+            title: '设定新密码',
+            autoHeight: true,
+            defaults: { width: 200 },
+            items: [newTxt, againTxt]
+        })
+  });
+    		
+	var SetPasswordWin;
+	function handleSetPassword() {
+	    SetPasswordWin = new Ext.Window({
+	        title: '修改密码',
+	        layout: 'fit',
+	        width: 500,
+	        closeAction: 'hide',
+	        height: 300,
+	        modal: true,
+	        autoDestroy: true,
+	        plain: true,
+	        items: PasswordForm,
+	        buttons: [{
+	            text: '确定',
+	            handler: SetPassword
+	        }, {
+	            text: '取消',
+	            handler: function() {
+	                SetPasswordWin.hide();
+	            }
+            }]
+	        });
+	        PasswordForm.form.reset();
+	        SetPasswordWin.show(this);
+	}
+	
+	function SetPassword(btn) {
+		if (PasswordForm.form.isValid()) {
+			btn.disabled = true;
+			Ext.MessageBox.show({
+						msg : '正在请求数据, 请稍侯',
+						progressText : '正在请求数据',
+						width : 300,
+						wait : true,
+						waitConfig : {
+							interval : 200
+						}
+					});
+
+			var formvalue = PasswordForm.form.getValues();
+			Ext.Ajax.request({
+						url : '/User.mvc/UpdatePassword',
+						method : 'POST',
+						params : {password:formvalue["newPassword"]},
+						callback: function(options, success, response) {
+						  btn.disabled = true;
+							if (success) { 
+								Ext.MessageBox.hide();
+								var result = Ext.util.JSON.decode(response.responseText)
+								Ext.MessageBox.alert("消息", result.Message);
+								SetPasswordWin.hide();
+							} else {
+								Ext.MessageBox.hide();
+								Ext.MessageBox.alert("失败，请重试",
+										response.responseText);
+							}
+						},
+						failure : function(response, options) {
+							Ext.MessageBox.hide();
+							ReturnValue = Ext.MessageBox.alert("警告",
+									"出现异常错误！请联系管理员！");
+						},
+						success : function(response, options) {
+							Ext.MessageBox.hide();
+						}
+					})
+		}
+	}   
+	
+	    
 	MainPanel.superclass.constructor.call(this, {
 		id : 'main',
 		region : 'center',
@@ -250,33 +257,9 @@ MainPanel = function() {
 			},
 			autoScroll : true,
 			tbar : [{
-						text : '主页',
-						handler : function() {
-							main.loadUrl(this.homePage);
-						},
-						scope : this
-					}, {
-						text : '前进',
-						handler : this.forward,
-						scope : this
-					}, {
-						text : '后退',
-						handler : this.back,
-						scope : this
-					}, {
-						text : '刷新',
-						handler : this.refresh,
-						scope : this
-					}, {
-						text : '消息设置',
-						handler : OnlineMessageManager.config,
-						scope : OnlineMessageManager
-					}, {
-						text : '请与我联系',
-						handler : function() {
-							window.open("");
-						}
-					}]
+						text : '修改密码',
+						handler : handleSetPassword
+					  }]
 		}
 	});
 	this.on("contextmenu", function(tabPanel, tab, e) {
@@ -292,6 +275,35 @@ Ext.onReady(function() {
 		var theme = Ext.state.Manager.get('theme', 'ext-all.css');
 		Ext.util.CSS.swapStyleSheet('windows', cssMenu + theme);
 	}
+	
+	function logout() {
+	  Ext.Msg.confirm("提示", "是否真的要注销当前用户?", function(btn) {
+				if (btn == "yes") {
+				  Ext.Ajax.request({
+						url : '/User.mvc/Logout',
+						method : "POST",
+						waitMsg : "请等待!",
+						callback: function(options, success, response) {
+							if (success) { 
+								window.location = '../../Default.aspx';  
+							} else {
+								Ext.MessageBox.hide();
+								Ext.MessageBox.alert("失败，请重试",
+										response.responseText);
+							}
+						},
+						failure : function(response, options) {
+							Ext.MessageBox.hide();
+							ReturnValue = Ext.MessageBox.alert("警告",
+									"出现异常错误！请联系管理员！");
+						},
+						success : function(response, options) {
+							Ext.MessageBox.hide();
+						}
+					});
+				}
+			});
+  }
 
 	header = new Ext.Panel({
 				border : true,
@@ -314,9 +326,7 @@ Ext.onReady(function() {
 											}, "->", {
 												text : "退出",
 												iconCls : 'btnwebqq',
-												handler : function() {
-												    window.location = '../../Default.aspx';  
-												}
+												handler : logout
 											}, "-", "更换皮肤:", {
 												xtype : "combo",
 												transform : "skins",
@@ -380,8 +390,8 @@ Ext.onReady(function() {
 		layoutConfig : {
 			titleCollapse : true,
 			animate : true
-		}//,
-		//layout : 'accordion'// 折叠式菜单
+		},
+		layout : 'accordion'// 折叠式菜单
 	});
 	
 	var response = Ext.lib.Ajax.getConnectionObject().conn;    
@@ -391,8 +401,7 @@ Ext.onReady(function() {
     
   for(var m=0; m<treejsonData.length; m++){
     var div_id = treejsonData[m].id + "-tree";
-    treejsonData[m].html = "<div id='" + div_id + "' style='overflow:auto;height:100%;border:0px solid c3daf9;'></div>";   
-    treejsonData[m].height = 200;
+    treejsonData[m].html = "<div id='" + div_id + "' style='overflow:auto;height:100%;'></div>";   
     westMenuPanel.add(treejsonData[m]);     
   }
 
@@ -410,23 +419,13 @@ Ext.onReady(function() {
 
     var paramId = treejsonData[i].id;
     var tree = new Ext.tree.TreePanel({
-	    el : mdiv_id,
+	    autoShow:true, 
 	    autoScroll : true,
 	    animate : true,
 	    enableDD : true,
 	    containerScroll : true,
 	    draggable : false,
-	    rootVisible : false//,
-//	    listeners:{expand:{fn:function(node) {   
-//          paramId = node.id;
-//          //tree.getLoader().load({dataUrl:'/User.mvc/GetMenuNodeList',baseParams : {fucId : paramId}});
-//          tree.getLoader().baseParams["fucId"] = node.id;
-//          }},click:{fn:function(node){alert(node.id);}} 
-//      },
-//	    loader:new Ext.tree.TreeLoader({
-//          dataUrl:'/User.mvc/GetMenuNodeList',
-//          baseParams : {fucId : paramId}
-//       })
+	    rootVisible : false
     });
 
     var root=new Ext.tree.AsyncTreeNode({
@@ -464,7 +463,7 @@ Ext.onReady(function() {
 		  }
 	  });
 
-    tree.render();
+    tree.render(mdiv_id);
     root.expand();
     tree.show();
   }
