@@ -84,6 +84,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetAcceptController.cs" />
     <Compile Include="BaseController.cs" />
     <Compile Include="AssetApplyController.cs" />
     <Compile Include="DepartmentController.cs" />
