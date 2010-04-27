@@ -149,6 +149,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\AssetAccept\AstAcceptManage.aspx.cs">
+      <DependentUpon>AstAcceptManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\AssetAccept\AstAcceptManage.aspx.designer.cs">
+      <DependentUpon>AstAcceptManage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\AssetApply\AstApplyManage.aspx.cs">
       <DependentUpon>AstApplyManage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1360,6 +1367,8 @@
     <Content Include="Content\Scripts\treeSerializer.js" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Views\AssetAccept\AstAcceptManage.aspx" />
+    <Content Include="Views\AssetAccept\AstAcceptManage.js" />
     <Content Include="Views\AssetApply\AstApplyManage.aspx" />
     <Content Include="Views\AssetApply\AstApplyManage.js" />
     <Content Include="Views\Department\DepartManage.aspx" />
