@@ -286,17 +286,63 @@ namespace AIMNS.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Logout()
+        public ActionResult GetAllByDepartment(string id)
         {
-            var rdto = new ResultDTO();
+            Department dep = ManagerFactory.DepartmentManager.GetDepartment(id);
+            IList list = dep.UserList;
+
+            IList<UserDTO> result = new List<UserDTO>();
+
+            foreach (User o in list)
+            {
+                result.Add(UserDTOMapper.MapToDTO(o));
+            }
+            return this.Json(result);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UpdatePassword(string password)
+        {
             string userId = HttpContext.Session["User"].ToString();
             User user = ManagerFactory.UserManager.GetUser(userId);
+            user.Password = password;
 
-            HttpContext.Session["User"] = null;
+            var rdto = new ResultDTO();
+
+            try
+            {
+                ManagerFactory.UserManager.UpdateUser(user);
+                rdto.Message = "更新成功";
+                rdto.Result = true;
+            }
+            catch
+            {
+                rdto.Message = "更新失败";
+                rdto.Result = false;
+            }
+
+            return this.Json(rdto);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Logout()
+        {
+            string userId = HttpContext.Session["User"].ToString();
+            User user = ManagerFactory.UserManager.GetUser(userId);
             user.LoginFlg = "0";
-            ManagerFactory.UserManager.UpdateUser(user);
 
-            rdto.Result = true;
+            var rdto = new ResultDTO();
+
+            try
+            {
+                ManagerFactory.UserManager.UpdateUser(user);
+                rdto.Result = true;
+                HttpContext.Session["User"] = "";
+            }
+            catch
+            {
+                rdto.Result = false;
+            }
 
             return this.Json(rdto);
         }
