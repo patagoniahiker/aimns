@@ -17,12 +17,16 @@ namespace AIMNS.IBLL
         IList GetAplTypeList();
         IList GetAplStatusList();
         IList GetFreeAssetList();
+        IList GetAssetListByCondition(AssetApply_Asset condition);
         IList GetDeptAssetList(string deptId);
+        IList GetDeptList();
 
         int DoApplyAddInBatch(string deptId, string[] astIds, string reason);
         int DoApplyAdd(AssetApply ast);
         int DoApplyRepair(string id, string reason);
         int DoApplyReturn(string id, string reason);
         int DoApplyDestroy(string id, string reason);
+
+        string GetUsersDeptId(string userId);
     }
 }
