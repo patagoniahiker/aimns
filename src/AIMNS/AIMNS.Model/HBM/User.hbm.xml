@@ -9,7 +9,7 @@
         </id>
 
         <!--用户密码-->
-        <property name="Password" column="usr_pwd"   type="System.String"  length="20" update="false"/>
+        <property name="Password" column="usr_pwd"   type="System.String"  length="20"/>
         
         <!--用户名-->
         <property name="UserName" column="usr_name"  not-null="true" type="System.String"  length="10" />
